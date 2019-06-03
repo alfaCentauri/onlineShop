@@ -18,9 +18,15 @@
     <div class="container">
         <p>Hola mundo....</p>
         <?php
-        use Models\Conection;
+        /**
+         * @param $class  Type class.
+         */
+        function autoload($class){
+          include 'Models/'.$class.'php';
+        }
+        spl_autoload_register('autoload');
         $conection = new Conection();
-        $conection.Close();
+        $conection->Close();
 
         /*$servername = "localhost";
         $username = "userShop";
