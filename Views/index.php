@@ -18,14 +18,8 @@
     <div class="container">
         <p>Hola mundo....</p>
         <?php
-        /**
-         * @param $class  Type class.
-         */
-        function autoload($class){
-          include 'Models/'.$class.'php';
-        }
-        spl_autoload_register('autoload');
-        $conection = new Conection();
+        
+        $conection = new Models\Conection();
         $conection->Close();
 
         /*$servername = "localhost";
