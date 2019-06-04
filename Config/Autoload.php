@@ -16,9 +16,10 @@ namespace Config;
 class Autoload {
     public static function Run(){
         spl_autoload_register(function($class){
-            $ruta = str_replace("\\", "/", $class).".php";
-            if(is_readable($ruta)){
-                require_once $ruta;
+            $url = str_replace("\\", "/", $class).".php";
+//            print 'La ruta en autolad es: '.$url."<br>"; //Debug
+            if(is_readable($url)){
+                require_once $url;
             }else {
                 print 'The file does not exists. ';
             }

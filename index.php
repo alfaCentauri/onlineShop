@@ -24,5 +24,6 @@
     
     Config\Autoload::Run();
     require_once 'Views/Templates.php';
-    Config\Router::Run(new Config\Request());
+    $request = new Config\Request();
+//    Config\Router::Run(new Config\Request());
 ?>
