@@ -34,3 +34,12 @@ CREATE TABLE shop.products (
 	creationDate DATE NOT NULL ,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE shop.products (
+	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
+	name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Product name' , 
+	price FLOAT NOT NULL COMMENT 'Price without product tax' , 
+	stock INT(10) NOT NULL , 
+	creationDate DATE NOT NULL ,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

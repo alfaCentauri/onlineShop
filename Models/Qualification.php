@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-    define("DS", DIRECTORY_SEPARATOR);
-    define("ROOT", realpath(dirname(__FILE__)).DS);
-    define("URL", "http://localhost/onlineShop/");
-    
-    require_once 'Config/Autoload.php';
-    
-    Config\Autoload::Run();
-    require_once 'Views/Templates.php';
-    Config\Router::Run(new Config\Request());
-?>
+
+namespace Models;
+
+/**
+ * This is the qualification of the product.
+ *
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
+ */
+class Qualification {
+    //put your code here
+}

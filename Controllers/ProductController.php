@@ -19,11 +19,21 @@ class ProductController
      */
     private $product;
 
+    function __construct() 
+    {
+        $this->product = new Product();
+    }
+    /**Default*/
+    public function index()
+    {
+        $data = $this->product->list();
+        return $data;
+    }
     /**
      * Method to create the product.
      * @param $newProduct
      */
-    public function create($newProduct)
+    public function add($newProduct)
     {
         $this->product = new Product();
         $this->product->setName('apple');
@@ -36,7 +46,7 @@ class ProductController
      * Show a product.
      * @param $id   Type integer.
      */
-    public function read($id)
+    public function view($id)
     {
 
     }
@@ -44,7 +54,7 @@ class ProductController
      * Method to update the product.
      * @param $modifiedProduct  Type Product.
      */
-    public function update($modifiedProduct)
+    public function edit($modifiedProduct)
     {
 
     }
