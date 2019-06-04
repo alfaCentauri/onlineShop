@@ -34,21 +34,21 @@ class Request {
     /**Constructor of Request.*/
     function __construct() {
         if(isset($_GET['url'])){
-            $ruta = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);
-            $ruta = explode("/", $ruta);
-            $ruta = array_filter($ruta);
-            if ($ruta[0] == "index.php"){
-                $this->controlador = "estudiantes";
+            $url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);
+            $url = explode("/", $url);
+            $url = array_filter($url);
+            if ($url[0] == "index.php"){
+                $this->controlador = "products";
             } else {
-                $this->controlador = strtolower(array_shift($ruta));
+                $this->controlador = strtolower(array_shift($url));
             }            
-            $this->method = strtolower(array_shift($ruta));
+            $this->method = strtolower(array_shift($url));
             if (!$this->method){
                 $this->method = "index";
             } 
-            $this->argument = $ruta;
+            $this->argument = $url;
         } else {
-            $this->controlador = "estudiantes";
+            $this->controlador = "products";
             $this->method = "index";
         }
     }
@@ -58,21 +58,21 @@ class Request {
      * 
      * @return String String with the name of the controller.
      */
-    function getControlador() {
+    function getController() {
         return $this->controlador;
     }
     /**
      *  Obtain the method.
      *  @return String String with the name of method.
      */
-    function getMetodo() {
+    function getMethod() {
         return $this->method;
     }
     /**
      * Obtain the argument.
      * @return String String with the argument.
      */
-    function getArgumento() {
+    function getArgument() {
         return $this->argument;
     }
     

@@ -12,6 +12,7 @@ namespace Models;
  * Class of Conexion.
  *
  * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.1.
  */
 class Conection
 {
