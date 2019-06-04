@@ -21,7 +21,7 @@
                         </thead>
                         <tbody>
             <?php 
-                while ($row = mysqli_fetch_array($datos)){            
+                while ($row = mysqli_fetch_array($data)){
             ?>
                             <tr>
                                 <td>
