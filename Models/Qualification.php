@@ -26,5 +26,113 @@ namespace Models;
  * @version 1.0.
  */
 class Qualification {
-    //put your code here
+    /**It contains the index*/
+    private $id;
+    private $idUser;
+    private $idProduct;
+    private $points;
+    private $creationDate;
+    /**Conetion to DB.*/
+    private $conn;
+    /***/
+    function __construct() {
+        $this->conn = new Conection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * @param mixed $idUser
+     */
+    public function setIdUser($idUser): void
+    {
+        $this->idUser = $idUser;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdProduct()
+    {
+        return $this->idProduct;
+    }
+
+    /**
+     * @param mixed $idProduct
+     */
+    public function setIdProduct($idProduct): void
+    {
+        $this->idProduct = $idProduct;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPoints()
+    {
+        return $this->points;
+    }
+
+    /**
+     * @param mixed $points
+     */
+    public function setPoints($points): void
+    {
+        $this->points = $points;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param mixed $creationDate
+     */
+    public function setCreationDate($creationDate): void
+    {
+        $this->creationDate = $creationDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConn()
+    {
+        return $this->conn;
+    }
+
+    /**
+     * @param mixed $conn
+     */
+    public function setConn($conn): void
+    {
+        $this->conn = $conn;
+    }
+
 }

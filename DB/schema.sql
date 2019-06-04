@@ -20,9 +20,10 @@ CREATE TABLE shop.users (
   password varchar(20) COLLATE utf8_bin NOT NULL,
   active tinyint(1) NOT NULL,
   creationDate date NOT NULL,
-  PRIMARY KEY (id),
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+/*
 drop table shop.products;
 CREATE TABLE shop.products (
 	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
@@ -33,13 +34,24 @@ CREATE TABLE shop.products (
 	active BOOLEAN NOT NULL , 
 	creationDate DATE NOT NULL ,
 	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;*/
 
+drop table shop.products;
 CREATE TABLE shop.products (
 	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
 	name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Product name' , 
 	price FLOAT NOT NULL COMMENT 'Price without product tax' , 
 	stock INT(10) NOT NULL , 
+	creationDate DATE NOT NULL ,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+drop table shop.qualification;
+CREATE TABLE shop.qualification (
+	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' ,
+	idUser int(11) NOT NULL,
+	idProduct INT(10) UNSIGNED NOT NULL,
+	points INT DEFAULT 0,
 	creationDate DATE NOT NULL ,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

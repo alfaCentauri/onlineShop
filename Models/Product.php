@@ -28,7 +28,7 @@ class Product
     /**Conetion to DB.*/
     private $con;
     function __construct() {
-        $this->con=new Conexion();
+        $this->con=new Conection();
     }
     /**
      * @return mixed
@@ -40,7 +40,6 @@ class Product
 
     /**
      * @param mixed $id
-     * @return Product
      */
     public function setId($id)
     {
@@ -57,7 +56,6 @@ class Product
 
     /**
      * @param String $name
-     * @return Product
      */
     public function setName($name)
     {
@@ -74,7 +72,6 @@ class Product
 
     /**
      * @param mixed $price
-     * @return Product
      */
     public function setPrice($price)
     {
@@ -91,7 +88,6 @@ class Product
 
     /**
      * @param Integer $stock
-     * @return Product
      */
     public function setStock($stock)
     {

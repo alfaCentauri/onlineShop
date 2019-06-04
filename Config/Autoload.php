@@ -17,11 +17,10 @@ class Autoload {
     public static function Run(){
         spl_autoload_register(function($class){
             $url = str_replace("\\", "/", $class).".php";
-//            print 'La ruta en autolad es: '.$url."<br>"; //Debug
             if(is_readable($url)){
                 require_once $url;
             }else {
-                print 'The file does not exists. ';
+                print 'The file does not exists. <h4>'.$url.'</h4>';
             }
         });
     }
