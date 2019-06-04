@@ -35,10 +35,10 @@
                                 <td><?php echo $row["price"];?></td>
                                 <td><?php echo '*'?></td>
                                 <td>
-                                    <a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" >
+                                    <a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="actions">
                                         <span class="glyphicon glyphicon-edit">
                                     </a>
-                                    <a href="<?php echo URL; ?>index.php?url=products/remove/<?php echo $row['id']; ?>" >
+                                    <a href="<?php echo URL; ?>index.php?url=products/remove/<?php echo $row['id']; ?>" class="actions" >
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </a>
                                 </td>

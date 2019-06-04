@@ -18,20 +18,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     Created on : 04/06/2019, 02:25:51 PM
     Author     : ricardo
 */
-.error{
+.error
+{
     color: red;
 }
-.info{
+.info
+{
     color: blue;
 }
-.success{
+.success
+{
     color: green;
 }
-.selected{
+.selected
+{
     color: black;
     text-align: justify;
     font-weight:  bold;
 }
-.foot{
+.foot
+{
     background-color: #cccccc;
+}
+.actions
+{
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 100%;
+    color: aqua;
 }
