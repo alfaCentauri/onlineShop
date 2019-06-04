@@ -37,7 +37,7 @@ class Request {
             $url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);
             $url = explode("/", $url);
             $url = array_filter($url);
-//            print 'La ruta en request es: '.$url."<br>"; //Debug
+//            print 'La ruta en request es: '.$url[0]."<br>"; //Debug
             if ($url[0] == "index.php"){
                 $this->controlador = "products";
             } else {
@@ -48,6 +48,8 @@ class Request {
                 $this->method = "index";
             } 
             $this->argument = $url;
+//            print 'El argumento en request es: '.$this->argument."<br>"; //Debug
+//            print 'El metodo en request es: '.$this->method."<br>"; //Debug
         } else {
             $this->controlador = "products";
             $this->method = "index";
