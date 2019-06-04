@@ -8,8 +8,7 @@
 
 namespace Controllers;
 
-use Models\Product;
-use MongoDB\BSON\Type;
+use Models\Product as Product;
 /**
  * Controller of actions on products.
  */

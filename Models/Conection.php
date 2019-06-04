@@ -8,7 +8,11 @@
 
 namespace Models;
 
-
+/**
+ * Class of Conexion.
+ *
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ */
 class Conection
 {
     /** Contains the name of the server*/
@@ -26,12 +30,29 @@ class Conection
      */
     public function __construct()
     {
-        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
+        $this->conn = new \mysqli($this->servername, $this->username, $this->password, $this->dbname);
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
         echo 'Connection OK';
     }
+    /**
+     * 
+     * @param String $sql   Simple query sql.
+     */
+    public function SimpleQuery($sql)
+    {
+        $this->conn->query($sql);
+    }
+    /**
+     * 
+     */
+    public function ReturnQuery($sql)
+    {
+        $data = $this->conn->query($sql);
+        return $data;
+    }
+
     /**
      * Close conection.
      */
