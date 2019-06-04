@@ -12,7 +12,7 @@ use Models\Product as Product;
 /**
  * Controller of actions on products.
  */
-class ProductController
+class productsController
 {
     /**
      * Contains a object of type Product.
@@ -26,7 +26,7 @@ class ProductController
     /**Default*/
     public function index()
     {
-        $data = $this->product->list();
+        $data = $this->product->toList();
         return $data;
     }
     /**
@@ -44,7 +44,7 @@ class ProductController
 
     /**
      * Show a product.
-     * @param $id   Type integer.
+     * @param $id   Integer integer.
      */
     public function view($id)
     {
@@ -52,7 +52,7 @@ class ProductController
     }
     /**
      * Method to update the product.
-     * @param $modifiedProduct  Type Product.
+     * @param $modifiedProduct  Product Product.
      */
     public function edit($modifiedProduct)
     {
@@ -60,7 +60,7 @@ class ProductController
     }
 
     /**Delete a product
-     * @param $id   Type integer.
+     * @param $id   Integer integer.
      */
     public function delete($id)
     {

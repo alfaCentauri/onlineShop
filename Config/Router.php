@@ -13,23 +13,23 @@ namespace Config;
  */
 class Router {
     public static function Run(Request $request){
-        $controller = $request->getControlador()."Controller";
-        print 'El controlador en router es: '.$controller."<br>"; //Debug
+        $controller = $request->getController()."Controller";
+        //print 'El controlador en router es: '.$controller."<br>"; //Debug
         $route = ROOT."Controllers".DS. $controller.".php";
         print 'La ruta en router es: '.$route."<br>"; //Debug
-        $method = $request->getMetodo();
+        $method = $request->getMethod();
         if ($method=="index.php"){
             $method = "index";
         }
-        $argument = $request->getArgumento();
+        $argument = $request->getArgument();
         if (is_readable($route)){
             require_once $route; 
             $mostrar = "Controllers\\".$controller;
             $controller = new $mostrar;
             if (!isset($argument)) {
-                $datos = call_user_func(array($controller,$method));
+                $data = call_user_func(array($controller,$method));
             } else {
-                $datos = call_user_func_array(array($controller,$method), $argument);
+                $data = call_user_func_array(array($controller,$method), $argument);
             }
             print 'La ruta del controlador es: '.$route."<br>"; //Debug
         } else {
@@ -37,7 +37,7 @@ class Router {
         }
         
         //Load views
-        $route = ROOT."Views".DS.$request->getControlador().DS.$request->getMetodo().".php";
+        $route = ROOT."Views".DS.$request->getController().DS.$request->getMethod().".php";
         print 'La ruta de la vista es: '.$route."<br>"; //Debug
         if (is_readable($route)){
             require_once $route; 
