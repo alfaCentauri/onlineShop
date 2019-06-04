@@ -33,7 +33,7 @@
                                     <a href="<?php echo URL; ?>index.php?url=products/view/<?php echo $row['id']; ?>"><?php echo $row["name"];?></a>
                                 </td>
                                 <td><?php echo $row["price"];?></td>
-                                <td><?php echo $row["average"];?></td>
+                                <td><?php echo '*'?></td>
                                 <td>
                                     <a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" >
                                         <span class="glyphicon glyphicon-edit">

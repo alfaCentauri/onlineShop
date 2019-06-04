@@ -33,13 +33,28 @@ class productsController
      * Method to create the product.
      * @param $newProduct
      */
-    public function add($newProduct)
+    public function add()
     {
-        $this->product = new Product();
-        $this->product->setName('apple');
-        $this->product->setPrice(0.3);
-        $this->product->setStock(100);
-        $this->product = $newProduct;
+        if ($_POST)
+        {
+            $permitted = array("image/jpeg", "image/png", "image/gif", "image/jpg");
+            $limit = 700;
+            if (in_array($_FILES['image']['type'], $permitted) && $_FILES['image']['size'] <= $limit*1024){
+                $name = date('is').$_FILES['image']['name'];
+                $ruta = "Views".DS."Templates".DS."images".DS."products".DS.$name;
+//                print 'La ruta es '.$ruta.' <br>'; //Debug
+                move_uploaded_file($_FILES['image']['tmp_name'], $ruta);
+                $this->product->setName($_POST['name']);
+                $this->product->setPrice($_POST['price']);
+                $this->product->setStock($_POST['stock']);
+                $this->product->setImage($name);
+                $this->product->add();
+                header("Location: ".URL."index.php?url=products");
+//                print 'El nombre es: '.$this->product->getName().' <br>'; //Debug
+            } else {
+                print '<h4 class="error">El archivo no es valido.</h4>'; //Debug
+            }
+        }
     }
 
     /**

@@ -43,36 +43,22 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                                <label for="edad">Edad:</label>
+                                <label for="price">Price:</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                                <input type="number" name="edad" value="" placeholder="0" class="form-control" />
+                                <input type="number" name="price" value="" placeholder="0" class="form-control" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                                <label for="average">Average:</label>
+                                <label for="stock">Stock:</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                                <input type="number" name="average" value="" placeholder="0" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12">
-                                <label for="id_seccion">Secci&oacute;n:</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12">
-                                <select name="id_seccion" class="form-control">
-                                <?php while ($row = mysqli_fetch_array($datos)){  ?>    
-                                    <option value="<?php echo $row["id"]; ?>"><?php echo $row["name"];?></option>
-                                <?php } ?>  
-                                </select>
+                                <input type="number" name="stock" value="" placeholder="0" class="form-control" />
                             </div>
                         </div>
                         <div class="row">

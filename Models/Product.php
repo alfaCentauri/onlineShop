@@ -134,7 +134,7 @@ class Product
     }
     /**Add register*/
     public function add(){
-        $sql = "INSERT INTO products(name, price, image, creationDate) VALUES('{$this->name}', '{$this->price}', '{$this->image}', '{$this->stock}',NOW());";
+        $sql = "INSERT INTO products(name, price, image, stock, creationDate) VALUES('{$this->name}', '{$this->price}', '{$this->image}', '{$this->stock}',NOW());";
         $this->con->SimpleQuery($sql);
     }
     /**Delete record indicated by the current id.*/

@@ -40,7 +40,8 @@ drop table shop.products;
 CREATE TABLE shop.products (
 	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
 	name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Product name' , 
-	price FLOAT NOT NULL COMMENT 'Price without product tax' , 
+	price FLOAT NOT NULL COMMENT 'Price without product tax' ,
+	image VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Name of the product image' ,
 	stock INT(10) NOT NULL , 
 	creationDate DATE NOT NULL ,
 	PRIMARY KEY (id)
