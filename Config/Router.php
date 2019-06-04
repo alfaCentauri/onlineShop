@@ -14,7 +14,9 @@ namespace Config;
 class Router {
     public static function Run(Request $request){
         $controller = $request->getControlador()."Controller";
+        print 'El controlador en router es: '.$controller."<br>"; //Debug
         $route = ROOT."Controllers".DS. $controller.".php";
+        print 'La ruta en router es: '.$route."<br>"; //Debug
         $method = $request->getMetodo();
         if ($method=="index.php"){
             $method = "index";
