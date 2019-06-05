@@ -63,7 +63,9 @@ class productsController
      */
     public function view($id)
     {
-
+        $this->product->setId($id);
+        $data = $this->product->view();
+        return $data;
     }
     /**
      * Method to update the product.
@@ -82,3 +84,5 @@ class productsController
 
     }
 }
+//
+$products = new productsController();

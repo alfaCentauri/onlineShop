@@ -14,9 +14,9 @@
                             <tr class="table-primary">
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Avg.</th>
-                                <th>Actions</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Avg.</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,14 +32,14 @@
                                 <td>
                                     <a href="<?php echo URL; ?>index.php?url=products/view/<?php echo $row['id']; ?>"><?php echo $row["name"];?></a>
                                 </td>
-                                <td><?php echo $row["price"];?></td>
-                                <td><?php echo '*'?></td>
-                                <td>
-                                    <a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="actions">
-                                        <span class="glyphicon glyphicon-edit">
+                                <td class="text-right"><?php echo $row["price"];?></td>
+                                <td class="text-center"><?php echo '*'?></td>
+                                <td class="text-center">
+                                    <a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="btn btn-warning">
+                                        Edit
                                     </a>
-                                    <a href="<?php echo URL; ?>index.php?url=products/remove/<?php echo $row['id']; ?>" class="actions" >
-                                        <span class="glyphicon glyphicon-remove"></span>
+                                    <a href="<?php echo URL; ?>index.php?url=products/remove/<?php echo $row['id']; ?>" class="btn btn-danger" >
+                                        Delete
                                     </a>
                                 </td>
                             </tr>
