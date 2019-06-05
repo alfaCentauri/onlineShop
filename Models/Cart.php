@@ -25,49 +25,90 @@ namespace Models;
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
-class Cart {
+class Cart
+{
     private $conn;
     /**It contains the index*/
     private $id;
+    /***/
+    private $idUser;
+    /***/
+    private $idProduct;
     /**Constains the quantity*/
     private $quantity;
     /**Contains creation date */
     private $creationDate;
-    function __construct() {
+    /***/
+    function __construct() 
+    {
         $this->conn = new Conection();
     }
     /***/
-    function getConn() {
+    public function getConn() {
         return $this->conn;
     }
 
-    function getId() {
+    public function getId() {
         return $this->id;
     }
 
-    function getQuantity() {
+    public function getIdUser() {
+        return $this->idUser;
+    }
+
+    public function getIdProduct() {
+        return $this->idProduct;
+    }
+
+    public function getQuantity() {
         return $this->quantity;
     }
 
-    function getCreationDate() {
+    public function getCreationDate() {
         return $this->creationDate;
     }
 
-    function setConn($conn) {
+    public function setConn($conn) {
         $this->conn = $conn;
     }
 
-    function setId($id) {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    function setQuantity($quantity) {
+    public function setIdUser($idUser) {
+        $this->idUser = $idUser;
+    }
+
+    public function setIdProduct($idProduct) {
+        $this->idProduct = $idProduct;
+    }
+
+    public function setQuantity($quantity) {
         $this->quantity = $quantity;
     }
 
-    function setCreationDate($creationDate) {
+    public function setCreationDate($creationDate) {
         $this->creationDate = $creationDate;
     }
-
+    /***/
+    public function toList()
+    {
+        $sql = "SELECT * FROM carts;";
+        $data = $this->con->ReturnQuery($sql);
+        return $data;
+    }
+    /***/
+    public function toList2()
+    {
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id ;";
+        $data = $this->con->ReturnQuery($sql);
+        return $data;
+    }
+    /**Add register*/
+    public function add(){
+        $sql = "INSERT INTO carts(id, idUser, idProduct, quantity, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->quantity}', NOW());";
+        $this->con->SimpleQuery($sql);
+    }
 
 }

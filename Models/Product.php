@@ -27,7 +27,8 @@ class Product
     private $creationDate;
     /**Conetion to DB.*/
     private $con;
-    function __construct() {
+    function __construct() 
+    {
         $this->con=new Conection();
     }
     /**
@@ -97,23 +98,26 @@ class Product
      * 
      * @return Date Creation date.
      */
-    function getCreationDate() 
+    public function getCreationDate() 
     {
         return $this->creationDate;
     }
-    function getImage() {
+    public function getImage() 
+    {
         return $this->image;
     }
 
-    function getCon() {
+    public function getCon() 
+    {
         return $this->con;
     }
 
-    function setImage($image) {
+    public function setImage($image)
+    {
         $this->image = $image;
     }
 
-    function setCon($con) {
+    public function setCon($con) {
         $this->con = $con;
     }
 
@@ -121,7 +125,7 @@ class Product
      * 
      * @param Date $creationDate
      */
-    function setCreationDate($creationDate) 
+    public function setCreationDate($creationDate) 
     {
         $this->creationDate = $creationDate;
     }

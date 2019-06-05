@@ -56,3 +56,12 @@ CREATE TABLE shop.qualification (
 	creationDate DATE NOT NULL ,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE shop.carts(
+    id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
+    idUser int(11) NOT NULL, 
+    idProduct INT(10) UNSIGNED NOT NULL, 
+    quantity INT(10) UNSIGNED NOT NULL, 
+    creationDate DATE NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
