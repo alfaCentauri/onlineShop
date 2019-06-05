@@ -145,7 +145,7 @@ class Product
     /**Edit record indicated by the current id.*/
     public function edit(){
         $sql = "update products set name='{$this->name}', price="
-        . "'{$this->price}', image='{$this->image}' where id='{$this->id}';";
+        . "'{$this->price}', stock='{$this->stock}' where id='{$this->id}';";
         $this->con->SimpleQuery($sql);
     }
     /**Display a record indicated by the current id.*/

@@ -71,9 +71,18 @@ class productsController
      * Method to update the product.
      * @param $modifiedProduct  Product Product.
      */
-    public function edit($modifiedProduct)
-    {
-
+    public function edit($id){
+        $this->product->setId($id);
+        if (!$_POST){
+            $data = $this->product->view();
+            return $data;
+        } else {
+            $this->product->setNombre($_POST['name']);
+            $this->product->setEdad($_POST['price']);
+            $this->product->setPromedio($_POST['stock']);
+            $this->product->edit();
+            header("Location: ".URL."index.php?url=products");
+        }
     }
 
     /**Delete a product
