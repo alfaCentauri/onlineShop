@@ -30,7 +30,7 @@
                 <div class="card-header bg-success">Add to Cart</div>
                 <div class="card-body">
                     <div class="container">
-                        <form name="formCart" method="POST">
+                        <form name="formCart" action="<?php echo URL; ?>cart/add/<?php echo $data['id']; ?>" method="POST">
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Picture" class="img-fluid"/>
@@ -43,7 +43,7 @@
                                     <li class="list-group-item">                                     
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend"><span class="input-group-text">Quantity: </span></div>                                            
-                                            <input id="quantity" type="number" name="quantity" value="0" placeholder="1" class="form-control" />
+                                            <input id="quantity" type="number" min="1" name="quantity" value="0" placeholder="1" class="form-control" />
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Und.</span>
                                             </div>
@@ -55,7 +55,8 @@
                         <div class="row">
                             <div class="col-sm-2 col-md-2"></div>
                             <div class="col-sm-4 col-md-4">
-                                <a href="index.php?url=cart/add" class="btn btn-success btn-block">Add</a>
+                                <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
+                                <!-- a href="index.php?url=cart/add" class="btn btn-success btn-block">Add</a -->
                             </div>
                             <div class="col-sm-4 col-md-4">
                                 <a href="index.php?url=cart" class="btn btn-warning btn-block">Return</a>

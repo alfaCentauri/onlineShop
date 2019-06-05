@@ -34,8 +34,8 @@
                             <tr class="table-primary">
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th class="text-center">cantidad</th>
-                                <th class="text-center">Price</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Total Price $</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -52,8 +52,8 @@
                                 <td>
                                     <a href="<?php echo URL; ?>index.php?url=cart/view/<?php echo $row['id']; ?>"><?php echo $row["name_product"];?></a>
                                 </td>
-                                <td class="text-center"><?php echo '*'?></td>
-                                <td class="text-right"><?php echo $row["price"];?></td>                                
+                                <td class="text-center"><?php echo $row['quantity']; ?></td>
+                                <td class="text-right"><?php echo $row['totalPrice'];?></td>
                                 <td class="text-center">
                                     <a href="<?php echo URL; ?>index.php?url=cart/edit/<?php echo $row['id']; ?>" class="btn btn-warning">
                                         Edit

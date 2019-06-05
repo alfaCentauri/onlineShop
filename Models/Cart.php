@@ -27,88 +27,180 @@ namespace Models;
  */
 class Cart
 {
+    /**
+     * @var Conection
+     */
     private $conn;
-    /**It contains the index*/
+    /**
+     * It contains the index
+     * @var integer
+     */
     private $id;
-    /***/
+    /**
+     * @var integer
+     */
     private $idUser;
-    /***/
+    /**
+     * @var integer
+     */
     private $idProduct;
-    /**Constains the quantity*/
+    /**
+     * Constains the quantity.
+     * @var integer
+     */
     private $quantity;
-    /**Contains creation date */
+    /**
+     * Constains the total price.
+     * @var float
+     */
+    private $totalPrice;
+    /**
+     * Contains creation date.
+     */
     private $creationDate;
-    /***/
-    function __construct() 
+    /**
+     * Cart constructor.
+     */
+    function __construct()
     {
         $this->conn = new Conection();
+        $this->id = 0;
+        $this->idUser = 0;
+        $this->idProduct = 0;
+        $this->quantity = 0;
     }
-    /***/
-    public function getConn() {
+
+    /**
+     * @return Conection
+     */
+    public function getConn(): Conection
+    {
         return $this->conn;
     }
 
-    public function getId() {
-        return $this->id;
-    }
-
-    public function getIdUser() {
-        return $this->idUser;
-    }
-
-    public function getIdProduct() {
-        return $this->idProduct;
-    }
-
-    public function getQuantity() {
-        return $this->quantity;
-    }
-
-    public function getCreationDate() {
-        return $this->creationDate;
-    }
-
-    public function setConn($conn) {
+    /**
+     * @param Conection $conn
+     */
+    public function setConn(Conection $conn): void
+    {
         $this->conn = $conn;
     }
 
-    public function setId($id) {
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
         $this->id = $id;
     }
 
-    public function setIdUser($idUser) {
+    /**
+     * @return int
+     */
+    public function getIdUser(): int
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * @param int $idUser
+     */
+    public function setIdUser(int $idUser): void
+    {
         $this->idUser = $idUser;
     }
 
-    public function setIdProduct($idProduct) {
+    /**
+     * @return int
+     */
+    public function getIdProduct(): int
+    {
+        return $this->idProduct;
+    }
+
+    /**
+     * @param int $idProduct
+     */
+    public function setIdProduct(int $idProduct): void
+    {
         $this->idProduct = $idProduct;
     }
 
-    public function setQuantity($quantity) {
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity(int $quantity): void
+    {
         $this->quantity = $quantity;
     }
 
-    public function setCreationDate($creationDate) {
+    /**
+     * @return float
+     */
+    public function getTotalPrice(): float
+    {
+        return $this->totalPrice;
+    }
+
+    /**
+     * @param float $totalPrice
+     */
+    public function setTotalPrice(float $totalPrice): void
+    {
+        $this->totalPrice = $totalPrice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param mixed $creationDate
+     */
+    public function setCreationDate($creationDate): void
+    {
         $this->creationDate = $creationDate;
     }
+
     /***/
     public function toList()
     {
         $sql = "SELECT * FROM carts;";
-        $data = $this->con->ReturnQuery($sql);
+        $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
     /***/
     public function toList2()
     {
         $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id ;";
-        $data = $this->con->ReturnQuery($sql);
+        $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
     /**Add register*/
     public function add(){
-        $sql = "INSERT INTO carts(id, idUser, idProduct, quantity, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->quantity}', NOW());";
-        $this->con->SimpleQuery($sql);
+        $sql = "INSERT INTO carts(id, idUser, idProduct, quantity, totalPrice, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->quantity}', '{$this->totalPrice}', NOW());";
+        print $sql;
+        $this->conn->SimpleQuery($sql);
     }
 
 }

@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12">
-                                        <input type="number" name="price" value="<?php echo $data['price']; ?>" placeholder="0" class="form-control" />
+                                        <input type="number" step="any" min="0" name="price" value="<?php echo $data['price']; ?>" placeholder="0" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 mb-3">
-                                        <input type="number" name="stock" value="<?php echo $data['stock']; ?>" placeholder="0" class="form-control" />
+                                        <input type="number" min="0" name="stock" value="<?php echo $data['stock']; ?>" placeholder="0" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row">

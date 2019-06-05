@@ -51,28 +51,52 @@ class cartController
         $data = $this->cart->toList2();
         return $data;
     }
-    /**
-     * Add the product to the user's cart with the indicated amount and discount 
-     * the stock. Go back to the list of products.
-     */
-    public function add()
+    /**List all product carts.*/
+    public function toListAll()
     {
-        $this->cart->setIdProduct($this->product->getId());
-        $this->cart->setIdUser(1);
-        $this->cart->setQuantity($_POST['quantity']);
-        $result = $this->product->getStock()-$this->cart->getQuantity();
-        $this->product->setStock($result);
-        $this->product->edit();
-        $this->cart->add();
-        header("Location: ".URL."index.php?url=products");
+        $data = $this->cart->toList();
+        return $data;
     }
 
     /**
-     * Preview
+     * Add the product to the user's cart with the indicated amount and discount
+     * the stock. Go back to the list of products.
+     * @param int $id Default 0.
+     */
+    public function add($id=0)
+    {
+        $data = $this->preview($id);
+        $this->cart->setIdUser(1);
+        $this->cart->setIdProduct($data['id']);
+        $quantity = $_POST['quantity'];
+        /*print '<br>Cantidad: '.$quantity.'<br>';  //Debug*/
+        $this->cart->setQuantity($quantity);
+        $this->cart->setTotalPrice($data["price"]*$quantity);
+        $result = $data['stock'] - $this->cart->getQuantity();
+        $this->product->setStock($result);
+        /*print '<br>';  //Debug
+        var_dump($this->cart);  //Debug
+        print '<br>';  //Debug
+        var_dump($this->product);  //Debug
+        print '<br>';  //Debug*/
+        //
+        $this->product->setId($data['id']);
+        $this->product->setName($data['name']);
+        $this->product->setPrice($data["price"]);
+        $this->product->setImage($data['image']);
+        $this->product->setCreationDate($data['creationDate']);
+        $this->product->edit();
+        //
+        $this->cart->add();
+        /*header("Location: ".URL."index.php?url=cart");*/
+    }
+
+    /**
+     * Preview of the product.
      * @param $idProduct   Integer integer.
      * @return array|null   $idProduct.
      */
-    public function preview($idProduct)
+    public function preview($idProduct):array
     {
         $this->product->setId($idProduct);
         $data = $this->product->view();
@@ -84,7 +108,7 @@ class cartController
      * @param $id   Integer integer.
      * @return array|null   $id.
      */
-    public function view($id)
+    public function view($id):array
     {
         $this->product->setId($id);
         $data = $this->product->view();
