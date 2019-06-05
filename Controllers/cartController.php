@@ -66,9 +66,11 @@ class cartController
         $this->cart->add();
         header("Location: ".URL."index.php?url=products");
     }
+
     /**
      * Preview
      * @param $idProduct   Integer integer.
+     * @return array|null   $idProduct.
      */
     public function preview($idProduct)
     {
@@ -76,9 +78,11 @@ class cartController
         $data = $this->product->view();
         return $data;
     }
+
     /**
      * Show a cart.
      * @param $id   Integer integer.
+     * @return array|null   $id.
      */
     public function view($id)
     {

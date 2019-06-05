@@ -26,4 +26,3 @@
     require_once 'Views/Templates.php';
 //    $request = new Config\Request();
     Config\Router::Run(new Config\Request());
-?>

@@ -44,8 +44,10 @@ class Conection
     {
         $this->conn->query($sql);
     }
+
     /**
-     * 
+     * @param $sql
+     * @return bool|\mysqli_result
      */
     public function ReturnQuery($sql)
     {

@@ -70,8 +70,7 @@ class productsController
 
     /**
      * Method to update the product.
-     * @param $modifiedProduct  Product Product.
-     *
+     * @param $id   Integer.
      * @return array|null Data
      */
     public function edit($id){

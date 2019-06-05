@@ -38,7 +38,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
-                                <input type="text" name="name" value="" class="form-control" />
+                                <input type="text" id="name" name="name" value="" class="form-control" />
                             </div>
                         </div>
                         <div class="row">
