@@ -58,12 +58,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     <a class="dropdown-item" href="<?php echo URL; ?>index.php?url=products/add">Add</a>
                   </div>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cart <span class="glyphicon glyphicon-cart"></span></a>
-                  <div class="dropdown-menu" aria-labelledby="dropdown09">
-                    <a class="dropdown-item" href="<?php echo URL; ?>index.php?url=cart">List</a>
-                    <a class="dropdown-item" href="<?php echo URL; ?>index.php?url=cart/add">Add</a>
-                  </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo URL; ?>index.php?url=cart">Cart</a>                  
                 </li>
               </ul>
             </div>

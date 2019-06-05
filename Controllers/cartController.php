@@ -36,7 +36,9 @@ class cartController
      * Contains a object of type Product.
      */
     private $product;
-    /***/
+    /**
+     * Construct
+     **/
     function __construct() 
     {
         $this->cart = new Cart();
@@ -45,27 +47,41 @@ class cartController
     /**Default*/
     public function index()
     {
-        $data = $this->cart->toList();
+        $data = $this->cart->toList2();
         return $data;
     }
-    /**Add**/
+    /**
+     * Add the product to the user's cart with the indicated amount and discount 
+     * the stock. Go back to the list of products.
+     */
     public function add()
     {
-        if ($_POST)
-        {
-            $this->cart->setIdProduct($this->product->getId());
-            $this->cart->setIdUser(1);
-            $this->cart->setQuantity($_POST['quantity']);
-            $this->cart->add();
-            header("Location: ".URL."index.php?url=products");
-        } else {
-            print '<h4 class="error">El archivo no es valido.</h4>'; //Debug
-        }
+        $this->cart->setIdProduct($this->product->getId());
+        $this->cart->setIdUser(1);
+        $this->cart->setQuantity($_POST['quantity']);
+        $result = $this->product->getStock()-$this->cart->getQuantity();
+        $this->product->setStock($result);
+        $this->product->edit();
+        $this->cart->add();
+        header("Location: ".URL."index.php?url=products");
     }
-    /****/
+    /**
+     * Preview
+     * @param $idProduct   Integer integer.
+     */
     public function preview($idProduct)
     {
         $this->product->setId($idProduct);
+        $data = $this->product->view();
+        return $data;
+    }
+    /**
+     * Show a cart.
+     * @param $id   Integer integer.
+     */
+    public function view($id)
+    {
+        $this->product->setId($id);
         $data = $this->product->view();
         return $data;
     }
