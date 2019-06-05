@@ -88,9 +88,11 @@ class productsController
     /**Delete a product
      * @param $id   Integer integer.
      */
-    public function delete($id)
+    public function remove($id)
     {
-
+        $this->product->setId($id);
+        $this->product->delete();
+        header("Location: ".URL."index.php?url=products");
     }
 }
 //
