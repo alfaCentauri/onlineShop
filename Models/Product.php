@@ -10,6 +10,7 @@ namespace Models;
 
 /**
  * Entity for the products table
+ *
  */
 class Product
 {

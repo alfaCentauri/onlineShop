@@ -5,6 +5,7 @@
  * Description of templates
  *
  * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
  */
 class Templates {
     /**Constructor*/

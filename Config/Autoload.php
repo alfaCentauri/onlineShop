@@ -12,6 +12,7 @@ namespace Config;
  * Description of Autoload
  *
  * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
  */
 class Autoload {
     public static function Run(){

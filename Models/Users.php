@@ -22,7 +22,8 @@ namespace Models;
 /**
  * Description of Users
  *
- * @author ricardo
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
  */
 class Users {
     private $id;
@@ -36,7 +37,7 @@ class Users {
     private $conn;
     /***/
     function __construct() {
-        $this->con=new Conexion();
+        $this->con=new Conection();
     }
     /**List**/
     public function toList()

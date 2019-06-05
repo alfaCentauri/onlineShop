@@ -23,6 +23,7 @@ namespace Config;
  * Description of Request class. Clase para gestionar el requisito del usuario.
  *
  * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
  */
 class Request {
     /**Controler*/
@@ -39,9 +40,9 @@ class Request {
             $url = array_filter($url);
 //            print 'La ruta en request es: '.$url[0]."<br>"; //Debug
             if ($url[0] == "index.php"){
-                $this->controlador = "products";
+                $this->controller = "products";
             } else {
-                $this->controlador = strtolower(array_shift($url));
+                $this->controller = strtolower(array_shift($url));
             }            
             $this->method = strtolower(array_shift($url));
             if (!$this->method){
@@ -51,7 +52,7 @@ class Request {
 //            print 'El argumento en request es: '.$this->argument."<br>"; //Debug
 //            print 'El metodo en request es: '.$this->method."<br>"; //Debug
         } else {
-            $this->controlador = "products";
+            $this->controller = "products";
             $this->method = "index";
         }
     }
@@ -62,7 +63,7 @@ class Request {
      * @return String String with the name of the controller.
      */
     function getController() {
-        return $this->controlador;
+        return $this->controller;
     }
     /**
      *  Obtain the method.

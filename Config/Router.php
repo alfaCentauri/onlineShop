@@ -10,6 +10,7 @@ namespace Config;
  * Description of Router
  *
  * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
  */
 class Router {
     public static function Run(Request $request){

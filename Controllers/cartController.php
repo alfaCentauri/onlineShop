@@ -24,7 +24,8 @@ use Models\Product as Product;
 /**
  * Description of cartController
  *
- * @author ricardo
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
  */
 class cartController 
 {
