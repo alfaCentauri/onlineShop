@@ -20,6 +20,7 @@
 namespace Controllers;
 
 use Models\Cart as Cart;
+use Models\Product as Product;
 /**
  * Description of cartController
  *
@@ -27,16 +28,45 @@ use Models\Cart as Cart;
  */
 class cartController 
 {
-    private $car;
+    /**
+     * Contains a object of type Cat.
+     */
+    private $cart;
+    /**
+     * Contains a object of type Product.
+     */
+    private $product;
     /***/
     function __construct() 
     {
-        $this->car = new Cart();
+        $this->cart = new Cart();
+        $this->product = new Product();
     }
     /**Default*/
     public function index()
     {
-        $data = $this->car->toList();
+        $data = $this->cart->toList();
+        return $data;
+    }
+    /**Add**/
+    public function add()
+    {
+        if ($_POST)
+        {
+            $this->cart->setIdProduct($this->product->getId());
+            $this->cart->setIdUser(1);
+            $this->cart->setQuantity($_POST['quantity']);
+            $this->cart->add();
+            header("Location: ".URL."index.php?url=products");
+        } else {
+            print '<h4 class="error">El archivo no es valido.</h4>'; //Debug
+        }
+    }
+    /****/
+    public function preview($idProduct)
+    {
+        $this->product->setId($idProduct);
+        $data = $this->product->view();
         return $data;
     }
 }

@@ -47,3 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     width: 100%;
     color: aqua;
 }
+.text1{
+    color: black;
+    font-weight: bold;
+}

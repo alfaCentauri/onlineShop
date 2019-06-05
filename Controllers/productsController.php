@@ -31,7 +31,6 @@ class productsController
     }
     /**
      * Method to create the product.
-     * @param $newProduct
      */
     public function add()
     {
