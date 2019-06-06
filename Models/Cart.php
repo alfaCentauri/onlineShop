@@ -197,10 +197,30 @@ class Cart
         return $data;
     }
     /**Add register*/
-    public function add(){
+    public function add()
+    {
         $sql = "INSERT INTO carts(id, idUser, idProduct, quantity, totalPrice, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->quantity}', '{$this->totalPrice}', NOW());";
         print $sql;
         $this->conn->SimpleQuery($sql);
     }
-
+    /**
+     * View register.
+     * @param int $id Index
+     */
+    public function view(int $id)
+    {
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id=id='{$this->id}';";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
+    /**Edit record indicated by the current id.*/
+    public function edit(){
+        $sql = "update carts set quantity='{$this->quantity}' where id='{$this->id}';";
+        $this->con->SimpleQuery($sql);
+    }
+    /**Delete record indicated by the current id.*/
+    public function delete(){
+        $sql = "delete from carts where id='{$this->id}';";
+        $this->con->SimpleQuery($sql);
+    }
 }

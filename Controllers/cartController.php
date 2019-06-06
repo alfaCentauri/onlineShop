@@ -113,6 +113,8 @@ class cartController
      */
     public function shipping(int $id=0)
     {
-
+        $this->cart->setId($id);
+        $data = $this->cart->view($id);
+        return $data;
     }
 }
