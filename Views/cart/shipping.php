@@ -20,15 +20,35 @@
                 <form action="<?php echo URL; ?>cart/dispach/<?php echo $data['id']; ?>"
                       id="formShipping" name="formShipping" method="post">
                     <div class="row">
-                        <div class="col-sm-3 col-md-3 col-lg-3">
-                                <label for="shipping" class="">Shipping option:</label>
+                        <div class="col-sm-4 col-md-3 col-lg-3">
+                            <label for="shipping" class="">Shipping option:</label>
                         </div>
-                        <div class="col-sm-3 col-md-3 col-lg-3">
-                                <select id="shipping" name="shipping" class="form-control">
-                                    <option value="0">Pick up</option>
-                                    <option value="5">UPS</option>
-                                </select>
+                        <div class="col-sm-1 col-md-1 col-lg-1">
+                            <input id="shipping" name="shipping" value="0" class="form-control" type="radio" required checked>
                         </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            Pick up
+                        </div>
+                        <div class="col-sm-1 col-md-1 col-lg-1">
+                            <input id="shipping" name="shipping" value="5" class="form-control" type="radio" required>
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2">
+                            UPS
+                        </div>
+                        <div class="col-sm-2 col-md-3 col-lg-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 col-lg-3">
+                            <label for="direction" class="">Direction of shipping:</label>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" class="form-control" id="direction" name="direction" min="3" value=""
+                                   placeholder="Write a direction of shipping" required readonly>
+                        </div>
+                        <div class="hidden-sm col-md-3 col-lg-3"></div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-3 col-md-3 col-lg-3">
                                 <strong>Shipping costs: </strong>
                         </div>
@@ -43,3 +63,18 @@
         </div>
     </div>
 </div>
+<script>
+    $("input[type=radio]").on("change",function(){
+        const aux = document.getElementById("shipping").value;
+        console.log(aux);
+       if(aux>0)
+       {
+           document.getElementById('direction').removeAttribute('readonly');
+           document.getElementById('direction').removeAttribute('required');
+       }
+       else
+       {
+           document.getElementById('direction').setAttribute('readonly',true);
+       }
+    });
+</script>

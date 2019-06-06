@@ -108,4 +108,11 @@ class cartController
         $data = $this->product->view();
         return $data;
     }
+    /**
+     * @param int $id
+     */
+    public function shipping(int $id=0)
+    {
+
+    }
 }

@@ -108,7 +108,7 @@
                         <div class="row">
                             <div class="col-sm-2 col-md-2 col-lg-2"></div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
-                                <a href="" class="btn btn-success btn-block">Pay</a>
+                                <a href="<?php echo URL; ?>cart/shipping/<?php echo $row['id']; ?>" class="btn btn-success btn-block">Pay</a>
                             </div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
                                 <a href="index.php?url=cart" class="btn btn-info btn-block">Return</a>
