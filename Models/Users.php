@@ -25,7 +25,8 @@ namespace Models;
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
-class Users {
+class Users implements Crud
+{
     private $id;
     private $firstName;
     private $lastName;
@@ -36,7 +37,8 @@ class Users {
     private $creationDate;
     private $conn;
     /***/
-    function __construct() {
+    function __construct() 
+    {
         $this->con=new Conection();
     }
     /**List**/
@@ -47,101 +49,123 @@ class Users {
         return $data;
     }
     /**Add register*/
-    public function add(){
+    public function add()
+    {
         $sql = "INSERT INTO users(firstName, lastName, email, login, password, creationDate) "
                 . "VALUES('{$this->firstName}', '{$this->lastName}', '"
                 . "{$this->email}', '{$this->login}', '{$this->password}', NOW());";
         $this->con->SimpleQuery($sql);
     }
     /**Delete record indicated by the current id.*/
-    public function delete(){
+    public function delete()
+            {
         $sql = "delete from users where id='{$this->id}';";
         $this->con->SimpleQuery($sql);
     }
     /**Edit record indicated by the current id.*/
-    public function edit(){
+    public function edit()
+    {
         $sql = "update users set firstName='{$this->firstName}', lastName="
         . "'{$this->lastName}', email='{$this->email}', login='{$this->login}', '"
         . "{$this->password}' where id='{$this->id}';";
         $this->con->SimpleQuery($sql);
     }
     /**Display a record indicated by the current id.*/
-    public function view(){
+    public function view()
+    {
         $sql = "SELECT * FROM users where id='{$this->id}'";
         $datos = $this->con->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($datos);
         return $row;
     }
     /***/
-    function getId() {
+    function getId() 
+    {
         return $this->id;
     }
 
-    function getFirstName() {
+    function getFirstName() 
+    {
         return $this->firstName;
     }
 
-    function getLastName() {
+    function getLastName() 
+    {
         return $this->lastName;
     }
 
-    function getEmail() {
+    function getEmail() 
+    {
         return $this->email;
     }
 
-    function getLogin() {
+    function getLogin() 
+    {
         return $this->login;
     }
 
-    function getPassword() {
+    function getPassword() 
+    {
         return $this->password;
     }
 
-    function getActive() {
+    function getActive() 
+    {
         return $this->active;
     }
 
-    function getCreationDate() {
+    function getCreationDate() 
+    {
         return $this->creationDate;
     }
 
-    function getConn() {
+    function getConn() 
+    {
         return $this->conn;
     }
 
-    function setId($id) {
+    function setId($id) 
+    {
         $this->id = $id;
     }
 
-    function setFirstName($firstName) {
+    function setFirstName($firstName) 
+    {
         $this->firstName = $firstName;
     }
 
-    function setLastName($lastName) {
+    function setLastName($lastName) 
+    {
         $this->lastName = $lastName;
     }
 
-    function setEmail($email) {
+    function setEmail($email) 
+    {
         $this->email = $email;
     }
 
-    function setLogin($login) {
+    function setLogin($login) 
+    {
         $this->login = $login;
     }
 
-    function setPassword($password) {
+    function setPassword($password) 
+    {
         $this->password = $password;
     }
 
-    function setActive($active) {
+    function setActive($active) 
+    {
         $this->active = $active;
     }
 
-    function setCreationDate($creationDate) {
+    function setCreationDate($creationDate) 
+    {
         $this->creationDate = $creationDate;
     }
 
-    function setConn($conn) {
+    function setConn($conn) 
+    {
         $this->conn = $conn;
     }
 

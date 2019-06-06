@@ -25,7 +25,8 @@ namespace Models;
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
-class Qualification {
+class Qualification implements Crud
+{
     /**It contains the index*/
     private $id;
     private $idUser;
@@ -133,6 +134,45 @@ class Qualification {
     public function setConn($conn): void
     {
         $this->conn = $conn;
+    }
+    /**
+     * Add register
+     */
+    public function add() {
+        $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->points}', NOW());";
+        $this->conn->SimpleQuery($sql);
+    }
+    /**
+     * Delete record indicated by the current id.
+     */
+    public function delete() {
+        $sql = "delete from qualification where id='{$this->id}';";
+        $this->con->SimpleQuery($sql);
+    }
+    /**
+     * Edit record indicated by the current id.
+     */
+    public function edit() {
+        $sql = "update qualification set ponits='{$this->points}' where id='{$this->id}';";
+        $this->con->SimpleQuery($sql);
+    }
+    /**
+     * Get a list of all the records.
+     */
+    public function toList()
+    {
+        $sql = "SELECT * FROM qualification;";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
+    /**
+     * View register.
+     * @return array|null Return an arrangement with the record. 
+     */
+    public function view() {
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.qualification T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id=id='{$this->id}';";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
     }
 
 }

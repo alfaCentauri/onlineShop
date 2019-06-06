@@ -109,6 +109,8 @@ class cartController
         return $data;
     }
     /**
+     * Show the form for the shipment of the products and request the type of 
+     * shipment.
      * @param int $id
      */
     public function shipping(int $id=0)
@@ -117,4 +119,7 @@ class cartController
         $data = $this->cart->view($id);
         return $data;
     }
+    /**
+     * 
+     */
 }

@@ -12,7 +12,7 @@ namespace Models;
  * Entity for the products table
  *
  */
-class Product
+class Product implements Crud
 {
     /**It contains the index*/
     private $id;
