@@ -74,12 +74,6 @@ class cartController
         $this->cart->setTotalPrice($data["price"]*$quantity);
         $result = $data['stock'] - $this->cart->getQuantity();
         $this->product->setStock($result);
-        /*print '<br>';  //Debug
-        var_dump($this->cart);  //Debug
-        print '<br>';  //Debug
-        var_dump($this->product);  //Debug
-        print '<br>';  //Debug*/
-        //
         $this->product->setId($data['id']);
         $this->product->setName($data['name']);
         $this->product->setPrice($data["price"]);
@@ -88,7 +82,7 @@ class cartController
         $this->product->edit();
         //
         $this->cart->add();
-        /*header("Location: ".URL."index.php?url=cart");*/
+        header("Location: ".URL."index.php?url=cart");
     }
 
     /**
