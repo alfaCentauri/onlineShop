@@ -90,9 +90,9 @@
                                 <strong>Total to pay: </strong>
                             </div>
                             <div class="col-sm-6 col-md-3 col-lg-3">
-                                <strong>
-                                    <?php echo $total; ?> $
-                                </strong>
+                                <div class="price" id="total">
+                                  <?php echo $total; ?> $
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                                 <a href="<?php echo URL; ?>cart/shipping/<?php echo $row['id']; ?>" class="btn btn-success btn-block">Pay</a>
                             </div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
-                                <a href="index.php?url=cart" class="btn btn-info btn-block">Return</a>
+                                <a href="<?php echo URL; ?>products/" class="btn btn-info btn-block">Return</a>
                             </div>
                             <div class="col-sm-2 col-md-2 col-lg-2"></div>
                         </div>

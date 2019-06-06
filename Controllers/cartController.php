@@ -38,6 +38,10 @@ class cartController
      */
     private $product;
     /**
+     * @var float
+    */
+    private $subtotal;
+    /**
      * Construct
      **/
     function __construct() 
@@ -46,9 +50,10 @@ class cartController
         $this->product = new Product();
     }
     /**Default*/
-    public function index()
+    public function index(int $id=1)
     {
-        $data = $this->cart->toList2();
+        $this->cart->setIdUser($id);
+        $data = $this->cart->toListUser();
         return $data;
     }
     /**List all product carts.*/
@@ -69,7 +74,6 @@ class cartController
         $this->cart->setIdUser(1);
         $this->cart->setIdProduct($data['id']);
         $quantity = $_POST['quantity'];
-        /*print '<br>Cantidad: '.$quantity.'<br>';  //Debug*/
         $this->cart->setQuantity($quantity);
         $this->cart->setTotalPrice($data["price"]*$quantity);
         $result = $data['stock'] - $this->cart->getQuantity();
@@ -108,18 +112,48 @@ class cartController
         $data = $this->product->view();
         return $data;
     }
+
     /**
-     * Show the form for the shipment of the products and request the type of 
+     * Show the form for the shipment of the products and request the type of
      * shipment.
-     * @param int $id
+     * @param int $id     Default 1.
+     * @return array|null   $data
      */
-    public function shipping(int $id=0)
+    public function shipping(int $id=1): array
     {
         $this->cart->setId($id);
-        $data = $this->cart->view($id);
+        $data = $this->cart->view();
+        if ($data != null)
+        {
+            $array = $this->cart->totalList();
+            $this->subtotal = $array->fetch_assoc();
+        }
         return $data;
     }
     /**
      * 
      */
+    public function dispach()
+    {
+        echo 'Despacho muestra direccion de envio y fin';
+    }
+
+    /**
+     * @return float
+     */
+    public function getSubtotal(): float
+    {
+        return $this->subtotal;
+    }
+
+    /**
+     * @param float $subtotal
+     */
+    public function setSubtotal(float $subtotal): void
+    {
+        $this->subtotal = $subtotal;
+    }
+
 }
+//
+$cart = new cartController();

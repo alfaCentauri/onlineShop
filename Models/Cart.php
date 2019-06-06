@@ -202,6 +202,24 @@ class Cart implements Crud
         return $data;
     }
     /**
+     * Get a list of all the records for a user.
+     */
+    public function toListUser()
+    {
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.idUser='{$this->idUser}';";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
+    /**
+     * Get a list of all the records for a user.
+     */
+    public function totalList()
+    {
+        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM shop.carts T1 where T1.idUser='{$this->idUser}';";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
+    /**
      * Add register
      */
     public function add()
@@ -224,13 +242,13 @@ class Cart implements Crud
      */
     public function edit(){
         $sql = "update carts set quantity='{$this->quantity}' where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conn->SimpleQuery($sql);
     }
     /**
      * Delete record indicated by the current id.
      */
     public function delete(){
         $sql = "delete from carts where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conn->SimpleQuery($sql);
     }
 }
