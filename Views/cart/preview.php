@@ -56,7 +56,6 @@
                             <div class="col-sm-2 col-md-2"></div>
                             <div class="col-sm-4 col-md-4">
                                 <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
-                                <!-- a href="index.php?url=cart/add" class="btn btn-success btn-block">Add</a -->
                             </div>
                             <div class="col-sm-4 col-md-4">
                                 <a href="index.php?url=cart" class="btn btn-warning btn-block">Return</a>

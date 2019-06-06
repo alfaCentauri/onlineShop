@@ -44,11 +44,11 @@
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-6">
                             <input type="text" class="form-control" id="direction" name="direction" min="3" value=""
-                                   placeholder="Write a direction of shipping" readonly>
+                               placeholder="Write a direction of shipping" readonly>
                         </div>
                         <div class="hidden-sm col-md-3 col-lg-3"></div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-sm-3 col-md-3 col-lg-3">
                                 <strong>Shipping costs: </strong>
                         </div>
@@ -56,7 +56,16 @@
                                 <strong>00 $</strong>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-sm-2 col-md-2"></div>
+                        <div class="col-sm-4 col-md-4">
+                            <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <a href="index.php?url=cart/preview/<?php echo $data['id']; ?>" class="btn btn-warning btn-block">Return</a>
+                        </div>
+                        <div class="col-sm-2 col-md-2"></div>
+                    </div>
                 </form>
                 </div>
             </div>
