@@ -48,6 +48,7 @@ class cartController
     {
         $this->cart = new Cart();
         $this->product = new Product();
+        $this->subtotal = 0.0;
     }
     /**Default*/
     public function index(int $id=1)
@@ -90,14 +91,14 @@ class cartController
     }
 
     /**
-     * Preview of the product.
-     * @param $idProduct   Integer integer.
-     * @return array|null   $idProduct.
+     * Preview of the cart.
+     * @param $idCart   Integer integer.
+     * @return array|null   Data of the cart.
      */
-    public function preview($idProduct):array
+    public function preview($idCart):array
     {
-        $this->product->setId($idProduct);
-        $data = $this->product->view();
+        $this->cart->setId($idCart);
+        $data = $this->cart->view();
         return $data;
     }
 
@@ -119,14 +120,16 @@ class cartController
      * @param int $id     Default 1.
      * @return array|null   $data
      */
-    public function shipping(int $id=1): array
+    public function shipping(int $id=1)
     {
         $this->cart->setId($id);
+        $this->cart->setIdUser(1);  //Debug
         $data = $this->cart->view();
-        if ($data != null)
+        if (!is_null($data))
         {
             $array = $this->cart->totalList();
-            $this->subtotal = $array->fetch_assoc();
+            $filed = $array->fetch_assoc();
+            $this->subtotal = $filed['subtotal'];
         }
         return $data;
     }
@@ -153,7 +156,16 @@ class cartController
     {
         $this->subtotal = $subtotal;
     }
-
+    /**
+     * @param int $id Indice del registro.
+    */
+    public function edit(int $id=1)
+    {
+        $this->cart->setId($id);
+        print 'El idU: '.$this->cart->getIdUser();
+        $data = $this->cart->view();
+        return $data;
+    }
 }
 //
 $cart = new cartController();

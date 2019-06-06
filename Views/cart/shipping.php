@@ -59,24 +59,24 @@
                           <input type="number" min="0" value="0" id="priceShipping2" hidden>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="hidden-sm col-md-6 col-lg-6"></div>
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <strong>Subtotal to pay: </strong>
                         </div>
                         <div class="col-sm-6 col-md-3 col-lg-3">
-                            <div class="price" id="subtotal"><?php echo $data['subtotal']; ?> $</div>
-                            <input type="number" min="0" value="0" id="subtotal2" hidden>
+                            <div class="price" id="subtotal"><?php echo $subtotal; ?> $</div>
+                            <input type="number" min="0" value="<?php echo $subtotal; ?>" id="subtotal2" hidden>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="hidden-sm col-md-6 col-lg-6"></div>
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <strong>Total to pay: </strong>
                         </div>
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <div class="price" id="total"><?php echo $subtotal; ?> $</div>
-                            <input type="number" min="0" value="0" id="total2" hidden>
+                            <input type="number" min="0" value="<?php echo $subtotal; ?>" id="total2" hidden>
                         </div>
                     </div>
                     <div class="row">
@@ -106,12 +106,17 @@
             document.getElementById('direction').removeAttribute('readonly'); 
             document.getElementById('direction').setAttribute('required',true);
             document.getElementById('priceShipping').innerText='5 $';
+            document.getElementById('priceShipping2').value = 5;
         }
         else
         {
            document.getElementById('direction').setAttribute('readonly',true);
            document.getElementById('direction').removeAttribute('required');
-            document.getElementById('priceShipping').innerText='0 $';
+           document.getElementById('priceShipping').innerText='0 $';
+           document.getElementById('priceShipping2').value = 0;
         }
+        var total = currentValue + <?php echo $cart->getSubtotal(); ?>;
+        console.log(total);
+        document.getElementById('total2').value = total;
     }
 </script>
