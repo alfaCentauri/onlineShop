@@ -19,18 +19,18 @@
                 <div class="card-body">
                 <form action="<?php echo URL; ?>cart/dispach/<?php echo $data['id']; ?>"
                       id="formShipping" name="formShipping" method="post">
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-sm-4 col-md-3 col-lg-3">
                             <label for="shipping" class="">Shipping option:</label>
                         </div>
                         <div class="col-sm-1 col-md-1 col-lg-1">
-                            <input id="shipping" name="shipping" value="0" class="form-control" type="radio" required checked>
+                            <input id="shipping" name="shipping" value="0" class="form-control" type="radio" required onclick="Activate(this);">
                         </div>
                         <div class="col-sm-2 col-md-2 col-lg-2">
                             Pick up
                         </div>
                         <div class="col-sm-1 col-md-1 col-lg-1">
-                            <input id="shipping" name="shipping" value="5" class="form-control" type="radio" required>
+                            <input id="shipping" name="shipping" value="5" class="form-control" type="radio" required onclick="Activate(this);">
                         </div>
                         <div class="col-sm-2 col-md-2 col-lg-2">
                             UPS
@@ -38,13 +38,13 @@
                         <div class="col-sm-2 col-md-3 col-lg-3">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <label for="direction" class="">Direction of shipping:</label>
                         </div>
                         <div class="col-sm-6 col-md-6 col-lg-6">
                             <input type="text" class="form-control" id="direction" name="direction" min="3" value=""
-                                   placeholder="Write a direction of shipping" required readonly>
+                                   placeholder="Write a direction of shipping" readonly>
                         </div>
                         <div class="hidden-sm col-md-3 col-lg-3"></div>
                     </div>
@@ -64,17 +64,20 @@
     </div>
 </div>
 <script>
-    $("input[type=radio]").on("change",function(){
-        const aux = document.getElementById("shipping").value;
-        console.log(aux);
-       if(aux>0)
-       {
-           document.getElementById('direction').removeAttribute('readonly');
-           document.getElementById('direction').removeAttribute('required');
-       }
-       else
-       {
+    var currentValue = 0;
+    /**Activate the address field.*/
+    function Activate(myRadio)
+    {
+        currentValue = myRadio.value;
+        if(currentValue == 5)
+        {
+            document.getElementById('direction').removeAttribute('readonly'); 
+            document.getElementById('direction').setAttribute('required',true);
+        }
+        else
+        {
            document.getElementById('direction').setAttribute('readonly',true);
-       }
-    });
+           document.getElementById('direction').removeAttribute('required');
+        }
+    }
 </script>
