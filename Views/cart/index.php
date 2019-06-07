@@ -43,6 +43,7 @@
             <?php
                 $total = 0;
                 while ($row = mysqli_fetch_array($data)){
+                    $id = $row['id'];
             ?>
                             <tr>
                                 <td>
@@ -108,7 +109,7 @@
                         <div class="row">
                             <div class="col-sm-2 col-md-2 col-lg-2"></div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
-                                <a href="<?php echo URL; ?>cart/shipping/<?php echo $row['id']; ?>" class="btn btn-success btn-block">Pay</a>
+                                <a href="<?php echo URL; ?>cart/shipping/<?php echo $id; ?>" class="btn btn-success btn-block">Pay</a>
                             </div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
                                 <a href="<?php echo URL; ?>products/" class="btn btn-info btn-block">Return</a>

@@ -128,7 +128,7 @@ class cartController
     {
         $this->cart->setId($id);
         $this->cart->setIdUser(1);  //Debug
-        $data = $this->cart->view();
+        $data = $this->cart->toListUser();
         if (!is_null($data))
         {
             $array = $this->cart->totalList();

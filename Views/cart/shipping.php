@@ -5,7 +5,6 @@
  * Date: 6/5/2019
  * Time: 7:25 PM
  */
-    $subtotal = $cart->getSubtotal();
 ?>
 <div class="container">
     <div class="row">
@@ -18,7 +17,7 @@
             <div class="card mb-3">
                 <div class="card-header bg-success">Shipping information</div>
                 <div class="card-body">
-                <form action="<?php echo URL; ?>cart/dispach/<?php echo $data['id']; ?>"
+                <form action="<?php echo URL; ?>cart/dispach/"
                       id="formShipping" name="formShipping" method="post">
                     <div class="row mb-3">
                         <div class="col-sm-4 col-md-3 col-lg-3">
@@ -65,7 +64,15 @@
                             <strong>Subtotal to pay: </strong>
                         </div>
                         <div class="col-sm-6 col-md-3 col-lg-3">
-                            <div class="price" id="subtotal"><?php echo $subtotal; ?> $</div>
+                            <div class="price" id="subtotal">
+                            <?php
+                              $subtotal=0;
+                              while($row = mysqli_fetch_array($data))
+                              {
+                                $subtotal = $row['totalPrice'] + $subtotal;
+                              }
+                              echo $subtotal;?> $
+                            </div>
                             <input type="number" min="0" value="<?php echo $subtotal; ?>" id="subtotal2" hidden>
                         </div>
                     </div>
@@ -85,7 +92,7 @@
                             <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
                         </div>
                         <div class="col-sm-4 col-md-4">
-                            <a href="index.php?url=cart/preview/<?php echo $data['id']; ?>" class="btn btn-warning btn-block">Return</a>
+                            <a href="<?php echo URL; ?>cart/" class="btn btn-warning btn-block">Cancel</a>
                         </div>
                         <div class="col-sm-2 col-md-2"></div>
                     </div>
@@ -115,7 +122,9 @@
            document.getElementById('priceShipping').innerText='0 $';
            document.getElementById('priceShipping2').value = 0;
         }
-        var total = currentValue + <?php echo $cart->getSubtotal(); ?>;
+        var subtotal = document.getElementById('subtotal2').value;
+        console.log('Subtotal: '+subtotal);
+        var total = currentValue.valueOf() + subtotal.valueOf();
         console.log(total);
         document.getElementById('total2').value = total;
     }

@@ -57,7 +57,7 @@
                                     <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
                                 </div>
                                 <div class="col-sm-4 col-md-4">
-                                    <a href="index.php?url=cart" class="btn btn-warning btn-block">Return</a>
+                                    <a href="<?php echo URL; ?>cart" class="btn btn-warning btn-block">Return</a>
                                 </div>
                                 <div class="col-sm-2 col-md-2"></div>
                             </div>
