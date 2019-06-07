@@ -5,6 +5,13 @@
  * Date: 6/5/2019
  * Time: 7:25 PM
  */
+$subtotal=0;
+while($row = mysqli_fetch_array($data))
+{
+    $id = $row['id'];
+    $subtotal = $row['totalPrice'] + $subtotal;
+
+}
 ?>
 <div class="container">
     <div class="row">
@@ -17,7 +24,7 @@
             <div class="card mb-3">
                 <div class="card-header bg-success">Shipping information</div>
                 <div class="card-body">
-                <form action="<?php echo URL; ?>cart/dispach/"
+                <form action="<?php echo URL; ?>cart/dispach/<?php echo $id; ?>"
                       id="formShipping" name="formShipping" method="post">
                     <div class="row mb-3">
                         <div class="col-sm-4 col-md-3 col-lg-3">
@@ -66,11 +73,7 @@
                         <div class="col-sm-6 col-md-3 col-lg-3">
                             <div class="price" id="subtotal">
                             <?php
-                              $subtotal=0;
-                              while($row = mysqli_fetch_array($data))
-                              {
-                                $subtotal = $row['totalPrice'] + $subtotal;
-                              }
+
                               echo $subtotal;?> $
                             </div>
                             <input type="number" min="0" value="<?php echo $subtotal; ?>" id="subtotal2" hidden>
@@ -124,8 +127,9 @@
         }
         var subtotal = document.getElementById('subtotal2').value;
         console.log('Subtotal: '+subtotal);
-        var total = currentValue.valueOf() + subtotal.valueOf();
+        var total = parseFloat(currentValue) + parseFloat(subtotal);
         console.log(total);
         document.getElementById('total2').value = total;
+        document.getElementById('total').innerText=total+' $';
     }
 </script>
