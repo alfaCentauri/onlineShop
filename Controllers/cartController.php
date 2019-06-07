@@ -50,7 +50,11 @@ class cartController
         $this->product = new Product();
         $this->subtotal = 0.0;
     }
-    /**Default*/
+
+    /**Default
+     * @param int $id
+     * @return bool|\mysqli_result  Data of list of the cart.
+     */
     public function index(int $id=1)
     {
         $this->cart->setIdUser($id);
@@ -68,6 +72,7 @@ class cartController
      * Add the product to the user's cart with the indicated amount and discount
      * the stock. Go back to the list of products.
      * @param int $id Default 0.
+     * @return array|null Data of product.
      */
     public function add($id=0)
     {
@@ -90,7 +95,7 @@ class cartController
             $this->product->edit();
             //
             $this->cart->add();
-            header("Location: ".URL."index.php?url=cart");
+            header("Location: ".URL."cart/");
         }
         return $data;
     }
@@ -98,6 +103,7 @@ class cartController
     /**
      * Preview of the cart.
      * @param $id   Integer integer.
+     * @return array|null   Data of product.
      */
     public function preview($id)
     {
@@ -161,15 +167,61 @@ class cartController
     {
         $this->subtotal = $subtotal;
     }
+
     /**
      * @param int $id Indice del registro.
-    */
+     * @return array|null   Data of cart item.
+     */
     public function edit(int $id=1)
     {
         $this->cart->setId($id);
-        print 'El idU: '.$this->cart->getIdUser();
+        $data = $this->cart->view_Stock();
+        $this->product->setId($data['idProduct']);
+        if ($_POST)
+        {
+            /*echo 'Presiono enviar<br>'; //Debug*/
+            $quantityPreview = $data['quantity'];
+            $quantity = $_POST['quantity'];
+            /*print 'Cantidad previa '.$quantityPreview.'<br>';    //Debug*/
+            /*print 'Cantidad '.$quantity.'<br>';    //Debug*/
+            $this->cart->setQuantity($quantity);
+            $this->product->setId($data['idProduct']);
+            $product_data = $this->product->view();
+            /*print '<br>Precio '.$product_data["price"].'<br>'; //Debug*/
+            $totalPrice = $product_data["price"]*$quantity;
+            /*print '<br>Precio total '.$totalPrice.'<br>'; //Debug*/
+            $this->cart->setTotalPrice($totalPrice);
+            $result = $product_data['stock'] - ($this->cart->getQuantity() - $quantityPreview);
+            $this->product->setStock($result);
+            $this->product->setId($product_data['id']);
+            $this->product->setName($product_data['name']);
+            $this->product->setPrice($product_data["price"]);
+            $this->product->edit();
+            $this->cart->edit();
+            header("Location: ".URL."cart/");
+        }
+        else
+        {
+            return $data;
+        }
+    }
+    /**
+     * Delete a cart item.
+     * @param int $id Integer with id to cart.
+     */
+    public function remove(int $id=0)
+    {
+        $this->cart->setId($id);
         $data = $this->cart->view();
-        return $data;
+        $this->product->setId($data['idProduct']);
+        $product_data = $this->product->view();
+        $result = $product_data['stock'] + $data['quantity'];
+        $this->product->setStock($result);
+        $this->product->setName($product_data['name']);
+        $this->product->setPrice($product_data["price"]);
+        $this->product->edit();
+        $this->cart->delete();
+        header("Location: ".URL."cart/");
     }
 }
 //

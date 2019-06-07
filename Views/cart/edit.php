@@ -30,7 +30,7 @@
                 <div class="card-header bg-success">Edit to Cart the item #<?php echo $data['id']; ?></div>
                 <div class="card-body">
                     <div class="container">
-                        <form name="formCart" action="<?php echo URL; ?>cart/edit/<?php echo $data['id']; ?>" method="POST">
+                        <form name="formCart" method="POST" action="<?php echo URL; ?>cart/edit/<?php echo $data['id']; ?>" >
                             <div class="row">
                                 <div class="col-sm-12 col-md-4">
                                     <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image_product"];?>" alt="Picture" class="img-fluid"/>
@@ -39,6 +39,7 @@
                                     <ul class="list-group mb-3">
                                         <li class="list-group-item"><strong>Product Name:</strong> <?php echo $data['name_product']; ?></li>
                                         <li class="list-group-item"><strong>Price:</strong> <?php echo $data['totalPrice']; ?></li>
+                                        <li class="list-group-item"><strong>Stock:</strong> <?php echo $data['stock']; ?></li>
                                         <li class="list-group-item">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend"><span class="input-group-text">Quantity: </span></div>

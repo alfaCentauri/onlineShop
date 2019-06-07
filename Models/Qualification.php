@@ -147,14 +147,14 @@ class Qualification implements Crud
      */
     public function delete() {
         $sql = "delete from qualification where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conn->SimpleQuery($sql);
     }
     /**
      * Edit record indicated by the current id.
      */
     public function edit() {
         $sql = "update qualification set ponits='{$this->points}' where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conn->SimpleQuery($sql);
     }
     /**
      * Get a list of all the records.
@@ -165,9 +165,10 @@ class Qualification implements Crud
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
+
     /**
      * View register.
-     * @return array|null Return an arrangement with the record. 
+     * @return bool|\mysqli_result Return an arrangement with the record.
      */
     public function view() {
         $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.qualification T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id=id='{$this->id}';";

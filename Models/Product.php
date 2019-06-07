@@ -156,8 +156,8 @@ class Product implements Crud
     /**Display a record indicated by the current id.*/
     public function view(){
         $sql = "SELECT * FROM products where id='{$this->id}'";
-        $datos = $this->con->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($datos);
+        $data = $this->con->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
         return $row;
     }
 }

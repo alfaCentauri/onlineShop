@@ -235,7 +235,19 @@ class Cart implements Crud
     {
         $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
-        return $data;
+        $row = mysqli_fetch_assoc($data);
+        return $row;
+    }
+    /**
+     * View register with stock.
+     * @return array|null Return an arrangement with the record.
+     */
+    public function view_Stock()
+    {
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product, T2.stock as stock FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id='{$this->id}';";
+        $data = $this->conn->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
     /**
      * Edit record indicated by the current id.

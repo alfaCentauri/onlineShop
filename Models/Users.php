@@ -39,13 +39,13 @@ class Users implements Crud
     /***/
     function __construct() 
     {
-        $this->con=new Conection();
+        $this->conn=new Conection();
     }
     /**List**/
     public function toList()
     {
         $sql = "SELECT * FROM users;";
-        $data = $this->con->ReturnQuery($sql);
+        $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
     /**Add register*/
@@ -54,13 +54,13 @@ class Users implements Crud
         $sql = "INSERT INTO users(firstName, lastName, email, login, password, creationDate) "
                 . "VALUES('{$this->firstName}', '{$this->lastName}', '"
                 . "{$this->email}', '{$this->login}', '{$this->password}', NOW());";
-        $this->con->SimpleQuery($sql);
+        $this->conn->SimpleQuery($sql);
     }
     /**Delete record indicated by the current id.*/
     public function delete()
             {
         $sql = "delete from users where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conn->SimpleQuery($sql);
     }
     /**Edit record indicated by the current id.*/
     public function edit()
@@ -68,13 +68,13 @@ class Users implements Crud
         $sql = "update users set firstName='{$this->firstName}', lastName="
         . "'{$this->lastName}', email='{$this->email}', login='{$this->login}', '"
         . "{$this->password}' where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conn->SimpleQuery($sql);
     }
     /**Display a record indicated by the current id.*/
     public function view()
     {
         $sql = "SELECT * FROM users where id='{$this->id}'";
-        $datos = $this->con->ReturnQuery($sql);
+        $datos = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($datos);
         return $row;
     }
