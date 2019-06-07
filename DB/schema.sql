@@ -60,10 +60,49 @@ CREATE TABLE shop.qualification (
 drop table shop.carts;
 CREATE TABLE shop.carts(
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
-    idUser int(11) NOT NULL, 
-    idProduct INT(10) UNSIGNED NOT NULL, 
-    quantity INT(10) UNSIGNED NOT NULL DEFAULT 0,
-    totalPrice FLOAT NOT NULL DEFAULT 0,
+    idUser int(11) NOT NULL,    
     creationDate DATE NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+drop table shop.itemsCart;
+CREATE TABLE IF NOT EXISTS shop.itemsCart (
+  id INT NOT NULL AUTO_INCREMENT,
+  idProduct INT(10) UNSIGNED NOT NULL,
+  quantity INT(10) UNSIGNED NOT NULL DEFAULT 0,
+  totalPrice FLOAT NOT NULL DEFAULT 0,
+  PRIMARY KEY (id),
+  INDEX Carrito (idProduct ASC),
+  CONSTRAINT fk_itemsCart_1
+    FOREIGN KEY (id)
+    REFERENCES shop.carts (idUser)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_itemsCart_2
+    FOREIGN KEY (idProduct)
+    REFERENCES shop.products (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin
+COMMENT = 'Items por carrito.';
+
+/**Data de pruebas*/
+INSERT INTO shop.products (id, name, price, image, stock, creationDate) VALUES
+(1, 'Apple red', 0.3, '4208manzana.jpg', 499, '2019-06-05'),
+(2, 'Water bottle 5 liters', 1, '4305agua-mineral-minalba-5-lts.jpg', 599, '2019-06-05'),
+(3, 'Beer', 2, '4356Smirnoff-Ice-Manzana-Verde-_355ml_-Front.jpg', 994, '2019-06-05'),
+(4, 'Cheese', 3.74, '4542portada-wp-quesos-600x363.jpg', 199, '2019-06-05'),
+(5, 'Melon', 0.5, '1929melon.jpg', 700, '2019-06-05');
+SELECT * FROM shop.products LIMIT 100;
+
+INSERT INTO shop.users (id, firstName, lastName, email, login, password, active, creationDate) VALUES
+(1, 'Pedro', 'Perez', 'pepe@dominio.com', 'pepe', '123456', 1, '2019-06-06');
+
+INSERT INTO shop.carts (id, idUser, idProduct, quantity, totalPrice, creationDate) VALUES
+(13, 1, 1, 1, 0.3, '2019-06-07'),
+(14, 1, 2, 1, 1, '2019-06-07'),
+(15, 1, 3, 6, 12, '2019-06-07'),
+(16, 1, 4, 1, 3.74, '2019-06-07');
+SELECT * FROM shop.carts LIMIT 100;
