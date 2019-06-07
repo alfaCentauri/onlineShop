@@ -14,7 +14,7 @@ use Models\Product as Product;
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
-class productsController
+class productsController implements Crud
 {
     /**
      * Contains a object of type Product.
@@ -61,7 +61,7 @@ class productsController
      * @param $id   Integer integer.
      * @return array|null $data
      */
-    public function view($id)
+    public function view(int $id=0)
     {
         $this->product->setId($id);
         $data = $this->product->view();
@@ -73,7 +73,7 @@ class productsController
      * @param $id   Integer integer.
      * @return array|null Data
      */
-    public function edit($id){
+    public function edit(int $id=0){
         $this->product->setId($id);
         if (!$_POST){
             $data = $this->product->view();
@@ -91,7 +91,7 @@ class productsController
     /**Delete a product
      * @param $id   Integer integer.
      */
-    public function remove($id)
+    public function remove(int $id=0)
     {
         $this->product->setId($id);
         $this->product->delete();

@@ -27,7 +27,7 @@ use Models\Product as Product;
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
-class cartController 
+class cartController implements Crud
 {
     /**
      * Contains a object of type Cat.
@@ -74,7 +74,7 @@ class cartController
      * @param int $id Default 0.
      * @return array|null Data of product.
      */
-    public function add($id=0)
+    public function add(int $id=0)
     {
         $this->product->setId($id);
         $data = $this->product->view();
@@ -105,7 +105,7 @@ class cartController
      * @param $id   Integer integer.
      * @return array|null   Data of product.
      */
-    public function preview($id)
+    public function preview(int $id)
     {
         $this->product->setId($id);
         $data = $this->product->view();
@@ -117,7 +117,7 @@ class cartController
      * @param $id   Integer integer.
      * @return array|null   $id.
      */
-    public function view($id):array
+    public function view(int $id=0):array
     {
         $this->cart->setId($id);
         $data = $this->cart->view();
@@ -179,17 +179,12 @@ class cartController
         $this->product->setId($data['idProduct']);
         if ($_POST)
         {
-            /*echo 'Presiono enviar<br>'; //Debug*/
             $quantityPreview = $data['quantity'];
             $quantity = $_POST['quantity'];
-            /*print 'Cantidad previa '.$quantityPreview.'<br>';    //Debug*/
-            /*print 'Cantidad '.$quantity.'<br>';    //Debug*/
             $this->cart->setQuantity($quantity);
             $this->product->setId($data['idProduct']);
             $product_data = $this->product->view();
-            /*print '<br>Precio '.$product_data["price"].'<br>'; //Debug*/
             $totalPrice = $product_data["price"]*$quantity;
-            /*print '<br>Precio total '.$totalPrice.'<br>'; //Debug*/
             $this->cart->setTotalPrice($totalPrice);
             $result = $product_data['stock'] - ($this->cart->getQuantity() - $quantityPreview);
             $this->product->setStock($result);
