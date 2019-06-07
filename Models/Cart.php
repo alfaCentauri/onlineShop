@@ -233,7 +233,7 @@ class Cart implements Crud
      */
     public function view()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id=id='{$this->id}';";
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }

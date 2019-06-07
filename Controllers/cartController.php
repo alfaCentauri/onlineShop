@@ -71,34 +71,38 @@ class cartController
      */
     public function add($id=0)
     {
-        $data = $this->preview($id);
+        $this->product->setId($id);
+        $data = $this->product->view();
         $this->cart->setIdUser(1);
         $this->cart->setIdProduct($data['id']);
-        $quantity = $_POST['quantity'];
-        $this->cart->setQuantity($quantity);
-        $this->cart->setTotalPrice($data["price"]*$quantity);
-        $result = $data['stock'] - $this->cart->getQuantity();
-        $this->product->setStock($result);
-        $this->product->setId($data['id']);
-        $this->product->setName($data['name']);
-        $this->product->setPrice($data["price"]);
-        $this->product->setImage($data['image']);
-        $this->product->setCreationDate($data['creationDate']);
-        $this->product->edit();
-        //
-        $this->cart->add();
-        header("Location: ".URL."index.php?url=cart");
+        if ($_POST)
+        {
+            $quantity = $_POST['quantity'];
+            $this->cart->setQuantity($quantity);
+            $this->cart->setTotalPrice($data["price"]*$quantity);
+            $result = $data['stock'] - $this->cart->getQuantity();
+            $this->product->setStock($result);
+            $this->product->setId($data['id']);
+            $this->product->setName($data['name']);
+            $this->product->setPrice($data["price"]);
+            $this->product->setImage($data['image']);
+            $this->product->setCreationDate($data['creationDate']);
+            $this->product->edit();
+            //
+            $this->cart->add();
+            header("Location: ".URL."index.php?url=cart");
+        }
+        return $data;
     }
 
     /**
      * Preview of the cart.
-     * @param $idCart   Integer integer.
-     * @return array|null   Data of the cart.
+     * @param $id   Integer integer.
      */
-    public function preview($idCart):array
+    public function preview($id)
     {
-        $this->cart->setId($idCart);
-        $data = $this->cart->view();
+        $this->product->setId($id);
+        $data = $this->product->view();
         return $data;
     }
 
@@ -109,8 +113,8 @@ class cartController
      */
     public function view($id):array
     {
-        $this->product->setId($id);
-        $data = $this->product->view();
+        $this->cart->setId($id);
+        $data = $this->cart->view();
         return $data;
     }
 
@@ -133,10 +137,11 @@ class cartController
         }
         return $data;
     }
+
     /**
-     * 
+     * @param int $id   Default 0.
      */
-    public function dispach()
+    public function dispach(int $id=0)
     {
         echo 'Despacho muestra direccion de envio y fin';
     }
