@@ -175,9 +175,9 @@ class cartController implements Crud
     /**
      * Show the form for the shipment of the products and request the type of
      * shipment.
-     * @param int $id   Default 1.
-     * @param int $idU  Default 1.
-     * @return array|null   $data
+     * @param int $id Default 1.
+     * @param int $idU Default 1.
+     * @return bool|\mysqli_result $data
      */
     public function shipping(int $id=1, int $idU=1)
     {

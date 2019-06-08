@@ -87,7 +87,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
             </div><!-- End card -->
         </div>
     </div>
@@ -139,4 +138,3 @@
         echo 'Error';
     }
 ?>
-</div>
