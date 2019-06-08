@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,35 +21,35 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">User's cart history.</h3>
+            <h3 class="text-center">My current cart.</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header bg-success">
-                    My shopping carts
+                    My cart
                 </div>
                 <div class="card-body">
                     <table border="1" class="table table-striped table-hover">
                         <thead>
-                            <tr class="table-primary">
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th class="text-center">Quantity</th>
-                                <th class="text-center">Total Price $</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
+                        <tr class="table-primary">
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-center">Total Price $</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-            <?php
-                $total = 0;
-                while ($row = mysqli_fetch_array($data)){
-            ?>
+                        <?php
+                        $total = 0;
+                        while ($row = mysqli_fetch_array($data)){
+                            ?>
                             <tr>
                                 <td>
-                                    <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $row["image_product"];?>" 
-                                         width="60px" height="60px" alt="Picture" 
+                                    <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $row["image_product"];?>"
+                                         width="60px" height="60px" alt="Picture"
                                          class="img-fluid"/>
                                 </td>
                                 <td>
@@ -71,9 +71,9 @@
                                     </a>
                                 </td>
                             </tr>
-            <?php 
-                }
-            ?>                            
+                            <?php
+                        }
+                        ?>
                         </tbody>
                     </table>
 
@@ -93,7 +93,7 @@
                             </div>
                             <div class="col-sm-6 col-md-3 col-lg-3">
                                 <div class="price" id="total">
-                                  <?php echo $total; ?> $
+                                    $
                                 </div>
                             </div>
                         </div>
@@ -123,4 +123,3 @@
         </div><!-- End col -->
     </div><!-- End row -->
 </div>
-        

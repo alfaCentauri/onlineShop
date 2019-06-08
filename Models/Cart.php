@@ -41,20 +41,6 @@ class Cart implements Crud
      */
     private $idUser;
     /**
-     * @var integer
-     */
-    private $idProduct;
-    /**
-     * Constains the quantity.
-     * @var integer
-     */
-    private $quantity;
-    /**
-     * Constains the total price.
-     * @var float
-     */
-    private $totalPrice;
-    /**
      * Contains creation date.
      */
     private $creationDate;
@@ -119,54 +105,6 @@ class Cart implements Crud
     }
 
     /**
-     * @return int
-     */
-    public function getIdProduct(): int
-    {
-        return $this->idProduct;
-    }
-
-    /**
-     * @param int $idProduct
-     */
-    public function setIdProduct(int $idProduct): void
-    {
-        $this->idProduct = $idProduct;
-    }
-
-    /**
-     * @return int
-     */
-    public function getQuantity(): int
-    {
-        return $this->quantity;
-    }
-
-    /**
-     * @param int $quantity
-     */
-    public function setQuantity(int $quantity): void
-    {
-        $this->quantity = $quantity;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTotalPrice(): float
-    {
-        return $this->totalPrice;
-    }
-
-    /**
-     * @param float $totalPrice
-     */
-    public function setTotalPrice(float $totalPrice): void
-    {
-        $this->totalPrice = $totalPrice;
-    }
-
-    /**
      * @return mixed
      */
     public function getCreationDate()
@@ -192,7 +130,7 @@ class Cart implements Crud
         return $data;
     }
     /**
-     * Get a list of all records with the image and the name of the associated 
+     * Get a list of all records with the image and the name of the associated
      * product.
      */
     public function toList2()
@@ -206,25 +144,17 @@ class Cart implements Crud
      */
     public function toListUser()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.idUser='{$this->idUser}';";
+        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product FROM shop.carts C INNER JOIN shop.itemscart I on C.id=I.id and C.idUser='{$this->idUser}' INNER JOIN shop.products P on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
-    /**
-     * Get a list of all the records for a user.
-     */
-    public function totalList()
-    {
-        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM shop.carts T1 where T1.idUser='{$this->idUser}';";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
+
     /**
      * Add register
      */
     public function add()
     {
-        $sql = "INSERT INTO carts(id, idUser, idProduct, quantity, totalPrice, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->quantity}', '{$this->totalPrice}', NOW());";
+        $sql = "INSERT INTO carts(id, idUser, creationDate) VALUES(NULL, '{$this->idUser}', NOW());";
         $this->conn->SimpleQuery($sql);
     }
     /**
@@ -245,6 +175,7 @@ class Cart implements Crud
     public function view_Stock()
     {
         $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product, T2.stock as stock FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id='{$this->id}';";
+        echo 'SQL '.$sql;
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;

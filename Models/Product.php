@@ -97,7 +97,7 @@ class Product implements Crud
     }
     /**
      * 
-     * @return Date Creation date.
+     * @return mixed Creation date.
      */
     public function getCreationDate() 
     {
@@ -124,7 +124,7 @@ class Product implements Crud
 
     /**
      * 
-     * @param Date $creationDate
+     * @param mixed $creationDate
      */
     public function setCreationDate($creationDate) 
     {

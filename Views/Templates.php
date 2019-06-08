@@ -42,25 +42,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-            <a class="navbar-brand" href="#">Product manager</a>
+            <a class="navbar-brand" href="<?php echo URL; ?>">Product manager</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars01" aria-controls="navbars01" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbars01">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="<?php echo URL; ?>">Home <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
                   <div class="dropdown-menu" aria-labelledby="dropdown09">
-                    <a class="dropdown-item" href="<?php echo URL; ?>index.php?url=products">List</a>
-                    <a class="dropdown-item" href="<?php echo URL; ?>index.php?url=products/add">Add</a>
+                    <a class="dropdown-item" href="<?php echo URL; ?>products">List</a>
+                    <a class="dropdown-item" href="<?php echo URL; ?>products/add">Add</a>
                   </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URL; ?>index.php?url=cart">Cart</a>                  
+                    <a class="nav-link" href="<?php echo URL; ?>cart/">Cart</a>
                 </li>
               </ul>
             </div>
