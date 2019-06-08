@@ -60,7 +60,8 @@ CREATE TABLE shop.qualification (
 drop table shop.carts;
 CREATE TABLE shop.carts(
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
-    idUser int(11) NOT NULL,    
+    idUser int(11) NOT NULL, 
+    totalPrice FLOAT NOT NULL DEFAULT 0,
     creationDate DATE NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

@@ -41,6 +41,11 @@ class Cart implements Crud
      */
     private $idUser;
     /**
+     * Constains the total price.
+     * @var float
+     */
+    private $totalPrice;
+    /**
      * Contains creation date.
      */
     private $creationDate;
@@ -102,6 +107,22 @@ class Cart implements Crud
     public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPrice(): float
+    {
+        return $this->totalPrice;
+    }
+
+    /**
+     * @param float $totalPrice
+     */
+    public function setTotalPrice(float $totalPrice): void
+    {
+        $this->totalPrice = $totalPrice;
     }
 
     /**

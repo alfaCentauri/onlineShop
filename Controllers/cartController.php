@@ -55,6 +55,10 @@ class cartController implements Crud
     */
     private $subtotal;
     /**
+     * @var String
+     */
+    private $direction;
+    /**
      * Construct
      **/
     function __construct() 
@@ -63,6 +67,7 @@ class cartController implements Crud
         $this->product = new Product();
         $this->itemsCart = new CartItems();
         $this->subtotal = 0.0;
+        $this->direction = "";
     }
 
     /**Default
@@ -169,7 +174,8 @@ class cartController implements Crud
     /**
      * Show the form for the shipment of the products and request the type of
      * shipment.
-     * @param int $id     Default 1.
+     * @param int $id   Default 1.
+     * @param int $idU  Default 1.
      * @return array|null   $data
      */
     public function shipping(int $id=1, int $idU=1)
@@ -186,7 +192,7 @@ class cartController implements Crud
         }
         if ($_POST)
         {
-            $dir = $_POST['direction'];
+            $this->direction = $_POST['direction'];
             header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         return $data;
@@ -196,11 +202,11 @@ class cartController implements Crud
      * Accept the dispatch, show the shipping address and return to the list of products.
      * @param int $id   Default 0.
      */
-    public function dispach(int $id=0)
+    public function dispach(int $id=1, int $idU=1)
     {
         $this->cart->setId($id);
         $data = $this->itemsCart->setIdCart($id);
-        return ;
+        return $data;
     }
 
     /**
@@ -220,6 +226,22 @@ class cartController implements Crud
     }
 
     /**
+     * @return String
+     */
+    public function getDirection(): String
+    {
+        return $this->direction;
+    }
+
+    /**
+     * @param String $direction
+     */
+    public function setDirection(String $direction): void
+    {
+        $this->direction = $direction;
+    }
+
+    /**
      * @param int $id Indice del registro.
      * @return array|null   Data of cart item.
      */
@@ -227,7 +249,7 @@ class cartController implements Crud
     {
         $this->cart->setId($id);
         $data = $this->cart->view_Stock();
-        /*$this->product->setId($data['idProduct']);
+        $this->product->setId($data['idProduct']);
         if ($_POST)
         {
             $quantityPreview = $data['quantity'];
@@ -246,7 +268,7 @@ class cartController implements Crud
             $this->cart->edit();
             header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
-        return $data;*/
+        return $data;
     }
 
     /**

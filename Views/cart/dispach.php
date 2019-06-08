@@ -20,7 +20,7 @@
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-12 col-lg-12">
                             <ul class="list-group mb-3">
-                                <li class="list-group-item"><strong>Direcction of shipping:</strong> <?php echo $data['direction']; ?></li>
+                                <li class="list-group-item"><strong>Direcction of shipping:</strong> <?php echo $cart->getDirection(); ?></li>
                             </ul>
                         </div>
                     </div>
