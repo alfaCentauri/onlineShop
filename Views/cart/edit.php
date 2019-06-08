@@ -39,7 +39,7 @@
                                     <ul class="list-group mb-3">
                                         <li class="list-group-item"><strong>Product Name:</strong> <?php echo $data['name_product']; ?></li>
                                         <li class="list-group-item"><strong>Price:</strong> <?php echo $data['totalPrice']; ?></li>
-                                        <li class="list-group-item"><strong>Stock:</strong> <?php echo $data['stock']; ?></li>
+                                        <li class="list-group-item"><strong>Product Stock:</strong> <?php echo $data['stock']; ?></li>
                                         <li class="list-group-item">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend"><span class="input-group-text">Quantity: </span></div>

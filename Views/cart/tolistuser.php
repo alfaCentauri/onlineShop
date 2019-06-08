@@ -77,10 +77,10 @@
                                     ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="<?php echo URL; ?>index.php?url=cart/edit/<?php echo $row['id']; ?>" class="btn btn-warning">
+                                    <a href="<?php echo URL; ?>cart/edit/<?php echo $row['idItem']; ?>" class="btn btn-warning">
                                         Edit
                                     </a>
-                                    <a href="<?php echo URL; ?>index.php?url=cart/remove/<?php echo $row['id']; ?>" class="btn btn-danger" >
+                                    <a href="<?php echo URL; ?>cart/remove/<?php echo $row['idItem']; ?>" class="btn btn-danger" >
                                         Delete
                                     </a>
                                 </td>

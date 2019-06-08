@@ -69,6 +69,7 @@ class Cart implements Crud
         $this->idProduct = 0;
         $this->quantity = 0;
         $this->direction ="";
+        $this->totalPrice = 0;
     }
 
     /**
@@ -223,7 +224,7 @@ class Cart implements Crud
      */
     public function toListItemsCart()
     {
-        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
+        $sql = "SELECT C.*, I.id as idItem, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
 	      FROM shop.carts C 
 	      INNER JOIN shop.itemscart I 
 	      on C.id=I.idCart and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
@@ -249,17 +250,6 @@ class Cart implements Crud
     public function view()
     {
         $sql = "SELECT * FROM shop.carts";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * View register with stock.
-     * @return array|null Return an arrangement with the record.
-     */
-    public function view_Stock()
-    {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product, T2.stock as stock FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;

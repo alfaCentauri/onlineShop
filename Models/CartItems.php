@@ -47,9 +47,10 @@ class CartItems implements Crud
     {
         $this->conn = new Conection();
         $this->id = 0;
+        $this->idCart = 0;
         $this->idProduct = 0;
         $this->quantity = 0;
-        $this->totalPrice;
+        $this->totalPrice = 0;
     }
 
     /**
@@ -153,7 +154,10 @@ class CartItems implements Crud
      */
     public function view()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.itemscart T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id='{$this->id}';";
+        $sql = "SELECT I.*, P.name as name_product, P.image as image_product, P.stock as stock 
+          FROM shop.itemscart I 
+          INNER JOIN shop.products P 
+          on I.idProduct=P.id and I.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -171,7 +175,7 @@ class CartItems implements Crud
      */
     public function edit()
     {
-        $sql = "update itemscart set quantity='{$this->quantity}' where id='{$this->id}';";
+        $sql = "update itemscart set quantity='{$this->quantity}', totalPrice='{$this->totalPrice}' where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**

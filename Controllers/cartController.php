@@ -241,45 +241,54 @@ class cartController implements Crud
     }
 
     /**
+     * Edit an item in the shopping cart.
+     * The route for this method is: http://localhost/onlineShop/cart/edit/$id .
      * @param int $id Indice del registro.
      * @return array|null   Data of cart item.
      */
     public function edit(int $id=1)
     {
-        $this->cart->setId($id);
-        $data = $this->cart->view_Stock();
+        $this->itemsCart->setId($id);
+        $data = $this->itemsCart->view();
         $this->product->setId($data['idProduct']);
         if ($_POST)
         {
             $quantityPreview = $data['quantity'];
             $quantity = $_POST['quantity'];
-            $this->cart->setQuantity($quantity);
+            $this->itemsCart->setQuantity($quantity);
             $this->product->setId($data['idProduct']);
             $product_data = $this->product->view();
             $totalPrice = $product_data["price"]*$quantity;
-            $this->cart->setTotalPrice($totalPrice);
-            $result = $product_data['stock'] - ($this->cart->getQuantity() - $quantityPreview);
+            $PricePreview = $data['totalPrice'];
+            $this->itemsCart->setTotalPrice($totalPrice);
+            $result = $product_data['stock'] - ($this->itemsCart->getQuantity() - $quantityPreview);
             $this->product->setStock($result);
             $this->product->setId($product_data['id']);
             $this->product->setName($product_data['name']);
             $this->product->setPrice($product_data["price"]);
             $this->product->edit();
+            $this->itemsCart->edit();
+            //Update total cart price
+            $this->cart->setId($data['idCart']);
+            $dataCart = $this->cart->view();
+            $updatePrice = $dataCart['totalPrice'] - ($PricePreview - $totalPrice);
+            $this->cart->setTotalPrice($updatePrice);
             $this->cart->edit();
-            header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
+            header("Location: ".URL."cart/toListUser/".$this->itemsCart->getIdCart()."/1");
         }
         return $data;
     }
 
     /**
      * Delete a cart item.
-     * @param int $id Integer with id to cart.
+     * @param int $id Integer with id to cart item.
      * @param int $idU
      * @param int $idCart
      */
-    public function remove(int $id=0, int $idU=1, int $idCart=1)
+    public function remove(int $id=0)
     {
-        $this->cart->setId($idCart);
-        $data = $this->cart->view();
+        $this->itemsCart->setId($id);
+        $data = $this->itemsCart->view();
         $this->product->setId($data['idProduct']);
         $product_data = $this->product->view();
         $result = $product_data['stock'] + $data['quantity'];
@@ -287,8 +296,10 @@ class cartController implements Crud
         $this->product->setName($product_data['name']);
         $this->product->setPrice($product_data["price"]);
         $this->product->edit();
-        $this->cart->delete();
-        header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
+        $this->cart->setId($data['idCart']);
+        $this->cart->view();
+        $this->itemsCart->delete();
+        header("Location: ".URL."cart/toListUser/".$this->itemsCart->getIdCart()."/".$this->cart->getIdUser());
     }
 
     /**
@@ -305,11 +316,6 @@ class cartController implements Crud
         $this->cart->setIdUser($idU);
         $data = $this->cart->toListItemsCart();
         return $data;
-    }
-    /****/
-    public function pay(int $idU=1, int $idCart=1)
-    {
-        echo 'Pagan el pedido.<br>';
     }
 
 }
