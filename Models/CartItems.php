@@ -206,7 +206,7 @@ class CartItems implements Crud
      */
     public function totalList()
     {
-        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM shop.itemscart T1 where T1.idCart='{$this->id}';";
+        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM shop.itemscart T1 where T1.idCart='{$this->idCart}';";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }

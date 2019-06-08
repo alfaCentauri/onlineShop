@@ -6,6 +6,8 @@
  * Time: 7:25 PM
  */
 $subtotal=0;
+$idCart = 0;
+$idU = 1;
     ?>
     <div class="container">
         <div class="row">
@@ -16,7 +18,8 @@ $subtotal=0;
         <?php
         if (isset($data)) {
             while ($row = mysqli_fetch_array($data)) {
-                $id = $row['id'];
+                $idCart= $row['id'];
+                $idU = $row['idUser'];
                 $subtotal = $row['totalPrice'] + $subtotal;
 
             }
@@ -68,7 +71,6 @@ $subtotal=0;
                                 </div>
                                 <div class="col-sm-3 col-md-3 col-lg-3">
                                     <div class="price" id="priceShipping">0 $</div>
-                                    <input type="number" min="0" value="0" id="priceShipping2" hidden>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -78,11 +80,8 @@ $subtotal=0;
                                 </div>
                                 <div class="col-sm-6 col-md-3 col-lg-3">
                                     <div class="price" id="subtotal">
-
-
-                                        $
+                                        <?php echo $subtotal.'$'; ?>
                                     </div>
-                                    <input type="number" min="0" value="<?php echo $subtotal; ?>" id="subtotal2" hidden>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -92,17 +91,12 @@ $subtotal=0;
                                 </div>
                                 <div class="col-sm-6 col-md-3 col-lg-3">
                                     <div class="price" id="total"><?php echo $subtotal; ?> $</div>
-                                    <input type="number" min="0" value="<?php echo $subtotal; ?>" id="total2" hidden>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-2 col-md-2"></div>
                                 <div class="col-sm-4 col-md-4">
-                                    <!--a href="<?php echo URL; ?>cart/dispach/<?php echo $id; ?>" id="accept" name="accept" class="btn btn-success btn-block">
-                                Accept
-                            </a -->
-                                    <input type="submit" id="accept" name="accept" value="Accept"
-                                           class="btn btn-success btn-block">
+                                    <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block" >
                                 </div>
                                 <div class="col-sm-4 col-md-4">
                                     <a href="<?php echo URL; ?>cart/toListUser/1/1" class="btn btn-warning btn-block">Cancel</a>
@@ -133,20 +127,17 @@ $subtotal=0;
             document.getElementById('direction').setAttribute('required',true);
             document.getElementById('direction').setAttribute('min',3);
             document.getElementById('priceShipping').innerText='5 $';
-            document.getElementById('priceShipping2').value = 5;
         }
         else
         {
-            document.getElementById('direction').value='Pick up';
+           document.getElementById('direction').value='Pick up';
            document.getElementById('direction').setAttribute('readonly',true);
            document.getElementById('direction').removeAttribute('required');
-            document.getElementById('direction').removeAttribute('min');
+           document.getElementById('direction').removeAttribute('min');
            document.getElementById('priceShipping').innerText='0 $';
-           document.getElementById('priceShipping2').value = 0;
         }
         var subtotal = document.getElementById('subtotal2').value;
         var total = parseFloat(currentValue) + parseFloat(subtotal);
-        document.getElementById('total2').value = total;
-        document.getElementById('total').innerText=total+' $';
+        document.getElementById('total').innerText=total.toFixed(2)+' $';
     }
 </script>

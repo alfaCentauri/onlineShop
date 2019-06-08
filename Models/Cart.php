@@ -152,6 +152,22 @@ class Cart implements Crud
     }
 
     /**
+     * @return bool
+     */
+    public function isPaidOut(): bool
+    {
+        return $this->paidOut;
+    }
+
+    /**
+     * @param bool $paidOut
+     */
+    public function setPaidOut(bool $paidOut): void
+    {
+        $this->paidOut = $paidOut;
+    }
+
+    /**
      * @return mixed
      */
     public function getCreationDate()
@@ -232,7 +248,7 @@ class Cart implements Crud
      */
     public function view()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id='{$this->id}';";
+        $sql = "SELECT * FROM shop.carts";
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;

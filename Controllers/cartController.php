@@ -134,12 +134,10 @@ class cartController implements Crud
             $this->itemsCart->setIdCart($idCart);
             if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
             {
-                echo 'No existe el carrito #'.$idCart.' y lo crea <br>';    //Debug
                 $this->cart->add();
             }
             else
             {
-                echo 'Existe el carrito #'.$idCart.' y lo edita <br>';  //Debug
                 $this->cart->edit();
             }
             $this->itemsCart->add();
@@ -195,14 +193,19 @@ class cartController implements Crud
         {
             $this->cart->setDirection($_POST['direction']);
             if($_POST['shipping']==5)
+            {
                 $this->cart->setTotalPrice(($this->subtotal+5));
+            }
             else
+            {
                 $this->cart->setTotalPrice($this->subtotal);
+            }
+            $this->cart->setPaidOut(true);
             $this->cart->edit();
-            print 'El total del carrito es '.$this->cart->getTotalPrice();
-            //header("Location: ".URL."cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
+            header("Location: ".URL."cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
-        return $data;
+        else
+            return $data;
     }
 
     /**
@@ -215,13 +218,10 @@ class cartController implements Crud
     public function dispach(int $id=1, int $idU=1)
     {
         $this->cart->setId($id);
+        $this->cart->setIdUser($idU);
         $this->itemsCart->setIdCart($id);
-        $data = $this->cart->view();
-        if ($_POST)
-        {
-            echo 'Presiono enviar';
-        }
-        return $data;
+        $dataCart = $this->cart->view();
+        return $dataCart;
     }
 
     /**
