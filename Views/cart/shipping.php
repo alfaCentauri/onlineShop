@@ -22,7 +22,12 @@ while($row = mysqli_fetch_array($data))
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-3">
-                <div class="card-header bg-success">Shipping information #: <?php echo $id; ?></div>
+                <div class="card-header bg-success">Shipping information
+                <?php
+                    if (isset($id))
+                        echo '#:'.$id;
+                ?>
+                </div>
                 <div class="card-body">
                 <form action="" id="formShipping" name="formShipping" method="post">
                     <div class="row mb-3">

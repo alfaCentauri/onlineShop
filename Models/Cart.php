@@ -46,6 +46,15 @@ class Cart implements Crud
      */
     private $totalPrice;
     /**
+     * Contains the direction of shipping.
+     * @var String
+     */
+    private $direction;
+    /**
+     * @var Boolean
+     */
+    private $paidOut;
+    /**
      * Contains creation date.
      */
     private $creationDate;
@@ -59,6 +68,7 @@ class Cart implements Crud
         $this->idUser = 0;
         $this->idProduct = 0;
         $this->quantity = 0;
+        $this->direction ="";
     }
 
     /**
@@ -126,6 +136,22 @@ class Cart implements Crud
     }
 
     /**
+     * @return String
+     */
+    public function getDirection(): String
+    {
+        return $this->direction;
+    }
+
+    /**
+     * @param String $direction
+     */
+    public function setDirection(String $direction): void
+    {
+        $this->direction = $direction;
+    }
+
+    /**
      * @return mixed
      */
     public function getCreationDate()
@@ -175,7 +201,7 @@ class Cart implements Crud
      */
     public function add()
     {
-        $sql = "INSERT INTO carts(id, idUser, creationDate) VALUES(NULL, '{$this->idUser}', NOW());";
+        $sql = "INSERT INTO carts(id, idUser, totalPrice, direction, paidOut, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->totalPrice}', '{$this->direction}', '{$this->paidOut}', NOW());";
         $this->conn->SimpleQuery($sql);
     }
     /**
@@ -205,7 +231,7 @@ class Cart implements Crud
      * Edit record indicated by the current id.
      */
     public function edit(){
-        $sql = "update carts set quantity='{$this->quantity}' where id='{$this->id}';";
+        $sql = "update carts set totalPrice='{$this->totalPrice}', direction='{$this->direction}', paidOut='{$this->paidOut}' where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**

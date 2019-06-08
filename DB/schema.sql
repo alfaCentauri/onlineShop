@@ -63,6 +63,7 @@ CREATE TABLE shop.carts(
     idUser int(11) NOT NULL, 
     totalPrice FLOAT NOT NULL DEFAULT 0,
     direction VARCHAR (100),
+    paidOut BOOLEAN DEFAULT FALSE,
     creationDate DATE NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

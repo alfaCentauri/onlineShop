@@ -181,7 +181,7 @@ class cartController implements Crud
     public function shipping(int $id=1, int $idU=1)
     {
         $this->cart->setId($id);
-        $this->cart->setIdUser($idU);  //Debug
+        $this->cart->setIdUser($idU);
         $data = $this->cart->toListUser();
         if (!is_null($data))
         {
@@ -192,7 +192,13 @@ class cartController implements Crud
         }
         if ($_POST)
         {
-            $this->direction = $_POST['direction'];
+            $this->cart->setDirection($_POST['direction']);
+            if($_POST['shipping']==5)
+                $this->cart->setTotalPrice(($this->subtotal+5));
+            else
+                $this->cart->setTotalPrice($this->subtotal);
+            $this->cart->edit();
+            print 'El total del carrito es '.$this->cart->getTotalPrice();
             header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         return $data;
@@ -297,7 +303,10 @@ class cartController implements Crud
      */
     public function toListUser(int $idU=1, int $idCart=1)
     {
-        echo 'Hola esta es la lista del usuario '.$idU.' para el carrito '.$idCart.'<br>';
+        $this->cart->setId($idCart);
+        $this->cart->setIdUser($idU);
+        $data = $this->cart->toListUser();
+        return $data;
     }
     /****/
     public function pay(int $idU=1, int $idCart=1)
