@@ -50,7 +50,7 @@
                         <?php
                         $total = 0;
                         $idCart = 0;
-                        $idU = 0;
+                        $idU = 1;
                         $i=1;
                         while ($row = mysqli_fetch_array($data)){
                             ?>
@@ -67,7 +67,11 @@
                                 <td class="text-center"><?php echo $row['quantity']; ?></td>
                                 <td class="text-right">
                                     <?php
-                                    $idCart= $row['id'];
+                                    if (isset($row['id']) && isset($row['idUser']))
+                                    {
+                                        $idCart= $row['id'];
+                                        $idU = $row['idUser'];
+                                    }
                                     $total = $row['totalPrice'] + $total;
                                     echo $row['totalPrice'];
                                     ?>

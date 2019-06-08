@@ -192,7 +192,11 @@ class Cart implements Crud
      */
     public function toListUser()
     {
-        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product FROM shop.carts C INNER JOIN shop.itemscart I on C.id=I.id and C.idUser='{$this->idUser}' INNER JOIN shop.products P on P.id=I.idProduct ";
+        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
+          FROM shop.carts C 
+          INNER JOIN shop.itemscart I 
+          on C.id=I.idCart and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
+          INNER JOIN shop.products P on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
@@ -204,11 +208,11 @@ class Cart implements Crud
     public function toListItemsCart()
     {
         $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
-	FROM shop.carts C 
-	INNER JOIN shop.itemscart I 
-	on C.id=I.id and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
-	INNER JOIN shop.products P 
-	on P.id=I.idProduct ";
+	      FROM shop.carts C 
+	      INNER JOIN shop.itemscart I 
+	      on C.id=I.idCart and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
+	      INNER JOIN shop.products P 
+	      on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
@@ -217,7 +221,9 @@ class Cart implements Crud
      */
     public function add()
     {
-        $sql = "INSERT INTO carts(id, idUser, totalPrice, direction, paidOut, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->totalPrice}', '{$this->direction}', '{$this->paidOut}', NOW());";
+        $sql = "INSERT INTO carts(id, idUser, totalPrice, direction, paidOut, creationDate) 
+                VALUES(NULL, '{$this->idUser}', '{$this->totalPrice}', '{$this->direction}', 
+                '{$this->paidOut}', NOW());";
         $this->conn->SimpleQuery($sql);
     }
     /**

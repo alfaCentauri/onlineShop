@@ -132,14 +132,14 @@ class cartController implements Crud
             $this->cart->setId($idCart);
             $dataCart = $this->cart->view();
             $this->itemsCart->setIdCart($idCart);
-            if(isset($dataCart)) // The shopping cart does not exist and a new one is created.
+            if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
             {
-                echo 'No existe el carrito #'.$idCart.' y lo crea <br>';
+                echo 'No existe el carrito #'.$idCart.' y lo crea <br>';    //Debug
                 $this->cart->add();
             }
             else
             {
-                echo 'Existe el carrito #'.$idCart.' y lo edita <br>';
+                echo 'Existe el carrito #'.$idCart.' y lo edita <br>';  //Debug
                 $this->cart->edit();
             }
             $this->itemsCart->add();
@@ -175,8 +175,8 @@ class cartController implements Crud
     /**
      * Show the form for the shipment of the products and request the type of
      * shipment.
-     * @param int $id Default 1.
-     * @param int $idU Default 1.
+     * @param int $id Default 1, index of cart.
+     * @param int $idU Default 1, index of user.
      * @return bool|\mysqli_result $data
      */
     public function shipping(int $id=1, int $idU=1)
@@ -200,7 +200,7 @@ class cartController implements Crud
                 $this->cart->setTotalPrice($this->subtotal);
             $this->cart->edit();
             print 'El total del carrito es '.$this->cart->getTotalPrice();
-            header("Location: ".URL."cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
+            //header("Location: ".URL."cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         return $data;
     }
@@ -217,6 +217,10 @@ class cartController implements Crud
         $this->cart->setId($id);
         $this->itemsCart->setIdCart($id);
         $data = $this->cart->view();
+        if ($_POST)
+        {
+            echo 'Presiono enviar';
+        }
         return $data;
     }
 
