@@ -29,7 +29,8 @@ while($row = mysqli_fetch_array($data))
                 ?>
                 </div>
                 <div class="card-body">
-                <form action="" id="formShipping" name="formShipping" method="post">
+                <form action="<?php echo URL."cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser(); ?>"
+                      id="formShipping" name="formShipping" method="post">
                     <div class="row mb-3">
                         <div class="col-sm-4 col-md-3 col-lg-3">
                             <label for="shipping" class="">Shipping option:</label>
@@ -96,10 +97,10 @@ while($row = mysqli_fetch_array($data))
                     <div class="row">
                         <div class="col-sm-2 col-md-2"></div>
                         <div class="col-sm-4 col-md-4">
-                            <a href="<?php echo URL; ?>cart/dispach/<?php echo $id; ?>" id="accept" name="accept" class="btn btn-success btn-block">
+                            <!--a href="<?php echo URL; ?>cart/dispach/<?php echo $id; ?>" id="accept" name="accept" class="btn btn-success btn-block">
                                 Accept
-                            </a>
-                            <!-- input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block" -->
+                            </a -->
+                            <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <a href="<?php echo URL; ?>cart/" class="btn btn-warning btn-block">Cancel</a>

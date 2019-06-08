@@ -19,9 +19,28 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-sm-12 col-md-12 col-lg-12">
+                            <?php
+                            if (isset($data))
+                            {
+                            ?>
                             <ul class="list-group mb-3">
-                                <li class="list-group-item"><strong>Direcction of shipping:</strong> <?php echo $cart->getDirection(); ?></li>
+                                <li class="list-group-item"><strong>Direcction of shipping: </strong>
+                            <?php
+                                echo $data['direction'];
+                            ?></li>
+                                <li class="list-group-item"><strong>Total of the operation: </strong>
+                            <?php
+                                echo $data['totalPrice'];
+                            ?>
+                                </li>
                             </ul>
+                            <?php
+                            }
+                            else
+                            {
+                              echo 'Error';
+                            }
+                            ?>
                         </div>
                     </div>
                     <div class="row">

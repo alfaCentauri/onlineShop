@@ -55,10 +55,6 @@ class cartController implements Crud
     */
     private $subtotal;
     /**
-     * @var String
-     */
-    private $direction;
-    /**
      * Construct
      **/
     function __construct() 
@@ -71,7 +67,8 @@ class cartController implements Crud
     }
 
     /**Default
-     * @param int $id
+     * @param int $idCart
+     * @param int $idU
      * @return bool|\mysqli_result  Data of list of the cart.
      */
     public function index(int $idCart=1, int $idU=1)
@@ -131,15 +128,19 @@ class cartController implements Crud
             $this->product->setId($data['id']);
             $this->product->setName($data['name']);
             $this->product->setPrice($data["price"]);
-            $this->product->setImage($data['image']);
-            $this->product->setCreationDate($data['creationDate']);
             $this->product->edit();
             $this->cart->setId($idCart);
             $dataCart = $this->cart->view();
             $this->itemsCart->setIdCart($idCart);
-            if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
+            if(isset($dataCart)) // The shopping cart does not exist and a new one is created.
             {
+                echo 'No existe el carrito #'.$idCart.' y lo crea <br>';
                 $this->cart->add();
+            }
+            else
+            {
+                echo 'Existe el carrito #'.$idCart.' y lo edita <br>';
+                $this->cart->edit();
             }
             $this->itemsCart->add();
             header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
@@ -152,7 +153,7 @@ class cartController implements Crud
      * @param $id   Integer integer.
      * @return array|null   Data of product.
      */
-    public function preview(int $id)
+    public function preview(int $id=1)
     {
         $this->product->setId($id);
         $data = $this->product->view();
@@ -199,19 +200,23 @@ class cartController implements Crud
                 $this->cart->setTotalPrice($this->subtotal);
             $this->cart->edit();
             print 'El total del carrito es '.$this->cart->getTotalPrice();
-            header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
+            header("Location: ".URL."cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         return $data;
     }
 
     /**
-     * Accept the dispatch, show the shipping address and return to the list of products.
-     * @param int $id   Default 0.
+     * Accept the dispatch, show the shipping address and return to the cart paid.
+     * @param int $id Default 0.
+     * @param int $idU
+     * @return array|null   Returns the data of the cart paid with the total amount of the operation and the shipping
+     * address.
      */
     public function dispach(int $id=1, int $idU=1)
     {
         $this->cart->setId($id);
-        $data = $this->itemsCart->setIdCart($id);
+        $this->itemsCart->setIdCart($id);
+        $data = $this->cart->view();
         return $data;
     }
 
@@ -229,22 +234,6 @@ class cartController implements Crud
     public function setSubtotal(float $subtotal): void
     {
         $this->subtotal = $subtotal;
-    }
-
-    /**
-     * @return String
-     */
-    public function getDirection(): String
-    {
-        return $this->direction;
-    }
-
-    /**
-     * @param String $direction
-     */
-    public function setDirection(String $direction): void
-    {
-        $this->direction = $direction;
     }
 
     /**
@@ -297,15 +286,19 @@ class cartController implements Crud
         $this->cart->delete();
         header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
     }
+
     /**
+     * List of carts per user indicated.
      * @param int $idU
      * @param int $idCart
+     * @return bool|\mysqli_result List of carts per user indicated.
      */
     public function toListUser(int $idU=1, int $idCart=1)
     {
         $this->cart->setId($idCart);
         $this->cart->setIdUser($idU);
-        $data = $this->cart->toListUser();
+        $data = $this->cart->toListItemsCart();
+        /*var_dump($data);    //Debug*/
         return $data;
     }
     /****/

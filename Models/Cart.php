@@ -188,6 +188,7 @@ class Cart implements Crud
     }
     /**
      * Get a list of all the records for a user.
+     * @return bool|\mysqli_result Return a list of all the records for a user.
      */
     public function toListUser()
     {
@@ -196,6 +197,21 @@ class Cart implements Crud
         return $data;
     }
 
+    /**
+     * Generates a list to show all the items in a cart for a specific user.
+     * @return bool|\mysqli_result
+     */
+    public function toListItemsCart()
+    {
+        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
+	FROM shop.carts C 
+	INNER JOIN shop.itemscart I 
+	on C.id=I.id and C.id='1' and C.idUser='1' 
+	INNER JOIN shop.products P 
+	on P.id=I.idProduct ";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
     /**
      * Add register
      */
