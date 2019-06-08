@@ -289,16 +289,17 @@ class cartController implements Crud
 
     /**
      * List of carts per user indicated.
+     * The route to list to the cart will be:
+     * http://localhost/onlineShop/cart/tolistuser/$idCart/$idU .
      * @param int $idU
      * @param int $idCart
      * @return bool|\mysqli_result List of carts per user indicated.
      */
-    public function toListUser(int $idU=1, int $idCart=1)
+    public function toListUser( int $idCart=1, int $idU=1)
     {
         $this->cart->setId($idCart);
         $this->cart->setIdUser($idU);
         $data = $this->cart->toListItemsCart();
-        /*var_dump($data);    //Debug*/
         return $data;
     }
     /****/

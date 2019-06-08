@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS shop.itemsCart (
   PRIMARY KEY (id),
   INDEX carts (idCart ASC),
   INDEX products (idProduct ASC)
-  ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'Items por carrito.'
+  ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'Items por carrito.';
 
 /**Data de pruebas*/
 INSERT INTO shop.products (id, name, price, image, stock, creationDate) VALUES
