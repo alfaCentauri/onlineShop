@@ -155,8 +155,8 @@ class CartItems implements Crud
     public function view()
     {
         $sql = "SELECT I.*, P.name as name_product, P.image as image_product, P.stock as stock 
-          FROM shop.itemscart I 
-          INNER JOIN shop.products P 
+          FROM itemsCart I 
+          INNER JOIN products P 
           on I.idProduct=P.id and I.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
@@ -167,7 +167,7 @@ class CartItems implements Crud
      */
     public function add()
     {
-        $sql = "INSERT INTO itemscart(id, idCart, idProduct, quantity, totalPrice) VALUES(NULL, '{$this->idCart}', '{$this->idProduct}', '{$this->quantity}', '{$this->totalPrice}');";
+        $sql = "INSERT INTO itemsCart(id, idCart, idProduct, quantity, totalPrice) VALUES(NULL, '{$this->idCart}', '{$this->idProduct}', '{$this->quantity}', '{$this->totalPrice}');";
         $this->conn->SimpleQuery($sql);
     }
     /**
@@ -175,7 +175,7 @@ class CartItems implements Crud
      */
     public function edit()
     {
-        $sql = "update itemscart set quantity='{$this->quantity}', totalPrice='{$this->totalPrice}' where id='{$this->id}';";
+        $sql = "update itemsCart set quantity='{$this->quantity}', totalPrice='{$this->totalPrice}' where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**
@@ -183,7 +183,7 @@ class CartItems implements Crud
      */
     public function delete()
     {
-        $sql = "delete from itemscart where id='{$this->id}';";
+        $sql = "delete from itemsCart where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**
@@ -191,7 +191,7 @@ class CartItems implements Crud
      */
     public function toList()
     {
-        $sql = "SELECT * FROM itemscart;";
+        $sql = "SELECT * FROM itemsCart;";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
@@ -201,7 +201,7 @@ class CartItems implements Crud
      */
     public function toList2()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.itemscart T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id ;";
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM itemsCart T1 INNER JOIN products T2 on T1.idProduct=T2.id ;";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
@@ -210,8 +210,9 @@ class CartItems implements Crud
      */
     public function totalList()
     {
-        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM shop.itemscart T1 where T1.idCart='{$this->idCart}';";
+        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM itemsCart T1 where T1.idCart='{$this->idCart}';";
         $data = $this->conn->ReturnQuery($sql);
-        return $data;
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
 }

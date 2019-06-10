@@ -114,36 +114,44 @@ class cartController implements Crud
      */
     public function add(int $id=0, int $idU=1, int $idCart=1)
     {
-        $this->product->setId($id);
-        $data = $this->product->view();
-        $this->cart->setIdUser($idU);
-        $this->itemsCart->setIdProduct($data['id']);
-        if ($_POST)
+        if ($id>0)
         {
-            $quantity = $_POST['quantity'];
-            $this->itemsCart->setQuantity($quantity);
-            $this->itemsCart->setTotalPrice($data["price"]*$quantity);
-            $result = $data['stock'] - $this->itemsCart->getQuantity();
-            $this->product->setStock($result);
-            $this->product->setId($data['id']);
-            $this->product->setName($data['name']);
-            $this->product->setPrice($data["price"]);
-            $this->product->edit();
-            $this->cart->setId($idCart);
-            $dataCart = $this->cart->view();
-            $this->itemsCart->setIdCart($idCart);
-            if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
+            $this->product->setId($id);
+            $data = $this->product->view();
+            $this->cart->setIdUser($idU);
+            $this->itemsCart->setIdProduct($data['id']);
+            if ($_POST && $_POST['quantity']>0)
             {
-                $this->cart->add();
+                $quantity = $_POST['quantity'];
+                $this->itemsCart->setQuantity($quantity);
+                $this->itemsCart->setTotalPrice($data["price"]*$quantity);
+                $result = $data['stock'] - $this->itemsCart->getQuantity();
+                $this->product->setStock($result);
+                $this->product->setId($data['id']);
+                $this->product->setName($data['name']);
+                $this->product->setPrice($data["price"]);
+                $this->product->edit();
+                $this->cart->setId($idCart);
+                $dataCart = $this->cart->view();
+                $this->itemsCart->setIdCart($idCart);
+                if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
+                {
+                    $this->cart->add();
+                }
+                else
+                {
+                    $this->cart->edit();
+                    /*echo 'Editado el carrito # '.$idCart;    //Debug*/
+                }
+                $this->itemsCart->add();
+                header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
             }
-            else
-            {
-                $this->cart->edit();
-            }
-            $this->itemsCart->add();
-            header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
+            return $data;
         }
-        return $data;
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -186,10 +194,9 @@ class cartController implements Crud
         {
             $this->itemsCart->setIdCart($id);
             $array = $this->itemsCart->totalList();
-            $filed = $array->fetch_assoc();
-            $this->subtotal = $filed['subtotal'];
+            $this->subtotal = $array['subtotal'];
         }
-        if ($_POST)
+        if ($_POST && $this->subtotal>0)
         {
             $this->cart->setDirection($_POST['direction']);
             if($_POST['shipping']==5)

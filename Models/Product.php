@@ -118,7 +118,8 @@ class Product implements Crud
         $this->image = $image;
     }
 
-    public function setCon($con) {
+    public function setCon($con)
+    {
         $this->con = $con;
     }
 
@@ -138,23 +139,27 @@ class Product implements Crud
         return $data;
     }
     /**Add register*/
-    public function add(){
+    public function add()
+    {
         $sql = "INSERT INTO products(name, price, image, stock, creationDate) VALUES('{$this->name}', '{$this->price}', '{$this->image}', '{$this->stock}',NOW());";
         $this->con->SimpleQuery($sql);
     }
     /**Delete record indicated by the current id.*/
-    public function delete(){
+    public function delete()
+    {
         $sql = "delete from products where id='{$this->id}';";
         $this->con->SimpleQuery($sql);
     }
     /**Edit record indicated by the current id.*/
-    public function edit(){
+    public function edit()
+    {
         $sql = "update products set name='{$this->name}', price="
         . "'{$this->price}', stock='{$this->stock}' where id='{$this->id}';";
         $this->con->SimpleQuery($sql);
     }
     /**Display a record indicated by the current id.*/
-    public function view(){
+    public function view()
+    {
         $sql = "SELECT * FROM products where id='{$this->id}'";
         $data = $this->con->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);

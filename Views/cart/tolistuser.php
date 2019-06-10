@@ -123,7 +123,13 @@
                         <div class="row">
                             <div class="col-sm-2 col-md-2 col-lg-2"></div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
-                                <a href="<?php echo URL; ?>index.php?url=cart/shipping/<?php echo $idCart; ?>/<?php echo $idU; ?>" class="btn btn-success btn-block">Pay</a>
+                                <?php if ($idCart>0)
+                                {
+                                ?>
+                                    <a href="<?php echo URL; ?>index.php?url=cart/shipping/<?php echo $idCart; ?>/<?php echo $idU; ?>" class="btn btn-success btn-block">Pay</a>
+                                <?php
+                                }
+                                ?>
                             </div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
                                 <a href="<?php echo URL; ?>index.php?url=products/" class="btn btn-info btn-block">Return</a>

@@ -199,7 +199,9 @@ class Cart implements Crud
      */
     public function toList2()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.carts T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id ;";
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product 
+          FROM carts T1 
+          INNER JOIN products T2 on T1.idProduct=T2.id ;";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
@@ -210,10 +212,10 @@ class Cart implements Crud
     public function toListUser()
     {
         $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
-          FROM shop.carts C 
-          INNER JOIN shop.itemscart I 
+          FROM carts C 
+          INNER JOIN itemsCart I 
           on C.id=I.idCart and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
-          INNER JOIN shop.products P on P.id=I.idProduct ";
+          INNER JOIN products P on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
@@ -225,10 +227,10 @@ class Cart implements Crud
     public function toListItemsCart()
     {
         $sql = "SELECT C.*, I.id as idItem, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
-	      FROM shop.carts C 
-	      INNER JOIN shop.itemscart I 
+	      FROM carts C 
+	      INNER JOIN itemsCart I 
 	      on C.id=I.idCart and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
-	      INNER JOIN shop.products P 
+	      INNER JOIN products P 
 	      on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
@@ -249,7 +251,7 @@ class Cart implements Crud
      */
     public function view()
     {
-        $sql = "SELECT * FROM shop.carts";
+        $sql = "SELECT * FROM carts";
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -257,14 +259,16 @@ class Cart implements Crud
     /**
      * Edit record indicated by the current id.
      */
-    public function edit(){
+    public function edit()
+    {
         $sql = "update carts set totalPrice='{$this->totalPrice}', direction='{$this->direction}', paidOut='{$this->paidOut}' where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**
      * Delete record indicated by the current id.
      */
-    public function delete(){
+    public function delete()
+    {
         $sql = "delete from carts where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }

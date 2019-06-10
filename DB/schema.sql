@@ -7,11 +7,12 @@
  */
 create database shop;
 /**For online shop*/
-grant all privileges on shop.* to 'userShop'@'localhost' identified by 'userShop.19' with grant option;
+grant all privileges on shop.* to 'phptest'@'localhost' identified by 'userShop.19' with grant option;
+
 use shop;
 
-drop table shop.users;
-CREATE TABLE shop.users (
+drop table users;
+CREATE TABLE users (
   id int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary key ',
   firstName varchar(50) COLLATE utf8_bin DEFAULT NULL,
   lastName varchar(50) COLLATE utf8_bin DEFAULT NULL,
@@ -23,21 +24,8 @@ CREATE TABLE shop.users (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-/*
-drop table shop.products;
-CREATE TABLE shop.products (
-	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
-	name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Product name' , 
-	cost FLOAT NOT NULL COMMENT 'Product cost' ,
-	taxPercentage FLOAT NOT NULL COMMENT 'percentage of tax on the price of the product' , 
-	price FLOAT NOT NULL COMMENT 'Price without product tax' , 
-	active BOOLEAN NOT NULL , 
-	creationDate DATE NOT NULL ,
-	PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;*/
-
-drop table shop.products;
-CREATE TABLE shop.products (
+drop table products;
+CREATE TABLE products (
 	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
 	name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Product name' , 
 	price FLOAT NOT NULL COMMENT 'Price without product tax' ,
@@ -47,8 +35,8 @@ CREATE TABLE shop.products (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-drop table shop.qualification;
-CREATE TABLE shop.qualification (
+drop table qualification;
+CREATE TABLE qualification (
 	id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' ,
 	idUser int(11) NOT NULL,
 	idProduct INT(10) UNSIGNED NOT NULL,
@@ -57,8 +45,8 @@ CREATE TABLE shop.qualification (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-drop table shop.carts;
-CREATE TABLE shop.carts(
+drop table carts;
+CREATE TABLE carts(
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary key ' , 
     idUser int(11) NOT NULL, 
     totalPrice FLOAT NOT NULL DEFAULT 0,
@@ -68,8 +56,8 @@ CREATE TABLE shop.carts(
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-drop table shop.itemsCart;
-CREATE TABLE IF NOT EXISTS shop.itemsCart (
+drop table itemsCart;
+CREATE TABLE IF NOT EXISTS itemsCart (
   id INT NOT NULL AUTO_INCREMENT,
   idCart INT(10) UNSIGNED NOT NULL,
   idProduct INT(10) UNSIGNED NOT NULL,
@@ -80,15 +68,14 @@ CREATE TABLE IF NOT EXISTS shop.itemsCart (
   INDEX products (idProduct ASC)
   ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'Items por carrito.';
 
-/**Data de pruebas*/
-INSERT INTO shop.products (id, name, price, image, stock, creationDate) VALUES
+/**Data of test*/
+INSERT INTO products (id, name, price, image, stock, creationDate) VALUES
 (1, 'Apple red', 0.3, '4208manzana.jpg', 499, '2019-06-05'),
 (2, 'Water bottle 5 liters', 1, '4305agua-mineral-minalba-5-lts.jpg', 599, '2019-06-05'),
 (3, 'Beer', 2, '4356Smirnoff-Ice-Manzana-Verde-_355ml_-Front.jpg', 994, '2019-06-05'),
 (4, 'Cheese', 3.74, '4542portada-wp-quesos-600x363.jpg', 199, '2019-06-05'),
 (5, 'Melon', 0.5, '1929melon.jpg', 700, '2019-06-05');
-SELECT * FROM shop.products LIMIT 100;
 
-INSERT INTO shop.users (id, firstName, lastName, email, login, password, active, creationDate) VALUES
+INSERT INTO users (id, firstName, lastName, email, login, password, active, creationDate) VALUES
 (1, 'Pedro', 'Perez', 'pepe@dominio.com', 'pepe', '123456', 1, '2019-06-06');
 

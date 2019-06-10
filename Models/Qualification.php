@@ -36,7 +36,8 @@ class Qualification implements Crud
     /**Conetion to DB.*/
     private $conn;
     /***/
-    function __construct() {
+    function __construct()
+    {
         $this->conn = new Conection();
     }
 
@@ -138,21 +139,24 @@ class Qualification implements Crud
     /**
      * Add register
      */
-    public function add() {
+    public function add()
+    {
         $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->points}', NOW());";
         $this->conn->SimpleQuery($sql);
     }
     /**
      * Delete record indicated by the current id.
      */
-    public function delete() {
+    public function delete()
+    {
         $sql = "delete from qualification where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**
      * Edit record indicated by the current id.
      */
-    public function edit() {
+    public function edit()
+    {
         $sql = "update qualification set ponits='{$this->points}' where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
@@ -170,8 +174,9 @@ class Qualification implements Crud
      * View register.
      * @return bool|\mysqli_result Return an arrangement with the record.
      */
-    public function view() {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM shop.qualification T1 INNER JOIN shop.products T2 on T1.idProduct=T2.id and T1.id=id='{$this->id}';";
+    public function view()
+    {
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM qualification T1 INNER JOIN products T2 on T1.idProduct=T2.id and T1.id=id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
