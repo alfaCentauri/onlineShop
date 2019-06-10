@@ -141,7 +141,6 @@ class cartController implements Crud
                 else
                 {
                     $this->cart->edit();
-                    /*echo 'Editado el carrito # '.$idCart;    //Debug*/
                 }
                 $this->itemsCart->add();
                 header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
