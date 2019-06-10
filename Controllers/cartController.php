@@ -102,8 +102,8 @@ class cartController implements Crud
     /**
      * Add the product to the user's cart with the indicated amount and discount
      * the stock. Go back to the list of products.
-     * First check if the shopping cart exists; then add the items to the cart. If it does not exist, a new one is
-     * created.
+     * First check if the shopping cart exists; then add the items to the cart. 
+     * If it does not exist, a new one is created.
      * The route to add to the cart will be:
      * http://localhost/onlineShop/cart/add/$id/$idU/$idCart .
      *
@@ -134,7 +134,7 @@ class cartController implements Crud
                 $this->cart->setId($idCart);
                 $dataCart = $this->cart->view();
                 $this->itemsCart->setIdCart($idCart);
-                if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
+                if(is_null($dataCart)) 
                 {
                     $this->cart->add();
                 }
