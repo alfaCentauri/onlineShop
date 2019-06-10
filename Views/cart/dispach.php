@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-sm-4 col-md-4"></div>
                         <div class="col-sm-4 col-md-4">
-                            <a href="<?php echo URL; ?>" class="btn btn-success btn-block">OK</a>
+                            <a href="<?php echo URL; ?>index.php?url=products" class="btn btn-success btn-block">OK</a>
                         </div>
                         <div class="col-sm-4 col-md-4"></div>
                     </div>

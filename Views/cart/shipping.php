@@ -99,7 +99,7 @@ $idU = 1;
                                     <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block" >
                                 </div>
                                 <div class="col-sm-4 col-md-4">
-                                    <a href="<?php echo URL; ?>cart/toListUser/1/1" class="btn btn-warning btn-block">Cancel</a>
+                                    <a href="<?php echo URL; ?>index.php?url=cart/toListUser/1/1" class="btn btn-warning btn-block">Cancel</a>
                                 </div>
                                 <div class="col-sm-2 col-md-2"></div>
                             </div>

@@ -30,7 +30,7 @@
                 <div class="card-header bg-success">Edit to Cart the item #<?php echo $data['id']; ?></div>
                 <div class="card-body">
                     <div class="container">
-                        <form name="formCart" method="POST" action="<?php echo URL; ?>cart/edit/<?php echo $data['id']; ?>" >
+                        <form name="formCart" method="POST" action="<?php echo URL; ?>index.php?url=cart/edit/<?php echo $data['id']; ?>" >
                             <div class="row">
                                 <div class="col-sm-12 col-md-4">
                                     <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image_product"];?>" alt="Picture" class="img-fluid"/>
@@ -58,7 +58,7 @@
                                     <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
                                 </div>
                                 <div class="col-sm-4 col-md-4">
-                                    <a href="<?php echo URL; ?>cart/toListUser/1/1" class="btn btn-warning btn-block">Return</a>
+                                    <a href="<?php echo URL; ?>index.php?url=cart/toListUser/1/1" class="btn btn-warning btn-block">Return</a>
                                 </div>
                                 <div class="col-sm-2 col-md-2"></div>
                             </div>

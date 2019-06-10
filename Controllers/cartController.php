@@ -141,7 +141,7 @@ class cartController implements Crud
                 $this->cart->edit();
             }
             $this->itemsCart->add();
-            header("Location: ".URL."cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
+            header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         return $data;
     }
@@ -202,7 +202,7 @@ class cartController implements Crud
             }
             $this->cart->setPaidOut(true);
             $this->cart->edit();
-            header("Location: ".URL."cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
+            header("Location: ".URL."index.php?url=cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         else
             return $data;
@@ -274,7 +274,7 @@ class cartController implements Crud
             $updatePrice = $dataCart['totalPrice'] - ($PricePreview - $totalPrice);
             $this->cart->setTotalPrice($updatePrice);
             $this->cart->edit();
-            header("Location: ".URL."cart/toListUser/".$this->itemsCart->getIdCart()."/1");
+            header("Location: ".URL."index.php?url=cart/toListUser/".$this->itemsCart->getIdCart()."/1");
         }
         return $data;
     }
@@ -299,7 +299,7 @@ class cartController implements Crud
         $this->cart->setId($data['idCart']);
         $this->cart->view();
         $this->itemsCart->delete();
-        header("Location: ".URL."cart/toListUser/".$this->itemsCart->getIdCart()."/".$this->cart->getIdUser());
+        header("Location: ".URL."index.php?url=cart/toListUser/".$this->itemsCart->getIdCart()."/".$this->cart->getIdUser());
     }
 
     /**

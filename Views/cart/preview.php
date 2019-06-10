@@ -30,7 +30,7 @@
                 <div class="card-header bg-success">Add to Cart</div>
                 <div class="card-body">
                     <div class="container">
-                        <form name="formCart" action="<?php echo URL; ?>cart/add/<?php echo $data['id']; ?>/1/1" method="POST">
+                        <form name="formCart" action="<?php echo URL; ?>index.php?url=cart/add/<?php echo $data['id']; ?>/1/1" method="POST">
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Picture" class="img-fluid"/>

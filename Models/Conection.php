@@ -19,11 +19,11 @@ class Conection
     /** Contains the name of the server*/
     private $servername = "localhost";
     /** Contains the MySQL user*/
-    private $username = "userShop";
+    private $username = "phptest";
     /** Contains the password */
     private $password = "userShop.19";
     /** Contains the name of the database*/
-    private $dbname = "shop";
+    private $dbname = "rpresilla";
     /** Contains the conection */
     private $conn;
     /**

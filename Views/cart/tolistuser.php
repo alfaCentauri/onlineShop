@@ -77,10 +77,10 @@
                                     ?>
                                 </td>
                                 <td class="text-center">
-                                    <a href="<?php echo URL; ?>cart/edit/<?php echo $row['idItem']; ?>" class="btn btn-warning">
+                                    <a href="<?php echo URL; ?>index.php?url=cart/edit/<?php echo $row['idItem']; ?>" class="btn btn-warning">
                                         Edit
                                     </a>
-                                    <a href="<?php echo URL; ?>cart/remove/<?php echo $row['idItem']; ?>" class="btn btn-danger" >
+                                    <a href="<?php echo URL; ?>index.php?url=cart/remove/<?php echo $row['idItem']; ?>" class="btn btn-danger" >
                                         Delete
                                     </a>
                                 </td>
@@ -123,10 +123,10 @@
                         <div class="row">
                             <div class="col-sm-2 col-md-2 col-lg-2"></div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
-                                <a href="<?php echo URL; ?>cart/shipping/<?php echo $idCart; ?>/<?php echo $idU; ?>" class="btn btn-success btn-block">Pay</a>
+                                <a href="<?php echo URL; ?>index.php?url=cart/shipping/<?php echo $idCart; ?>/<?php echo $idU; ?>" class="btn btn-success btn-block">Pay</a>
                             </div>
                             <div class="col-sm-4 col-md-4 col-lg-4">
-                                <a href="<?php echo URL; ?>products/" class="btn btn-info btn-block">Return</a>
+                                <a href="<?php echo URL; ?>index.php?url=products/" class="btn btn-info btn-block">Return</a>
                             </div>
                             <div class="col-sm-2 col-md-2 col-lg-2"></div>
                         </div>
