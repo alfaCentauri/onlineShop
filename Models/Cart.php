@@ -214,7 +214,7 @@ class Cart implements Crud
         $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
           FROM carts C 
           INNER JOIN itemsCart I 
-          on C.id=I.idCart and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
+          on C.id=I.idCart and C.paidOut=false and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
           INNER JOIN products P on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
@@ -229,7 +229,7 @@ class Cart implements Crud
         $sql = "SELECT C.*, I.id as idItem, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
 	      FROM carts C 
 	      INNER JOIN itemsCart I 
-	      on C.id=I.idCart and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
+	      on C.id=I.idCart and C.paidOut=false and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
 	      INNER JOIN products P 
 	      on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
