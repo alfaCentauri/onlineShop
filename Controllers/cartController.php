@@ -156,11 +156,25 @@ class cartController implements Crud
 
     /**
      * Preview of the cart.
+     * The route is: http://localhost/onlineShop/cart/preview/$id/$idU/$idCart .
      * @param $id   Integer integer.
      * @return array|null   Data of product.
      */
     public function preview(int $id=1)
     {
+        $idUser = 1;
+        $idCart = 1;
+        //Consultar si el carrito esta sin pagar
+        if (isset($_SESSION['idUser']) && isset($_SESSION['idCart']))
+        {
+            $idUser = $_SESSION['idUser'];
+            $idCart = $_SESSION['idCart'];
+        }
+        else
+        {
+            echo '<h2 class="error">Error: The cart no opened.</h2>';
+            header("Location: ".URL."index.php?url=cart/toListUser/".$idCart."/".$idUser);
+        }
         $this->product->setId($id);
         $data = $this->product->view();
         return $data;

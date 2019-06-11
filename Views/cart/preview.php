@@ -16,7 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+    if (isset($_SESSION['idUser']) && isset($_SESSION['idCart']))
+    {
+        $idUser = $_SESSION['idUser'];
+        $idCart = $_SESSION['idCart'];
+    }
+    else
+    {
+        $idUser = 1;    //Debug
+        $idCart = 1;    //Debug
+        echo 'Error...';    //Debug
+    }
 ?>
 <div class="container">
     <div class="row">
@@ -30,7 +40,7 @@
                 <div class="card-header bg-success">Add to Cart</div>
                 <div class="card-body">
                     <div class="container">
-                        <form name="formCart" action="<?php echo URL; ?>index.php?url=cart/add/<?php echo $data['id']; ?>/1/1" method="POST">
+                        <form name="formCart" action="<?php echo URL; ?>index.php?url=cart/add/<?php echo $data['id']; ?>/<?php echo $idUser; ?>/<?php echo $idCart; ?>" method="POST">
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Picture" class="img-fluid"/>
