@@ -142,8 +142,8 @@ class cartController implements Crud
                 $this->product->setPrice($data["price"]);
                 $this->product->edit();
                 $this->cart->setId($idCart);
-                $dataCart = $this->cart->viewNotPaidout(); // $this->cart->view();
-                if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
+                $dataCart = $this->cart->viewNotPaidout();
+                if(is_null($dataCart))
                 {
                     $idCart=$this->cart->add();
                     if (isset($idCart))
