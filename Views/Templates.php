@@ -57,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                   </div>
                 </li-->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URL; ?>index.php?url=cart/toListUser/1/1">Cart</a>
+                    <a class="nav-link" href="<?php echo URL; ?>index.php?url=cart/">Cart</a>
                 </li>
               </ul>
             </div>
