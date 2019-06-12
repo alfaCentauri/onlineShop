@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+    /*session_start();
+    $_SESSION['idUser'] = 1;*/
 ?>
 <div class="container">
     <div class="row">
@@ -55,12 +56,12 @@
                                 <td class="text-right"><?php echo $row["price"];?></td>
                                 <td class="text-center"><?php echo '*'?></td>
                                 <td class="text-center">
-                                    <a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">
+                                    <!--a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">
                                         Edit
                                     </a>
                                     <a href="<?php echo URL; ?>index.php?url=products/remove/<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" >
                                         Delete
-                                    </a>
+                                    </a-->
                                     <a href="<?php echo URL; ?>index.php?url=cart/preview/<?php echo $row['id']; ?>" class="btn btn-success btn-sm" >
                                         Add to cart
                                     </a>

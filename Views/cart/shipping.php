@@ -80,7 +80,7 @@ $idU = 1;
                                 </div>
                                 <div class="col-sm-6 col-md-3 col-lg-3">
                                     <div class="price" id="subtotal">
-                                        <?php echo $subtotal.'$'; ?>
+                                        <?php echo $subtotal.' $'; ?>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@ $idU = 1;
            document.getElementById('direction').removeAttribute('min');
            document.getElementById('priceShipping').innerText='0 $';
         }
-        var subtotal = document.getElementById('subtotal2').value;
+        var subtotal = <?php echo $subtotal;?>;
         var total = parseFloat(currentValue) + parseFloat(subtotal);
         document.getElementById('total').innerText=total.toFixed(2)+' $';
     }

@@ -16,7 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+    if (isset($_SESSION['idUser']) && isset($_SESSION['idCart']))
+    {
+        $idUser = $_SESSION['idUser'];
+        $idCart = $_SESSION['idCart'];
+    }
+    else
+    {
+        $idUser = 1;    //Debug
+        $idCart = 1;    //Debug
+    }
 ?>
 <div class="container">
     <div class="row">
@@ -30,7 +39,7 @@
                 <div class="card-header bg-success">Add to Cart</div>
                 <div class="card-body">
                     <div class="container">
-                        <form name="formCart" action="<?php echo URL; ?>index.php?url=cart/add/<?php echo $data['id']; ?>/1/1" method="POST">
+                        <form name="formCart" action="<?php echo URL; ?>index.php?url=cart/add/<?php echo $data['id']; ?>/<?php echo $idUser; ?>/<?php echo $idCart; ?>" method="POST">
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Picture" class="img-fluid"/>
@@ -58,7 +67,7 @@
                                 <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block">
                             </div>
                             <div class="col-sm-4 col-md-4">
-                                <a href="index.php?url=cart" class="btn btn-warning btn-block">Return</a>
+                                <a href="index.php?url=cart/toListUser/<?php echo $idCart; ?>/<?php echo $idUser; ?>" class="btn btn-warning btn-block">Return</a>
                             </div>
                             <div class="col-sm-2 col-md-2"></div>
                         </div>

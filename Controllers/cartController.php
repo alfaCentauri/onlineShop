@@ -59,6 +59,7 @@ class cartController implements Crud
      **/
     function __construct() 
     {
+        $this->user = new Users();
         $this->cart = new Cart();
         $this->product = new Product();
         $this->itemsCart = new CartItems();
@@ -71,11 +72,20 @@ class cartController implements Crud
      * @param int $idU
      * @return bool|\mysqli_result  Data of list of the cart.
      */
-    public function index(int $idCart=1, int $idU=1)
+    public function index(int $idU=1)
     {
         $this->cart->setIdUser($idU);
-        $data = $this->cart->toListUser();
-        return $data;
+        $dataCart = $this->cart->viewNotPaidout();
+        if (isset($dataCart))
+        {
+            $this->cart->setId($dataCart['id']);
+            $data = $this->cart->toListItemsCart();
+            return $data;
+        }
+        else
+        {
+            return null;
+        }
     }
     /**
      * Gets the user's full name.
@@ -132,18 +142,34 @@ class cartController implements Crud
                 $this->product->setPrice($data["price"]);
                 $this->product->edit();
                 $this->cart->setId($idCart);
-                $dataCart = $this->cart->view();
-                $this->itemsCart->setIdCart($idCart);
-                if(is_null($dataCart)) 
+                $dataCart = $this->cart->viewNotPaidout();
+                if(is_null($dataCart))
                 {
-                    $this->cart->add();
+                    $idCart=$this->cart->add();
+                    if (isset($idCart))
+                    {
+                        $this->cart->setId($idCart);
+                        $this->itemsCart->setIdCart($idCart);
+                    }
                 }
-                else
-                {
-                    $this->cart->edit();
-                }
+                elseif ($dataCart['paidOut']==1)
+                    {
+                        $idCart=$this->cart->add();
+                        if (isset($idCart))
+                        {
+                            $this->cart->setId($idCart);
+                            $this->itemsCart->setIdCart($idCart);
+                        }
+                    }
+                    else
+                    {
+                        echo '<h2>Edita el carrito #'.$dataCart['id'].'</h2>.<br>Valor del pago: '.$dataCart['paidOut'].'<br>'; //Debug
+                        $this->cart->setId($dataCart['id']);
+                        $this->cart->edit();
+                        $this->itemsCart->setIdCart($dataCart['id']);
+                    }
                 $this->itemsCart->add();
-                header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
+                header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$idU);
             }
             return $data;
         }
@@ -155,6 +181,7 @@ class cartController implements Crud
 
     /**
      * Preview of the cart.
+     * The route is: http://localhost/onlineShop/cart/preview/$id .
      * @param $id   Integer integer.
      * @return array|null   Data of product.
      */
@@ -210,8 +237,7 @@ class cartController implements Crud
             $this->cart->edit();
             header("Location: ".URL."index.php?url=cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
-        else
-            return $data;
+        return $data;
     }
 
     /**
@@ -249,7 +275,7 @@ class cartController implements Crud
     /**
      * Edit an item in the shopping cart.
      * The route for this method is: http://localhost/onlineShop/cart/edit/$id .
-     * @param int $id Indice del registro.
+     * @param int $id Index of the item.
      * @return array|null   Data of cart item.
      */
     public function edit(int $id=1)
@@ -280,7 +306,7 @@ class cartController implements Crud
             $updatePrice = $dataCart['totalPrice'] - ($PricePreview - $totalPrice);
             $this->cart->setTotalPrice($updatePrice);
             $this->cart->edit();
-            header("Location: ".URL."index.php?url=cart/toListUser/".$this->itemsCart->getIdCart()."/1");
+            header("Location: ".URL."index.php?url=cart/");
         }
         return $data;
     }

@@ -30,7 +30,7 @@
                             ?></li>
                                 <li class="list-group-item"><strong>Total of the operation: </strong>
                             <?php
-                                echo $data['totalPrice'];
+                                echo $data['totalPrice'].' $';
                             ?>
                                 </li>
                             </ul>

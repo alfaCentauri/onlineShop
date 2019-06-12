@@ -27,80 +27,107 @@ namespace Models;
  */
 class Qualification implements Crud
 {
-    /**It contains the index*/
+    /**
+     * It contains the index
+     * @var int
+     */
     private $id;
+    /**
+     * It contains the index of the user.
+     * @var int
+     */
     private $idUser;
+    /**
+     * It contains the index of the product.
+     * @var int
+     */
     private $idProduct;
+    /**
+     * It contains the points del product.
+     * @var int
+     */
     private $points;
+    /**
+     * Contains creation date 
+     * @var mixed
+     */
     private $creationDate;
-    /**Conetion to DB.*/
+    /**
+     * Conetion to DB.
+     */
     private $conn;
-    /***/
+    /**
+     * Qualification constructor.
+     */
     function __construct()
     {
         $this->conn = new Conection();
+        $this->id = 0;
+        $this->idUser = 0;
+        $this->idProduct = 0;
+        $this->points = 0;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getIdUser()
+    public function getIdUser(): int
     {
         return $this->idUser;
     }
 
     /**
-     * @param mixed $idUser
+     * @param int $idUser
      */
-    public function setIdUser($idUser): void
+    public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getIdProduct()
+    public function getIdProduct(): int
     {
         return $this->idProduct;
     }
 
     /**
-     * @param mixed $idProduct
+     * @param int $idProduct
      */
-    public function setIdProduct($idProduct): void
+    public function setIdProduct(int $idProduct): void
     {
         $this->idProduct = $idProduct;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getPoints()
+    public function getPoints(): int
     {
         return $this->points;
     }
 
     /**
-     * @param mixed $points
+     * @param int $points
      */
-    public function setPoints($points): void
+    public function setPoints(int $points): void
     {
         $this->points = $points;
     }
@@ -136,12 +163,14 @@ class Qualification implements Crud
     {
         $this->conn = $conn;
     }
+    
     /**
      * Add register
      */
     public function add()
     {
-        $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->points}', NOW());";
+        $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) 
+          VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->points}', NOW());";
         $this->conn->SimpleQuery($sql);
     }
     /**
@@ -171,14 +200,43 @@ class Qualification implements Crud
     }
 
     /**
-     * View register.
+     * View a register.
      * @return bool|\mysqli_result Return an arrangement with the record.
      */
     public function view()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM qualification T1 INNER JOIN products T2 on T1.idProduct=T2.id and T1.id=id='{$this->id}';";
+        $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
+          FROM qualification Q 
+          INNER JOIN products P 
+          on Q.idProduct=P.id and Q.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
-
+    /**
+     * Find a register by the user current.
+     * @return bool|\mysqli_result
+     */
+    public function findByUser()
+    {
+        $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
+          FROM qualification Q 
+          INNER JOIN users U on Q.idUser='{$this->idUser}' and Q.idUser=U.id  
+          INNER JOIN products P 
+          on Q.idProduct=P.id;";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
+    /**
+     * List all the average.
+     * @return bool|\mysqli_result
+     */
+    public function listAverage()
+    {
+        $sql = "SELECT Q.idProduct, AVG(Q.points) as average, P.name as name_product, P.image as image_product 
+          FROM qualification Q 
+          INNER JOIN products P 
+          on Q.idProduct=P.id;";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
 }

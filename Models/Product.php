@@ -14,23 +14,49 @@ namespace Models;
  */
 class Product implements Crud
 {
-    /**It contains the index*/
+    /**
+     * It contains the index.
+     * @var int
+     */
     private $id;
-    /**Contains the name*/
+    /**
+     * Contains the name.
+     * @var String
+     */
     private $name;
-    /**Contains the price*/
+    /**
+     * Contains the price.
+     * @var float
+     */
     private $price;
-    /** Contains the stock*/
+    /**
+     * Contains the stock.
+     * @var int
+     */
     private $stock;
-    /**Contains name image*/
+    /**
+     * Contains name image.
+     * @var String
+     */
     private $image;
-    /**Contains creation date */
+    /**
+     * Contains creation date.
+     *@var mixed
+     */
     private $creationDate;
-    /**Conetion to DB.*/
+    /**
+     * Conetion to DB.
+     * @var Conection
+     */
     private $con;
     function __construct() 
     {
         $this->con=new Conection();
+        $this->id=0;
+        $this->name="";
+        $this->price=0.0;
+        $this->stock=0;
+        $this->image="noImage.jpg";
     }
     /**
      * @return mixed
@@ -164,5 +190,14 @@ class Product implements Crud
         $data = $this->con->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
+    }
+    /**List witch average**/
+    public function toListAverage()
+    {
+        $sql = "SELECT P.* FROM products P
+              INNER JOIN qualification Q
+              ON Q.idProduct=P.id;";
+        $data = $this->con->ReturnQuery($sql);
+        return $data;
     }
 }

@@ -106,7 +106,7 @@
                             </div>
                             <div class="col-sm-6 col-md-3 col-lg-3">
                                 <div class="price" id="total">
-                                    <?php echo $total;?>$
+                                    <?php echo $total;?> $
                                 </div>
                             </div>
                         </div>
@@ -145,7 +145,9 @@
     }
     else
     {
-        echo 'Error';
+?>
+        <h2 class="text-center">My shopping carts is empty</h2>
+<?php
     }
 ?>
 </div>
