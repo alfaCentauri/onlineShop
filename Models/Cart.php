@@ -199,9 +199,12 @@ class Cart implements Crud
      */
     public function toList2()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product 
-          FROM carts T1 
-          INNER JOIN products T2 on T1.idProduct=T2.id ;";
+        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product, AVG(Q.points) as average 
+          FROM carts C 
+          INNER JOIN itemsCart I 
+          on C.id=I.idCart and C.paidOut=true and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
+          INNER JOIN products P
+          on P.id=I.idProduct;";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
