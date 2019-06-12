@@ -147,13 +147,19 @@ class cartController implements Crud
                 {
                     $idCart=$this->cart->add();
                     if (isset($idCart))
+                    {
+                        $this->cart->setId($idCart);
                         $this->itemsCart->setIdCart($idCart);
+                    }
                 }
                 elseif ($dataCart['paidOut']==1)
                     {
                         $idCart=$this->cart->add();
                         if (isset($idCart))
+                        {
+                            $this->cart->setId($idCart);
                             $this->itemsCart->setIdCart($idCart);
+                        }
                     }
                     else
                     {
