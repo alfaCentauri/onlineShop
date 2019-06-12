@@ -56,6 +56,19 @@ class Conection
     }
 
     /**
+     * @param $sql
+     * @return mixed
+     */
+    public function InsertQuery($sql)
+    {
+        if ($this->conn->query($sql) === TRUE) {
+            $last_id = $this->conn->insert_id;
+            return $last_id;
+        } else {
+            echo "Error: ".$sql."<br>".$this->conn->error."<br>" ;
+        }
+    }
+    /**
      * Close conection.
      */
     public function Close()

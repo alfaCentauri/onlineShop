@@ -59,6 +59,7 @@ class cartController implements Crud
      **/
     function __construct() 
     {
+        $this->user = new Users();
         $this->cart = new Cart();
         $this->product = new Product();
         $this->itemsCart = new CartItems();
@@ -132,19 +133,28 @@ class cartController implements Crud
                 $this->product->setPrice($data["price"]);
                 $this->product->edit();
                 $this->cart->setId($idCart);
-                $dataCart = $this->cart->view();
-                $this->itemsCart->setIdCart($idCart);
+                $dataCart = $this->cart->viewNotPaidout(); // $this->cart->view();
                 if(is_null($dataCart)) // The shopping cart does not exist and a new one is created.
                 {
-                    $this->cart->add();
+                    $idCart=$this->cart->add();
+                    if (isset($idCart))
+                        $this->itemsCart->setIdCart($idCart);
                 }
-                else
-                {
-                    $this->cart->edit();
-                    /*echo 'Editado el carrito # '.$idCart;    //Debug*/
-                }
+                elseif ($dataCart['paidOut']==1)
+                    {
+                        $idCart=$this->cart->add();
+                        if (isset($idCart))
+                            $this->itemsCart->setIdCart($idCart);
+                    }
+                    else
+                    {
+                        echo '<h2>Edita el carrito #'.$dataCart['id'].'</h2>.<br>Valor del pago: '.$dataCart['paidOut'].'<br>'; //Debug
+                        $this->cart->setId($dataCart['id']);
+                        $this->cart->edit();
+                        $this->itemsCart->setIdCart($dataCart['id']);
+                    }
                 $this->itemsCart->add();
-                header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$this->cart->getIdUser());
+                header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$idU);
             }
             return $data;
         }
@@ -156,25 +166,12 @@ class cartController implements Crud
 
     /**
      * Preview of the cart.
-     * The route is: http://localhost/onlineShop/cart/preview/$id/$idU/$idCart .
+     * The route is: http://localhost/onlineShop/cart/preview/$id .
      * @param $id   Integer integer.
      * @return array|null   Data of product.
      */
     public function preview(int $id=1)
     {
-        $idUser = 1;
-        $idCart = 1;
-        //Consultar si el carrito esta sin pagar
-        if (isset($_SESSION['idUser']) && isset($_SESSION['idCart']))
-        {
-            $idUser = $_SESSION['idUser'];
-            $idCart = $_SESSION['idCart'];
-        }
-        else
-        {
-            echo '<h2 class="error">Error: The cart no opened.</h2>';
-            header("Location: ".URL."index.php?url=cart/toListUser/".$idCart."/".$idUser);
-        }
         $this->product->setId($id);
         $data = $this->product->view();
         return $data;
