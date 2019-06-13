@@ -43,6 +43,7 @@ class cartController implements Crud
     private $cart;
     /**
      * Contains a object of type Product.
+     * @var Product
      */
     private $product;
     /**
@@ -64,7 +65,6 @@ class cartController implements Crud
         $this->product = new Product();
         $this->itemsCart = new CartItems();
         $this->subtotal = 0.0;
-        $this->direction = "";
     }
 
     /**Default
