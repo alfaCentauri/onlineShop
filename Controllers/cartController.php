@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2019 ricardo
+ * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,7 +163,6 @@ class cartController implements Crud
                     }
                     else
                     {
-                        echo '<h2>Edita el carrito #'.$dataCart['id'].'</h2>.<br>Valor del pago: '.$dataCart['paidOut'].'<br>'; //Debug
                         $this->cart->setId($dataCart['id']);
                         $this->cart->edit();
                         $this->itemsCart->setIdCart($dataCart['id']);
