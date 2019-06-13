@@ -239,4 +239,18 @@ class Qualification implements Crud
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
+    /**
+     * Find a average for a product.
+     * @return bool|\mysqli_result
+     */
+    public function findAverage()
+    {
+        $sql = "SELECT Q.idProduct, AVG(Q.points) as average, P.name as name_product, P.image as image_product 
+          FROM qualification Q 
+          INNER JOIN products P 
+          on Q.idProduct='{$this->idProduct}';";
+        $data = $this->conn->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
+        return $row;
+    }
 }
