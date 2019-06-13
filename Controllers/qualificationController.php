@@ -20,6 +20,7 @@ namespace Controllers;
 
 use Models\Product as Product;
 use Models\Users as Users;
+use Models\Qualification as Qualificationes;
 class qualificationController implements Crud
 {
     /**
@@ -33,18 +34,24 @@ class qualificationController implements Crud
      */
     private $product;
     /**
+     * Contains a object of type Qualificationes.
+     * @var Qualificationes
+     */
+    private $qualification;
+    /**
      * Qualification constructor.
      */
     public function __construct()
     {
         $this->user = new Users();
         $this->product = new Product();
+        $this->qualification = new Qualificationes();
     }
 
     public function index()
     {
-        echo 'Estas en la ruta por defecto de calificaciones.'; //Debug
-
+        $data = $this->qualification->listAverage();
+        return $data;
     }
 
     public function add()
