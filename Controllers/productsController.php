@@ -61,7 +61,7 @@ class productsController implements Crud
                 $this->product->add();
                 header("Location: ".URL."index.php?url=products");
             } else {
-                print '<h4 class="error">El archivo no es valido.</h4>'; //Debug
+                print '<h2 class="error text-center">Error: The file is not valid.</h2>';
             }
         }
     }
