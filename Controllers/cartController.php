@@ -163,7 +163,6 @@ class cartController implements Crud
                     }
                     else
                     {
-                        echo '<h2>Edita el carrito #'.$dataCart['id'].'</h2>.<br>Valor del pago: '.$dataCart['paidOut'].'<br>'; //Debug
                         $this->cart->setId($dataCart['id']);
                         $this->cart->edit();
                         $this->itemsCart->setIdCart($dataCart['id']);
