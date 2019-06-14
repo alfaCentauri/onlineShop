@@ -171,7 +171,8 @@ class Qualification implements Crud
     {
         $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) 
           VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->points}', NOW());";
-        $this->conn->SimpleQuery($sql);
+        $data = $this->conn->InsertQuery($sql);
+        return $data;
     }
     /**
      * Delete record indicated by the current id.
@@ -210,7 +211,8 @@ class Qualification implements Crud
           INNER JOIN products P 
           on Q.idProduct=P.id and Q.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
-        return $data;
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
     /**
      * Find a register by the user current.

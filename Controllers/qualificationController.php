@@ -64,131 +64,146 @@ class qualificationController implements Crud
      */
     public function add()
     {
-        $node = array();
-        if (isset($_POST['json']))
+        $url = getcwd();
+        $arrayResult = array();
+        $content = file_get_contents(URL.'Views/Templates/files/qualification.json');
+        $dataJson = json_decode($content, true);
+        if(isset($dataJson))
         {
-            $content=$_POST['json'];
-            $data = json_decode($content, true);
-            if(isset($data))
-            {
-                if ($data['idUser']>0 && $data['idProduct']>0 && $data['points']>0)
-                {
-                    $this->qualification->setIdUser($data['idUser']);
-                    $this->qualification->setIdProduct($data['idProduct']);
-                    $this->qualification->setPoints($data['points']);
-                    $id=$this->qualification->add();
-                    if ($id>0)
-                    {
-                        $this->statusCode = 201;
-                        $node['id']=$id;
-                    }
-                    else
-                    {
-                        $this->statusCode = 409;
-                        $node['error']="Error saving the score.";
-                    }
-                }
-                else
-                {
-                    $this->statusCode = 406;
-                    $node['error']="Not Acceptable.";
+            if ($dataJson['idUser']>0 && $dataJson['idProduct']>0 && $dataJson['points']>0) {
+                $this->qualification->setIdUser($dataJson['idUser']);
+                $this->qualification->setIdProduct($dataJson['idProduct']);
+                $this->qualification->setPoints($dataJson['points']);
+                $id = $this->qualification->add();
+                if ($id > 0) {
+                    $this->statusCode = 201;
+                    $arrayResult['id'] = $id;
+                } else {
+                    $this->statusCode = 409;
+                    $arrayResult['error'] = "Error saving the score.";
                 }
             }
             else
             {
-                $this->statusCode = 400;
-                $node['error']="Request error. :(";
+                $this->statusCode = 406;
+                $arrayResult['error']="Not Acceptable.";
             }
         }
         else
         {
             $this->statusCode = 400;
-            $node['error']="Request error in method.";
+            $arrayResult['error']="Request error.";
         }
-        // Response
-        header('Content-Type', 'application/json', $this->statusCode);
-        echo json_encode($node);
+        file_put_contents($url.'/Views/Templates/files/result.json',json_encode($arrayResult));
+        header("Location: ".URL."index.php?url=products");
     }
 
     /**
-     * Shows an average for the indicated product index.
-     * @param int $id   Product index.
+     * Shows a product qualification made by a user.
+     * @param int $id   Qualification index.
      */
     public function view(int $id = 0)
     {
         $url = getcwd();
         if ($id>0)
         {
-            $this->qualification->setIdProduct($id);
-            $data = $this->qualification->findAverage();
-            if (isset($data))
-                $this->statusCode = 200;
-            else
-                $this->statusCode = 500;
+            $this->qualification->setId($id);
+            $dataQualification = $this->qualification->view();
+            if (isset($dataQualification))
+                file_put_contents($url.'/Views/Templates/files/result.json',json_encode($dataQualification));
+            else {
+                http_response_code(500);
+                return;
+            }
         }
         else
         {
-            $this->statusCode = 400;
-            $data['error']="Request error.";
+            http_response_code(500);
+            return;
         }
-        // Response
-        header('Content-Type', 'application/json', $this->statusCode);
-        file_put_contents($url.'/Views/Templates/files/result.json',json_encode($data));
+        header("Location: ".URL."index.php?url=products");
     }
     /**
-     * @param int $id   Qualification index.
+     * Shows an average for the indicated product index.
+     * @param int $idProduct   Product index.
      */
-    public function edit(int $id = 0)
+    public function view_average_product(int $idProduct = 0)
     {
         $url = getcwd();
-        if ($id>0)
+        if ($idProduct>0)
         {
-            $this->qualification->setId($id);
+            $this->qualification->setIdProduct($idProduct);
+            $dataAverage = $this->qualification->findAverage();
+            if (isset($dataAverage))
+                file_put_contents($url.'/Views/Templates/files/resultAverage.json',json_encode($dataAverage));
+            else {
+                http_response_code(500);
+                return;
+            }
+        }
+        else
+        {
+            http_response_code(500);
+            return;
+        }
+        header("Location: ".URL."index.php?url=products");
+    }
+    /**
+     * Edit a register.
+     * @param int $idQualification   Qualification index.
+     */
+    public function edit(int $idQualification = 0)
+    {
+        $url = getcwd();
+        if ($idQualification>0)
+        {
+            $this->qualification->setId($idQualification);
             $content = file_get_contents(URL.'Views/Templates/files/points.json');
-            $data = json_decode($content, true);
-            if ($data['idUser']>0 && $data['idProduct']>0 && $data['points']>0)
+            $dataJson = json_decode($content, true);
+            if ($dataJson['idUser']>0 && $dataJson['idProduct']>0 && $dataJson['points']>0)
             {
-                $this->qualification->setIdUser($data['idUser']);
-                $this->qualification->setIdProduct($data['idProduct']);
-                $this->qualification->setPoints($data['points']);
+                $this->qualification->setIdUser($dataJson['idUser']);
+                $this->qualification->setIdProduct($dataJson['idProduct']);
+                $this->qualification->setPoints($dataJson['points']);
                 $this->qualification->edit();
                 $this->statusCode = 200;
-                $node['id']=$id;
+                $arrayResult['id']=$idQualification;
             }
             else
             {
                 $this->statusCode = 406;
-                $node['error']="Not Acceptable.";
+                $arrayResult['error']="Not Acceptable.";
             }
         }
         else
         {
             $this->statusCode = 400;
-            $node['error']="Request error.";
+            $arrayResult['error']="Request error.";
         }
-        // Response
-        header('Content-Type', 'application/json', $this->statusCode);
-        file_put_contents($url.'/Views/Templates/files/result.json',json_encode($node));
+        file_put_contents($url.'/Views/Templates/files/resultEdit.json',json_encode($arrayResult));
+        header("Location: ".URL."index.php?url=products");
     }
-
-    public function remove(int $id = 0)
+    /**
+     * Remove a register.
+     * @param int $idQualification   Qualification index.
+     */
+    public function remove(int $idQualification = 0)
     {
         $url = getcwd();
-        if ($id>0)
+        if ($idQualification>0)
         {
-            $this->qualification->setId($id);
+            $this->qualification->setId($idQualification);
             $this->qualification->delete();
             // Response
             $this->statusCode = 200;
-            $node['id']=$id;
+            $arrayResult['id']=$idQualification;
         }
         else
         {
             $this->statusCode = 400;
-            $node['error']="Request error.";
+            $arrayResult['error']="Request error.";
         }
-        // Response
-        header('Content-Type', 'application/json', $this->statusCode);
-        file_put_contents($url.'/Views/Templates/files/result.json',json_encode($node));
+        file_put_contents($url.'/Views/Templates/files/resultDelete.json',json_encode($arrayResult));
+        header("Location: ".URL."index.php?url=products");
     }
 }
