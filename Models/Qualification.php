@@ -186,7 +186,7 @@ class Qualification implements Crud
      */
     public function edit()
     {
-        $sql = "update qualification set ponits='{$this->points}' where id='{$this->id}';";
+        $sql = "update qualification set points='{$this->points}' where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**

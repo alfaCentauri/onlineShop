@@ -116,46 +116,79 @@ class qualificationController implements Crud
      */
     public function view(int $id = 0)
     {
-        $this->qualification->setIdProduct($id);
-        $data = $this->qualification->findAverage();
-        if (isset($data))
-            $this->statusCode = 200;
+        $url = getcwd();
+        if ($id>0)
+        {
+            $this->qualification->setIdProduct($id);
+            $data = $this->qualification->findAverage();
+            if (isset($data))
+                $this->statusCode = 200;
+            else
+                $this->statusCode = 500;
+        }
         else
-            $this->statusCode = 500;
+        {
+            $this->statusCode = 400;
+            $data['error']="Request error.";
+        }
         // Response
         header('Content-Type', 'application/json', $this->statusCode);
-        echo json_encode($data);
+        file_put_contents($url.'/Views/Templates/files/result.json',json_encode($data));
     }
     /**
      * @param int $id   Qualification index.
      */
     public function edit(int $id = 0)
     {
-        $this->qualification->setId($id);
-        $content = file_get_contents(URL.'Views/Templates/files/points.json');
-        $data = json_decode($content, true);
-        if ($data['idUser']>0 && $data['idProduct']>0 && $data['points']>0)
+        $url = getcwd();
+        if ($id>0)
         {
-            $this->qualification->setIdUser($data['idUser']);
-            $this->qualification->setIdProduct($data['idProduct']);
-            $this->qualification->setPoints($data['points']);
-            $this->qualification->edit();
+            $this->qualification->setId($id);
+            $content = file_get_contents(URL.'Views/Templates/files/points.json');
+            $data = json_decode($content, true);
+            if ($data['idUser']>0 && $data['idProduct']>0 && $data['points']>0)
+            {
+                $this->qualification->setIdUser($data['idUser']);
+                $this->qualification->setIdProduct($data['idProduct']);
+                $this->qualification->setPoints($data['points']);
+                $this->qualification->edit();
+                $this->statusCode = 200;
+                $node['id']=$id;
+            }
+            else
+            {
+                $this->statusCode = 406;
+                $node['error']="Not Acceptable.";
+            }
+        }
+        else
+        {
+            $this->statusCode = 400;
+            $node['error']="Request error.";
         }
         // Response
-        $this->statusCode = 200;
-        $node['id']=$id;
         header('Content-Type', 'application/json', $this->statusCode);
-        echo json_encode($node);
+        file_put_contents($url.'/Views/Templates/files/result.json',json_encode($node));
     }
 
     public function remove(int $id = 0)
     {
-        $this->qualification->setId($id);
-        $this->qualification->delete();
+        $url = getcwd();
+        if ($id>0)
+        {
+            $this->qualification->setId($id);
+            $this->qualification->delete();
+            // Response
+            $this->statusCode = 200;
+            $node['id']=$id;
+        }
+        else
+        {
+            $this->statusCode = 400;
+            $node['error']="Request error.";
+        }
         // Response
-        $this->statusCode = 200;
-        $node['id']=$id;
         header('Content-Type', 'application/json', $this->statusCode);
-        echo json_encode($node);
+        file_put_contents($url.'/Views/Templates/files/result.json',json_encode($node));
     }
 }

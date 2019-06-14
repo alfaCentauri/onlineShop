@@ -1,6 +1,5 @@
 {
+  "idUser": "1",
   "idProduct":"1",
-  "average":"3.0000",
-  "name_product":"Apple red",
-  "image_product":"4209manzana.jpg"
+  "points":"5"
 }
