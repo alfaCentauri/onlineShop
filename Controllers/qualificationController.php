@@ -132,7 +132,7 @@ class qualificationController implements Crud
     public function edit(int $id = 0)
     {
         $this->qualification->setId($id);
-        $content=$_POST['json'];
+        $content = file_get_contents(URL.'Views/Templates/files/points.json');
         $data = json_decode($content, true);
         if ($data['idUser']>0 && $data['idProduct']>0 && $data['points']>0)
         {
