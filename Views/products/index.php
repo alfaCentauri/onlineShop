@@ -78,4 +78,32 @@
     </div>
     
 </div>
+<script>
+    $document.ready(function (e) {
+        <?php $url = getcwd();?>
+        $.getJSON( "<?php echo $url.'/Views/Templates/files/resultAverage.json'; ?>",  )
+            .done(function( data, textStatus, jqXHR ) {
+                if ( console && console.log ) {
+                    console.log( "La solicitud se ha completado correctamente." );
+                }
+            })
+            .fail(function( jqXHR, textStatus, errorThrown ) {
+                if ( console && console.log ) {
+                    console.log( "Algo ha fallado: " +  textStatus" );
+                }
+            });
+        /**Add*/
+        $.getJSON( "<?php echo $url.'/Views/Templates/files/resultAverage.json'; ?>", { "parametro1" : "valor1", "parametro2" : "valor2" } )
+            .done(function( data, textStatus, jqXHR ) {
+                if ( console && console.log ) {
+                    console.log( "La solicitud se ha completado correctamente." );
+                }
+            })
+            .fail(function( jqXHR, textStatus, errorThrown ) {
+                if ( console && console.log ) {
+                    console.log( "Algo ha fallado: " +  textStatus" );
+                }
+            });
+    });
+</script>
         
