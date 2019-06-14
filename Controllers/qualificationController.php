@@ -21,6 +21,13 @@ namespace Controllers;
 use Models\Product as Product;
 use Models\Users as Users;
 use Models\Qualification as Qualificationes;
+/**
+ * This is the driver to add, edit, display and delete points of a product. Use 
+ * Json files to send and receive the data.
+ *
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
+ */
 class qualificationController implements Crud
 {
     /**
@@ -52,7 +59,9 @@ class qualificationController implements Crud
         $this->qualification = new Qualificationes();
         $this->statusCode = 400;
     }
-
+    /**
+     * Displays a list of all averages.
+     */
     public function index()
     {
         $data = $this->qualification->listAverage();
