@@ -118,18 +118,44 @@ class qualificationController implements Crud
     {
         $this->qualification->setIdProduct($id);
         $data = $this->qualification->findAverage();
+        if (isset($data))
+            $this->statusCode = 200;
+        else
+            $this->statusCode = 500;
         // Response
         header('Content-Type', 'application/json', $this->statusCode);
         echo json_encode($data);
     }
-
+    /**
+     * @param int $id   Qualification index.
+     */
     public function edit(int $id = 0)
     {
-        // TODO: Implement edit() method.
+        $this->qualification->setId($id);
+        $content=$_POST['json'];
+        $data = json_decode($content, true);
+        if ($data['idUser']>0 && $data['idProduct']>0 && $data['points']>0)
+        {
+            $this->qualification->setIdUser($data['idUser']);
+            $this->qualification->setIdProduct($data['idProduct']);
+            $this->qualification->setPoints($data['points']);
+            $this->qualification->edit();
+        }
+        // Response
+        $this->statusCode = 200;
+        $node['id']=$id;
+        header('Content-Type', 'application/json', $this->statusCode);
+        echo json_encode($node);
     }
 
     public function remove(int $id = 0)
     {
-        // TODO: Implement remove() method.
+        $this->qualification->setId($id);
+        $this->qualification->delete();
+        // Response
+        $this->statusCode = 200;
+        $node['id']=$id;
+        header('Content-Type', 'application/json', $this->statusCode);
+        echo json_encode($node);
     }
 }
