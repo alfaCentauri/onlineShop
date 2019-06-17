@@ -68,6 +68,16 @@ CREATE TABLE IF NOT EXISTS itemsCart (
   INDEX products (idProduct ASC)
   ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'Items por carrito.';
 
+drop table credit;
+CREATE TABLE IF NOT EXISTS credit (
+  id INT NOT NULL AUTO_INCREMENT,
+  idUser INT(10) UNSIGNED NOT NULL,
+  balance FLOAT NOT NULL DEFAULT 0,
+  creationDate DATE NOT NULL,
+  PRIMARY KEY (id),
+  INDEX users (idUser ASC)
+  ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'Credito por usuario.';
+
 /**Data of test*/
 INSERT INTO products (id, name, price, image, stock, creationDate) VALUES
 (1, 'Apple red', 0.3, '4208manzana.jpg', 499, '2019-06-05'),
@@ -79,3 +89,4 @@ INSERT INTO products (id, name, price, image, stock, creationDate) VALUES
 INSERT INTO users (id, firstName, lastName, email, login, password, active, creationDate) VALUES
 (1, 'Pedro', 'Perez', 'pepe@dominio.com', 'pepe', '123456', 1, '2019-06-06');
 
+INSERT INTO `credit` (`id`, `idUser`, `balance`, `creationDate`) VALUES (NULL, '1', '100', '2019-06-17');

@@ -239,7 +239,7 @@ class Cart implements Crud
         return $data;
     }
     /**
-     * Add register
+     * Add a register
      */
     public function add()
     {
