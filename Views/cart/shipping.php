@@ -8,6 +8,13 @@
 $subtotal=0;
 $idCart = 0;
 $idU = 1;
+if (isset($data)) {
+while ($row = mysqli_fetch_array($data)) {
+    $idCart= $row['id'];
+    $idU = $row['idUser'];
+    $subtotal = $row['totalPrice'] + $subtotal;
+
+}
     ?>
         <div class="container">
             <div class="row">
@@ -15,21 +22,11 @@ $idU = 1;
                     <h3 class="text-center">Shipping</h3>
                 </div>
             </div>
-            <?php
-            if (isset($data)) {
-                while ($row = mysqli_fetch_array($data)) {
-                    $idCart= $row['id'];
-                    $idU = $row['idUser'];
-                    $subtotal = $row['totalPrice'] + $subtotal;
-
-                }
-            ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-3">
-                        <div class="card-header bg-success">Shipping information
-
-
+                        <div class="card-header bg-success">
+                          Shipping information
                         </div>
                         <div class="card-body">
                             <form action="" id="formShipping" name="formShipping" method="post">
@@ -65,7 +62,12 @@ $idU = 1;
                                     <div class="hidden-sm col-md-3 col-lg-3"></div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="hidden-sm col-md-6 col-lg-6"></div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <strong>Current Balance:</strong>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <strong><?php echo ' $'; ?></strong>
+                                    </div>
                                     <div class="col-sm-3 col-md-3 col-lg-3">
                                         <strong>Shipping costs: </strong>
                                     </div>
@@ -85,7 +87,12 @@ $idU = 1;
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="hidden-sm col-md-6 col-lg-6"></div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <strong>Remaining Balance:</strong>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <strong><?php echo ' $'; ?></strong>
+                                    </div>
                                     <div class="col-sm-6 col-md-3 col-lg-3">
                                         <strong>Total to pay: </strong>
                                     </div>
@@ -99,7 +106,7 @@ $idU = 1;
                                         <input type="submit" id="accept" name="accept" value="Accept" class="btn btn-success btn-block" >
                                     </div>
                                     <div class="col-sm-4 col-md-4">
-                                        <a href="<?php echo URL; ?>index.php?url=cart/toListUser/1/1" class="btn btn-warning btn-block">Cancel</a>
+                                        <a href="<?php echo URL; ?>index.php?url=cart/" class="btn btn-warning btn-block">Cancel</a>
                                     </div>
                                     <div class="col-sm-2 col-md-2"></div>
                                 </div>
