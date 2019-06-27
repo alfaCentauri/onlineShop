@@ -5,23 +5,15 @@
  * Date: 6/5/2019
  * Time: 7:25 PM
  */
-$subtotal=0;
-$idCart = 0;
-$idU = 1;
-if (isset($data)) {
-while ($row = mysqli_fetch_array($data)) {
-    $idCart= $row['id'];
-    $idU = $row['idUser'];
-    $subtotal = $row['totalPrice'] + $subtotal;
-
-}
-    ?>
+?>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="text-center">Shipping</h3>
                 </div>
             </div>
+            <?php if (isset($data)) {
+?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-3">
@@ -66,7 +58,9 @@ while ($row = mysqli_fetch_array($data)) {
                                         <strong>Current Balance:</strong>
                                     </div>
                                     <div class="col-sm-3 col-md-3 col-lg-3">
-                                        <strong><?php echo ' $'; ?></strong>
+                                        <div class="price" id="balance">
+                                          <strong><?php echo $data['balanceCredit'].' $'; ?></strong>
+                                        </div>
                                     </div>
                                     <div class="col-sm-3 col-md-3 col-lg-3">
                                         <strong>Shipping costs: </strong>
@@ -76,28 +70,35 @@ while ($row = mysqli_fetch_array($data)) {
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="hidden-sm col-md-6 col-lg-6"></div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <strong>Remaining  Balance:</strong>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <div class="price" id="remainingBalance">
+                                            <strong><?php echo ($data['balanceCredit'] - $data['subtotal']).' $'; ?></strong>
+                                        </div>
+                                    </div>
                                     <div class="col-sm-6 col-md-3 col-lg-3">
                                         <strong>Subtotal to pay: </strong>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 col-lg-3">
+                                    <div class="col-sm-6 col-md-3 col-lg-3 text-right">
                                         <div class="price" id="subtotal">
-                                            <?php echo $subtotal.' $'; ?>
+                                            <?php echo $data['subtotal'].' $'; ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-sm-3 col-md-3 col-lg-3">
-                                        <strong>Remaining Balance:</strong>
+
                                     </div>
                                     <div class="col-sm-3 col-md-3 col-lg-3">
-                                        <strong><?php echo ' $'; ?></strong>
+
                                     </div>
                                     <div class="col-sm-6 col-md-3 col-lg-3">
                                         <strong>Total to pay: </strong>
                                     </div>
                                     <div class="col-sm-6 col-md-3 col-lg-3">
-                                        <div class="price" id="total"><?php echo $subtotal; ?> $</div>
+                                        <div class="price" id="total"><?php echo $data['subtotal']; ?> $</div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -143,8 +144,10 @@ while ($row = mysqli_fetch_array($data)) {
            document.getElementById('direction').removeAttribute('min');
            document.getElementById('priceShipping').innerText='0 $';
         }
-        var subtotal = <?php echo $subtotal;?>;
+        var subtotal = <?php echo $data['subtotal'];?>;
         var total = parseFloat(currentValue) + parseFloat(subtotal);
+        var newBalance = parseFloat(<?php echo $data['balanceCredit'];?>) - total;
         document.getElementById('total').innerText=total.toFixed(2)+' $';
+        document.getElementById('remainingBalance').innerText=newBalance.toFixed(2)+' $';
     }
 </script>

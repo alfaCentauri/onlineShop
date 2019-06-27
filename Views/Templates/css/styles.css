@@ -52,6 +52,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     color: black;
     font-weight: bold;
     font-stretch: condensed;
+    text-align: right;
+    padding-right: 20px;
 }
 .iconImage{
     width: 20px;

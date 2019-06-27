@@ -218,7 +218,8 @@ class Cart implements Crud
           on C.id=I.idCart and C.paidOut=false and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
           INNER JOIN products P on P.id=I.idProduct ";
         $data = $this->conn->ReturnQuery($sql);
-        return $data;
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
 
     /**

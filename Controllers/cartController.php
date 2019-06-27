@@ -24,6 +24,7 @@ use Models\CartItems;
 use Models\Product as Product;
 use Models\Users;
 use Models\Qualification as Qualification;
+use Models\Credit as Credit;
 
 /**
  * Description of cartController
@@ -62,6 +63,11 @@ class cartController implements Crud
      */
     private $qualification;
     /**
+     * Contains a object of type Credit.
+     * @var Credit
+    */
+    private $credit;
+    /**
      * Construct
      **/
     function __construct() 
@@ -72,6 +78,7 @@ class cartController implements Crud
         $this->itemsCart = new CartItems();
         $this->subtotal = 0.0;
         $this->qualification = new Qualification();
+        $this->credit = new Credit();
     }
 
     /**Default
@@ -259,16 +266,23 @@ class cartController implements Crud
      * shipment.
      * @param int $id Default 1, index of cart.
      * @param int $idU Default 1, index of user.
-     * @return bool|\mysqli_result $data
+     * @return array Array with shipping information.
      */
     public function shipping(int $id=1, int $idU=1)
     {
+        $infoForShipping = array();
         $this->cart->setId($id);
         $this->cart->setIdUser($idU);
-        $data = $this->cart->toListUser();
-        if (!is_null($data))
+        $shoppingCart = $this->cart->toListUser();
+        if (!is_null($shoppingCart))
         {
-            $this->itemsCart->setIdCart($id);
+            $infoForShipping['id'] = $shoppingCart['id'];
+            $infoForShipping['idUser'] = $shoppingCart['idUser'];
+            $infoForShipping['subtotal'] = $shoppingCart['totalPrice'];
+            $this->credit->setIdUser($shoppingCart['idUser']);
+            $dataCredit = $this->credit->findByUser();
+            $infoForShipping['balanceCredit'] = $dataCredit['balance'];
+            $this->itemsCart->setIdCart($shoppingCart['id']);
             $array = $this->itemsCart->totalList();
             $this->subtotal = $array['subtotal'];
         }
@@ -283,11 +297,15 @@ class cartController implements Crud
             {
                 $this->cart->setTotalPrice($this->subtotal);
             }
+            $dataCredit['balance'] = $infoForShipping['balanceCredit'] - $this->cart->getTotalPrice();
+            $this->credit->setId($dataCredit['id']);
+            $this->credit->setBalance($dataCredit['balance']);
+            $this->credit->edit();
             $this->cart->setPaidOut(true);
             $this->cart->edit();
             header("Location: ".URL."index.php?url=cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
-        return $data;
+        return $infoForShipping;
     }
 
     /**
