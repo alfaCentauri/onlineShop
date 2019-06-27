@@ -104,7 +104,26 @@ class productsController implements Crud
     public function view(int $id=0)
     {
         $this->product->setId($id);
-        $data = $this->product->view();
+        $product = $this->product->view();
+        if (isset($product['id']))
+        {
+            $data = array();
+            $data['id'] = $product['id'];
+            $data['name'] = $product['name'];
+            $data['price'] = $product['price'];
+            $data['image'] = $product['image'];
+            $data['stock'] = $product['stock'];
+            $data['creationDate'] = $product['creationDate'];
+            $this->qualification->setIdProduct($product['id']);
+            $averageProduct = $this->qualification->findAverage();
+            if (isset($averageProduct['average'])) {
+                $data['average'] = number_format($averageProduct['average'], 2);
+            } else {
+                $data['average'] = 0;
+            }
+        }
+        else
+            $data = null;
         return $data;
     }
 

@@ -83,6 +83,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                           <li class="list-group-item"><strong>Price:</strong> <?php echo $data['price']; ?></li>
                                           <li class="list-group-item"><strong>Stock:</strong> <?php echo $data['stock']; ?></li>
                                           <li class="list-group-item"><strong>Creation date:</strong> <?php echo $data["creationDate"];?></li>
+                                            <li class="list-group-item"><strong>Average:</strong> <?php echo $data["average"];?></li>
                                         </ul>
                                         <div class="row">
                                             <div class="col-sm-4 col-md-4"></div>
