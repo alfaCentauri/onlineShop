@@ -19,6 +19,7 @@
 namespace Controllers;
 
 use Models\Product as Product;
+use Models\Qualification as Qualification;
 /**
  * Controller of actions on products.
  * @author Ingeniero en Computación: Ricardo Presilla.
@@ -30,15 +31,44 @@ class productsController implements Crud
      * Contains a object of type Product.
      */
     private $product;
-
-    function __construct() 
+    /**
+     * Contains a object of type Qualificationes.
+     * @var Qualificationes
+     */
+    private $qualification;
+    /**
+     * productsController constructor.
+     */
+    function __construct()
     {
         $this->product = new Product();
+        $this->qualification = new Qualification();
     }
     /**Default*/
     public function index()
     {
-        $data = $this->product->toList();
+        $listProduct = $this->product->toList();
+        foreach ($listProduct as $node)
+        {
+            $item = array();
+            $item['id']=$node['id'];
+            $item['name']=$node['name'];
+            $item['price']=$node['price'];
+            $item['image']=$node['image'];
+            $item['stock']=$node['stock'];
+            $item['creationDate']=$node['creationDate'];
+            $this->qualification->setIdProduct($node['id']);
+            $averageProduct = $this->qualification->findAverage();
+            if (isset($averageProduct['average']))
+            {
+                $item['average']= number_format($averageProduct['average'],2);
+            }
+            else
+            {
+                $item['average']= 0;
+            }
+            $data[]=$item;
+        }
         return $data;
     }
     /**

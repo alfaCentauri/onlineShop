@@ -83,7 +83,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                 </thead>
                                 <tbody>
                     <?php
-                        while ($row = mysqli_fetch_array($data)){
+                    foreach ($data as $row){
                     ?>
                                     <tr>
                                         <td>
@@ -95,7 +95,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                                             <a href="<?php echo URL; ?>index.php?url=products/view/<?php echo $row['id']; ?>"><?php echo $row["name"];?></a>
                                         </td>
                                         <td class="text-right"><?php echo $row["price"];?></td>
-                                        <td class="text-center"><?php echo '*'?></td>
+                                        <td class="text-center"><?php echo $row["average"];?></td>
                                         <td class="text-center">
                                             <!--a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">
                                                 Edit
