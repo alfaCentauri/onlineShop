@@ -53,3 +53,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     font-weight: bold;
     font-stretch: condensed;
 }
+.iconImage{
+    width: 20px;
+    height: 20px;
+}

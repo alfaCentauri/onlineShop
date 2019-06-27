@@ -215,8 +215,8 @@ class Qualification implements Crud
         return $row;
     }
     /**
-     * Find a register by the user current.
-     * @return bool|\mysqli_result
+     * Find all registers by the current user.
+     * @return array
      */
     public function findByUser()
     {
@@ -226,7 +226,24 @@ class Qualification implements Crud
           INNER JOIN products P 
           on Q.idProduct=P.id;";
         $data = $this->conn->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
+        return $row;
         return $data;
+    }
+    /**
+     * Find a record for the current user and the product indicate by their index.
+     * @return array
+     */
+    public function findByUserProduct()
+    {
+        $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
+          FROM qualification Q 
+          INNER JOIN users U on Q.idUser='{$this->idUser}' and Q.idUser=U.id  
+          INNER JOIN products P 
+          on Q.idProduct=P.id and Q.idProduct='{$this->idProduct}';";
+        $data = $this->conn->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
     /**
      * List all the average.

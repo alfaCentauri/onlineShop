@@ -23,6 +23,7 @@ use Models\Cart as Cart;
 use Models\CartItems;
 use Models\Product as Product;
 use Models\Users;
+use Models\Qualification as Qualification;
 
 /**
  * Description of cartController
@@ -56,6 +57,11 @@ class cartController implements Crud
     */
     private $subtotal;
     /**
+     * Contains a object of type Qualificationes.
+     * @var Qualificationes
+     */
+    private $qualification;
+    /**
      * Construct
      **/
     function __construct() 
@@ -65,6 +71,7 @@ class cartController implements Crud
         $this->product = new Product();
         $this->itemsCart = new CartItems();
         $this->subtotal = 0.0;
+        $this->qualification = new Qualification();
     }
 
     /**Default
@@ -141,6 +148,18 @@ class cartController implements Crud
                 $this->product->setName($data['name']);
                 $this->product->setPrice($data["price"]);
                 $this->product->edit();
+                if ($_POST['points']>0) //Points
+                {
+                    $points = $_POST['points'];
+                    $this->qualification->setIdProduct($this->product->getId());
+                    $this->qualification->setPoints($points);
+                    $this->qualification->setIdUser($idU);
+                    $result = $this->qualification->findByUserProduct();
+                    if(is_null($result))
+                    {
+                        $this->qualification->add();
+                    }
+                }
                 $this->cart->setId($idCart);
                 $dataCart = $this->cart->viewNotPaidout();
                 if(is_null($dataCart))
@@ -180,14 +199,47 @@ class cartController implements Crud
 
     /**
      * Preview of the cart.
-     * The route is: http://localhost/onlineShop/cart/preview/$id .
-     * @param $id   Integer integer.
+     * The route is: http://localhost/onlineShop/cart/preview/$id/$idU .
+     * @param int $id   Integer integer.
+     * @param int $idU  Integer of index user.
      * @return array|null   Data of product.
      */
-    public function preview(int $id=1)
+    public function preview(int $id=1, int $idU=0)
     {
         $this->product->setId($id);
-        $data = $this->product->view();
+        $product = $this->product->view();
+        if (isset($product['id']))
+        {
+            $data = array();
+            $data['id'] = $product['id'];
+            $data['name'] = $product['name'];
+            $data['price'] = $product['price'];
+            $data['image'] = $product['image'];
+            $data['stock'] = $product['stock'];
+            $data['creationDate'] = $product['creationDate'];
+            $this->qualification->setIdProduct($product['id']);
+            $averageProduct = $this->qualification->findAverage();
+            if (isset($averageProduct['average']))
+            {
+                $data['average'] = number_format($averageProduct['average'], 2);
+            }
+            else
+            {
+                $data['average'] = 0;
+            }
+            $this->qualification->setIdUser($idU);
+            $qualification = $this->qualification->findByUserProduct();
+            if(is_null($qualification))
+            {
+                $data['points'] = 0;
+            }
+            else
+            {
+                $data['points'] = $qualification['points'];
+            }
+        }
+        else
+            $data = null;
         return $data;
     }
 
@@ -330,7 +382,7 @@ class cartController implements Crud
         $this->cart->setId($data['idCart']);
         $this->cart->view();
         $this->itemsCart->delete();
-        header("Location: ".URL."index.php?url=cart/toListUser/".$this->itemsCart->getIdCart()."/".$this->cart->getIdUser());
+        header("Location: ".URL."index.php?url=cart/");
     }
 
     /**

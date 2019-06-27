@@ -23,6 +23,6 @@
     require_once 'Config/Autoload.php';
     
     Config\Autoload::Run();
-    /*require_once 'Views/Templates.php';*/
+    require_once 'Views/Templates.php';
 //    $request = new Config\Request();
     Config\Router::Run(new Config\Request());
