@@ -33,7 +33,7 @@ class productsController implements Crud
     private $product;
     /**
      * Contains a object of type Qualificationes.
-     * @var Qualificationes
+     * @var Qualification
      */
     private $qualification;
     /**

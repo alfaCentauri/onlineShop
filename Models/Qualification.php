@@ -228,7 +228,6 @@ class Qualification implements Crud
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
-        return $data;
     }
     /**
      * Find a record for the current user and the product indicate by their index.

@@ -66,8 +66,6 @@ class Cart implements Crud
         $this->conn = new Conection();
         $this->id = 0;
         $this->idUser = 0;
-        $this->idProduct = 0;
-        $this->quantity = 0;
         $this->direction ="";
         $this->totalPrice = 0;
     }

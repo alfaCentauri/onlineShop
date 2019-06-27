@@ -61,10 +61,13 @@ class Conection
      */
     public function InsertQuery($sql)
     {
-        if ($this->conn->query($sql) === TRUE) {
+        if ($this->conn->query($sql) === TRUE)
+        {
             $last_id = $this->conn->insert_id;
             return $last_id;
-        } else {
+        }
+        else
+        {
             echo "Error: ".$sql."<br>".$this->conn->error."<br>" ;
         }
     }

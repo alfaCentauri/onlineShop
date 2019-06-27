@@ -57,8 +57,8 @@ class cartController implements Crud
     */
     private $subtotal;
     /**
-     * Contains a object of type Qualificationes.
-     * @var Qualificationes
+     * Contains a object of type Qualification.
+     * @var Qualification
      */
     private $qualification;
     /**
@@ -75,7 +75,6 @@ class cartController implements Crud
     }
 
     /**Default
-     * @param int $idCart
      * @param int $idU
      * @return bool|\mysqli_result  Data of list of the cart.
      */
@@ -365,23 +364,34 @@ class cartController implements Crud
     /**
      * Delete a cart item.
      * @param int $id Integer with id to cart item.
-     * @param int $idU
-     * @param int $idCart
      */
     public function remove(int $id=0)
     {
         $this->itemsCart->setId($id);
         $data = $this->itemsCart->view();
-        $this->product->setId($data['idProduct']);
-        $product_data = $this->product->view();
-        $result = $product_data['stock'] + $data['quantity'];
-        $this->product->setStock($result);
-        $this->product->setName($product_data['name']);
-        $this->product->setPrice($product_data["price"]);
-        $this->product->edit();
-        $this->cart->setId($data['idCart']);
-        $this->cart->view();
-        $this->itemsCart->delete();
+        if (!empty($data))
+        {
+            $this->product->setId($data['idProduct']);
+            $product_data = $this->product->view();
+            if (!is_null($product_data)) {
+                $result = $product_data['stock'] + $data['quantity'];
+                $this->product->setStock($result);
+                $this->product->setName($product_data['name']);
+                $this->product->setPrice($product_data["price"]);
+                $this->product->edit();
+            }
+            $this->cart->setId($data['idCart']);
+            $shoppingCart=$this->cart->view();
+            if (!empty($data['totalPrice']) && !empty($shoppingCart['totalPrice']))
+            {
+                $this->cart->setTotalPrice($shoppingCart['totalPrice'] - $data['totalPrice']);
+            }
+            else
+            {
+                $this->cart->setTotalPrice($shoppingCart['totalPrice']);
+            }
+            $this->itemsCart->delete();
+        }
         header("Location: ".URL."index.php?url=cart/");
     }
 
