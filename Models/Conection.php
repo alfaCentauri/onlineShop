@@ -69,6 +69,7 @@ class Conection
         else
         {
             echo "Error: ".$sql."<br>".$this->conn->error."<br>" ;
+            return 0;
         }
     }
     /**

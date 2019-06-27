@@ -369,11 +369,11 @@ class cartController implements Crud
     {
         $this->itemsCart->setId($id);
         $data = $this->itemsCart->view();
-        if (!empty($data))
+        if (isset($data))
         {
             $this->product->setId($data['idProduct']);
             $product_data = $this->product->view();
-            if (!is_null($product_data)) {
+            if (isset($product_data)) {
                 $result = $product_data['stock'] + $data['quantity'];
                 $this->product->setStock($result);
                 $this->product->setName($product_data['name']);
@@ -385,10 +385,9 @@ class cartController implements Crud
             if (!empty($data['totalPrice']) && !empty($shoppingCart['totalPrice']))
             {
                 $this->cart->setTotalPrice($shoppingCart['totalPrice'] - $data['totalPrice']);
-            }
-            else
-            {
-                $this->cart->setTotalPrice($shoppingCart['totalPrice']);
+                $this->cart->setDirection($shoppingCart['direction']);
+                $this->cart->setPaidOut(false);
+                $this->cart->edit();
             }
             $this->itemsCart->delete();
         }
