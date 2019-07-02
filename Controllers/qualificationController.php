@@ -18,13 +18,15 @@
 
 namespace Controllers;
 
-use Models\Product as Product;
 use Models\Users as Users;
+use Models\Product as Product;
+use Models\Conection as Conection;
 use Models\Qualification as Qualificationes;
 /**
  * This is the driver to add, edit, display and delete points of a product. Use 
  * Json files to send and receive the data.
  *
+ * @package Controllers.
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
@@ -50,13 +52,20 @@ class qualificationController implements Crud
      */
     private $statusCode;
     /**
+     * @var Conection
+     */
+    private $conection;
+    /**
      * Qualification constructor.
      */
     public function __construct()
     {
+        $this->conection = new Conection();
         $this->user = new Users();
         $this->product = new Product();
+        $this->product->setCon($this->conection);
         $this->qualification = new Qualificationes();
+        $this->qualification->setConn($this->conection);
         $this->statusCode = 400;
     }
     /**

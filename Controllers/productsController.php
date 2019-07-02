@@ -18,15 +18,24 @@
 
 namespace Controllers;
 
+use Models\Users as Users;
 use Models\Product as Product;
+use Models\Conection as Conection;
 use Models\Qualification as Qualification;
 /**
  * Controller of actions on products.
+ *
+ * @package Controllers.
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
 class productsController implements Crud
 {
+    /**
+     * Contains a object of type Users.
+     * @var Users
+     **/
+    private $user;
     /**
      * Contains a object of type Product.
      */
@@ -37,16 +46,26 @@ class productsController implements Crud
      */
     private $qualification;
     /**
+     * @var Conection
+     */
+    private $conection;
+    /**
      * productsController constructor.
      */
     function __construct()
     {
+        $this->conection = new Conection();
+        $this->user = new Users();
+        $this->user->setConection($this->conection);
         $this->product = new Product();
+        $this->product->setCon($this->conection);
         $this->qualification = new Qualification();
+        $this->qualification->setConn($this->conection);
     }
     /**Default*/
     public function index()
     {
+        $data=null;
         $listProduct = $this->product->toList();
         foreach ($listProduct as $node)
         {

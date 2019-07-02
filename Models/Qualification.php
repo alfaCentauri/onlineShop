@@ -22,6 +22,7 @@ namespace Models;
 /**
  * This is the qualification of the product.
  *
+ * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
@@ -61,7 +62,6 @@ class Qualification implements Crud
      */
     function __construct()
     {
-        $this->conn = new Conection();
         $this->id = 0;
         $this->idUser = 0;
         $this->idProduct = 0;

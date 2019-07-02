@@ -25,10 +25,12 @@ use Models\Product as Product;
 use Models\Users;
 use Models\Qualification as Qualification;
 use Models\Credit as Credit;
+use Models\Conection as Conection;
 
 /**
  * Description of cartController
  *
+ * @package Controllers
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
@@ -68,17 +70,28 @@ class cartController implements Crud
     */
     private $credit;
     /**
+     * @var Conection
+     */
+    private $conection;
+    /**
      * Construct
      **/
     function __construct() 
     {
+        $this->conection = new Conection();
         $this->user = new Users();
+        $this->user->setConection($this->conection);
         $this->cart = new Cart();
+        $this->cart->setConn($this->conection);
         $this->product = new Product();
+        $this->product->setCon($this->conection);
         $this->itemsCart = new CartItems();
-        $this->subtotal = 0.0;
+        $this->itemsCart->setConn($this->conection);
         $this->qualification = new Qualification();
+        $this->qualification->setConn($this->conection);
         $this->credit = new Credit();
+        $this->credit->setConn($this->conection);
+        $this->subtotal =0;
     }
 
     /**Default
@@ -273,18 +286,19 @@ class cartController implements Crud
         $infoForShipping = array();
         $this->cart->setId($id);
         $this->cart->setIdUser($idU);
-        $shoppingCart = $this->cart->toListUser();
+        $shoppingCart = $this->cart->findByUser();
         if (!is_null($shoppingCart))
         {
             $infoForShipping['id'] = $shoppingCart['id'];
             $infoForShipping['idUser'] = $shoppingCart['idUser'];
-            $infoForShipping['subtotal'] = $shoppingCart['totalPrice'];
             $this->credit->setIdUser($shoppingCart['idUser']);
             $dataCredit = $this->credit->findByUser();
             $infoForShipping['balanceCredit'] = $dataCredit['balance'];
             $this->itemsCart->setIdCart($shoppingCart['id']);
             $array = $this->itemsCart->totalList();
             $this->subtotal = $array['subtotal'];
+            $infoForShipping['subtotal'] = number_format($array['subtotal'],2);
+            $infoForShipping['remainingBalance'] = number_format($infoForShipping['balanceCredit'] - $infoForShipping['subtotal'],2);
         }
         if ($_POST && $this->subtotal>0)
         {
@@ -307,7 +321,6 @@ class cartController implements Crud
         }
         return $infoForShipping;
     }
-
     /**
      * Accept the dispatch, show the shipping address and return to the cart paid.
      * @param int $id Default 0.
@@ -323,23 +336,6 @@ class cartController implements Crud
         $dataCart = $this->cart->view();
         return $dataCart;
     }
-
-    /**
-     * @return float
-     */
-    public function getSubtotal(): float
-    {
-        return $this->subtotal;
-    }
-
-    /**
-     * @param float $subtotal
-     */
-    public function setSubtotal(float $subtotal): void
-    {
-        $this->subtotal = $subtotal;
-    }
-
     /**
      * Edit an item in the shopping cart.
      * The route for this method is: http://localhost/onlineShop/cart/edit/$id .

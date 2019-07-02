@@ -17,7 +17,13 @@
  */
 namespace Models;
 
-
+/***
+ * Class Credit.
+ *
+ * @package Models.
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
+ */
 class Credit extends Entity
 {
     /**
@@ -36,7 +42,6 @@ class Credit extends Entity
      */
     public function __construct()
     {
-        $this->conn = new Conection();
         $this->id = 0;
         $this->idUser = 0;
     }

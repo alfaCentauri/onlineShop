@@ -56,6 +56,7 @@ class Cart implements Crud
     private $paidOut;
     /**
      * Contains creation date.
+     * @var mixed
      */
     private $creationDate;
     /**
@@ -63,7 +64,6 @@ class Cart implements Crud
      */
     function __construct()
     {
-        $this->conn = new Conection();
         $this->id = 0;
         $this->idUser = 0;
         $this->direction ="";
@@ -192,21 +192,6 @@ class Cart implements Crud
         return $data;
     }
     /**
-     * Get a list of all records with the image and the name of the associated
-     * product.
-     */
-    public function toList2()
-    {
-        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product, AVG(Q.points) as average 
-          FROM carts C 
-          INNER JOIN itemsCart I 
-          on C.id=I.idCart and C.paidOut=true and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
-          INNER JOIN products P
-          on P.id=I.idProduct;";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-    /**
      * Get a list of all the records for a user.
      * @return bool|\mysqli_result Return a list of all the records for a user.
      */
@@ -215,8 +200,20 @@ class Cart implements Crud
         $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
           FROM carts C 
           INNER JOIN itemsCart I 
-          on C.id=I.idCart and C.paidOut=false and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
+          on C.id=I.idCart and C.paidOut=false and C.idUser='{$this->idUser}' 
           INNER JOIN products P on P.id=I.idProduct ";
+        $data = $this->conn->ReturnQuery($sql);
+        return $data;
+    }
+    /**
+     * View user's unpaid registration.
+     * @return array|null Return an arrangement with the record.
+     */
+    public function findByUser()
+    {
+        $sql = "SELECT C.* 
+          FROM carts C 
+          where C.paidOut=false and C.id='{$this->id}' and C.idUser='{$this->idUser}'";
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -266,17 +263,6 @@ class Cart implements Crud
     public function viewNotPaidout()
     {
         $sql = "SELECT * FROM carts WHERE idUser='{$this->idUser}' and paidOut=false ";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * View register, no pay.
-     * @return array|null Return an arrangement with the record.
-     */
-    public function viewUser()
-    {
-        $sql = "SELECT * FROM carts WHERE id='{$this->id}' and idUser='{$this->idUser}' and paidOut=false ";
         $data = $this->conn->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;

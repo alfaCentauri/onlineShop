@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="col-sm-3 col-md-3 col-lg-3">
                                         <div class="price" id="remainingBalance">
-                                            <strong><?php echo ($data['balanceCredit'] - $data['subtotal']).' $'; ?></strong>
+                                            <strong><?php echo $data['remainingBalance'].' $'; ?></strong>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3 col-lg-3">

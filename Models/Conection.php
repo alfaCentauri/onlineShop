@@ -9,8 +9,9 @@
 namespace Models;
 
 /**
- * Class of Conexion.
+ * Class of Conection.
  *
+ * @package Models.
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.1.
  */

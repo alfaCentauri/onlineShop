@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: rpres
+ * User: Ricardo Presilla
  * Date: 6/1/2019
  * Time: 2:37 PM
  */
@@ -9,8 +9,11 @@
 namespace Models;
 
 /**
- * Entity for the products table
+ * Entity for the products table.
  *
+ * @package Models
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
  */
 class Product implements Crud
 {
@@ -48,10 +51,12 @@ class Product implements Crud
      * Conetion to DB.
      * @var Conection
      */
-    private $con;
-    function __construct() 
+    private $conection;
+    /**
+     * Product constructor.
+     */
+    function __construct()
     {
-        $this->con=new Conection();
         $this->id=0;
         $this->name="";
         $this->price=0.0;
@@ -134,9 +139,9 @@ class Product implements Crud
         return $this->image;
     }
 
-    public function getCon() 
+    public function getCon()
     {
-        return $this->con;
+        return $this->conection;
     }
 
     public function setImage($image)
@@ -146,7 +151,7 @@ class Product implements Crud
 
     public function setCon($con)
     {
-        $this->con = $con;
+        $this->conection = $con;
     }
 
     /**
@@ -161,33 +166,33 @@ class Product implements Crud
     public function toList()
     {
         $sql = "SELECT * FROM products;";
-        $data = $this->con->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         return $data;
     }
     /**Add register*/
     public function add()
     {
         $sql = "INSERT INTO products(name, price, image, stock, creationDate) VALUES('{$this->name}', '{$this->price}', '{$this->image}', '{$this->stock}',NOW());";
-        $this->con->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     /**Delete record indicated by the current id.*/
     public function delete()
     {
         $sql = "delete from products where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     /**Edit record indicated by the current id.*/
     public function edit()
     {
         $sql = "update products set name='{$this->name}', price="
         . "'{$this->price}', stock='{$this->stock}' where id='{$this->id}';";
-        $this->con->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     /**Display a record indicated by the current id.*/
     public function view()
     {
         $sql = "SELECT * FROM products where id='{$this->id}'";
-        $data = $this->con->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
@@ -197,7 +202,7 @@ class Product implements Crud
         $sql = "SELECT P.* FROM products P
               INNER JOIN qualification Q
               ON Q.idProduct=P.id;";
-        $data = $this->con->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         return $data;
     }
 }
