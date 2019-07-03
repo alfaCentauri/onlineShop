@@ -72,7 +72,9 @@ class Users implements Crud
      * @var Conection
      */
     private $conection;
-    /***/
+    /**
+     * Construct of the class
+     */
     function __construct() 
     {
         $this->id=0;
@@ -83,7 +85,10 @@ class Users implements Crud
         $this->password="";
         $this->active=true;
     }
-    /**List**/
+    /**
+     * List
+     * @return null|array Result of the query.
+     */
     public function toList()
     {
         $sql = "SELECT * FROM users;";
