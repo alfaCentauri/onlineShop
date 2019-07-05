@@ -9,8 +9,9 @@
 namespace Models;
 
 /**
- * Class of Conexion.
+ * Class of Conection.
  *
+ * @package Models.
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.1.
  */
@@ -61,11 +62,15 @@ class Conection
      */
     public function InsertQuery($sql)
     {
-        if ($this->conn->query($sql) === TRUE) {
+        if ($this->conn->query($sql) === TRUE)
+        {
             $last_id = $this->conn->insert_id;
             return $last_id;
-        } else {
+        }
+        else
+        {
             echo "Error: ".$sql."<br>".$this->conn->error."<br>" ;
+            return 0;
         }
     }
     /**

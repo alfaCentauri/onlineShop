@@ -8,7 +8,13 @@
 
 namespace Models;
 
-
+/**
+ * Class CartItems.
+ *
+ * @package Models
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
+ */
 class CartItems implements Crud
 {
     /**
@@ -45,7 +51,6 @@ class CartItems implements Crud
      */
     public function __construct()
     {
-        $this->conn = new Conection();
         $this->id = 0;
         $this->idCart = 0;
         $this->idProduct = 0;
@@ -206,7 +211,7 @@ class CartItems implements Crud
         return $data;
     }
     /**
-     * Get a list of all the records for a cart.
+     * Get the total of all the records for a cart.
      */
     public function totalList()
     {

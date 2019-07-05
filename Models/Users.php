@@ -20,32 +20,79 @@
 namespace Models;
 
 /**
- * Description of Users
+ * Description of Users.
  *
+ * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
 class Users implements Crud
 {
+    /**
+     * It contains the index.
+     * @var int
+     */
     private $id;
+    /**
+     * Contains the firstName
+     * @var string
+     */
     private $firstName;
+    /**
+     * Contains the lastName
+     * @var string
+     */
     private $lastName;
+    /**
+     * User email
+     * @var string
+     */
     private $email;
+    /**
+     * User Login
+     * @var string
+    */
     private $login;
+    /**
+     * Encrypted user password
+     * @var string
+    */
     private $password;
+    /**
+     * @var Boolean
+     */
     private $active;
+    /**
+     * Contains creation date.
+     * @var mixed
+     */
     private $creationDate;
-    private $conn;
-    /***/
+    /**
+     * Conetion to DB.
+     * @var Conection
+     */
+    private $conection;
+    /**
+     * Construct of the class
+     */
     function __construct() 
     {
-        $this->conn=new Conection();
+        $this->id=0;
+        $this->firstName="";
+        $this->lastName="";
+        $this->email="";
+        $this->login="";
+        $this->password="";
+        $this->active=true;
     }
-    /**List**/
+    /**
+     * List
+     * @return null|array Result of the query.
+     */
     public function toList()
     {
         $sql = "SELECT * FROM users;";
-        $data = $this->conn->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         return $data;
     }
     /**Add register*/
@@ -54,13 +101,13 @@ class Users implements Crud
         $sql = "INSERT INTO users(firstName, lastName, email, login, password, creationDate) "
                 . "VALUES('{$this->firstName}', '{$this->lastName}', '"
                 . "{$this->email}', '{$this->login}', '{$this->password}', NOW());";
-        $this->conn->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     /**Delete record indicated by the current id.*/
     public function delete()
             {
         $sql = "delete from users where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     /**Edit record indicated by the current id.*/
     public function edit()
@@ -68,105 +115,158 @@ class Users implements Crud
         $sql = "update users set firstName='{$this->firstName}', lastName="
         . "'{$this->lastName}', email='{$this->email}', login='{$this->login}', '"
         . "{$this->password}' where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     /**Display a record indicated by the current id.*/
     public function view()
     {
         $sql = "SELECT * FROM users where id='{$this->id}'";
-        $datos = $this->conn->ReturnQuery($sql);
+        $datos = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($datos);
         return $row;
     }
-    /***/
-    function getId() 
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    function getFirstName() 
-    {
-        return $this->firstName;
-    }
-
-    function getLastName() 
-    {
-        return $this->lastName;
-    }
-
-    function getEmail() 
-    {
-        return $this->email;
-    }
-
-    function getLogin() 
-    {
-        return $this->login;
-    }
-
-    function getPassword() 
-    {
-        return $this->password;
-    }
-
-    function getActive() 
-    {
-        return $this->active;
-    }
-
-    function getCreationDate() 
-    {
-        return $this->creationDate;
-    }
-
-    function getConn() 
-    {
-        return $this->conn;
-    }
-
-    function setId($id) 
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    function setFirstName($firstName) 
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     */
+    public function setFirstName(string $firstName): void
     {
         $this->firstName = $firstName;
     }
 
-    function setLastName($lastName) 
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     */
+    public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
     }
 
-    function setEmail($email) 
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    function setLogin($login) 
+    /**
+     * @return string
+     */
+    public function getLogin(): string
+    {
+        return $this->login;
+    }
+
+    /**
+     * @param string $login
+     */
+    public function setLogin(string $login): void
     {
         $this->login = $login;
     }
 
-    function setPassword($password) 
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
-    function setActive($active) 
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
     {
         $this->active = $active;
     }
 
-    function setCreationDate($creationDate) 
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+
+    /**
+     * @param mixed $creationDate
+     */
+    public function setCreationDate($creationDate): void
     {
         $this->creationDate = $creationDate;
     }
 
-    function setConn($conn) 
+    /**
+     * @return Conection
+     */
+    public function getConection(): Conection
     {
-        $this->conn = $conn;
+        return $this->conection;
+    }
+
+    /**
+     * @param Conection $conection
+     */
+    public function setConection(Conection $conection): void
+    {
+        $this->conection = $conection;
     }
 
 }

@@ -18,70 +18,70 @@
  */
 
 ?>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-            <h1 class="text-center">Edit Product</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="card mb-3">
-                <div class="card-header bg-success">Edit Product</div>
-                <div class="card-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-4">
-                                <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Foto" class="img-fluid"/>
-                            </div>
-                            <div class="col-sm-12 col-md-8">
-                                <form name="formProduct" action="" method="POST" >
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-center">Edit Product</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="card mb-3">
+                        <div class="card-header bg-success">Edit Product</div>
+                        <div class="card-body">
+                            <div class="container">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-12">
-                                        <label for="name">Product Name:</label>
+                                    <div class="col-sm-12 col-md-4">
+                                        <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Foto" class="img-fluid"/>
+                                    </div>
+                                    <div class="col-sm-12 col-md-8">
+                                        <form name="formProduct" action="" method="POST" >
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <label for="name">Product Name:</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <input type="text" id="name" name="name" value="<?php echo $data['name']; ?>" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <label for="price">Price:</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <input type="number" step="any" min="0" name="price" value="<?php echo $data['price']; ?>" placeholder="0" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <label for="stock">Stock:</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 mb-3">
+                                                <input type="number" min="0" name="stock" value="<?php echo $data['stock']; ?>" placeholder="0" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2 col-md-2"></div>
+                                            <div class="col-sm-4 col-md-4">
+                                                <input type="submit" value="Save" name="save" class="btn btn-success btn-block" />
+                                            </div>
+                                            <div class="col-sm-4 col-md-4">
+                                                <input type="reset" value="Reset" name="reset" class="btn btn-warning btn-block" />
+                                            </div>
+                                            <div class="col-sm-2 col-md-2"></div>
+                                        </div>
+                                    </form>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12">
-                                        <input type="text" id="name" name="name" value="<?php echo $data['name']; ?>" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12">
-                                        <label for="price">Price:</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12">
-                                        <input type="number" step="any" min="0" name="price" value="<?php echo $data['price']; ?>" placeholder="0" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12">
-                                        <label for="stock">Stock:</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-12 mb-3">
-                                        <input type="number" min="0" name="stock" value="<?php echo $data['stock']; ?>" placeholder="0" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-2 col-md-2"></div>
-                                    <div class="col-sm-4 col-md-4">
-                                        <input type="submit" value="Save" name="save" class="btn btn-success btn-block" />
-                                    </div>
-                                    <div class="col-sm-4 col-md-4">
-                                        <input type="reset" value="Reset" name="reset" class="btn btn-warning btn-block" />
-                                    </div>
-                                    <div class="col-sm-2 col-md-2"></div>
-                                </div>
-                            </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>

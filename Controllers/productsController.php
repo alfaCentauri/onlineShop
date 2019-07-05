@@ -18,27 +18,76 @@
 
 namespace Controllers;
 
+use Models\Users as Users;
 use Models\Product as Product;
+use Models\Conection as Conection;
+use Models\Qualification as Qualification;
 /**
  * Controller of actions on products.
+ *
+ * @package Controllers.
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
 class productsController implements Crud
 {
     /**
+     * Contains a object of type Users.
+     * @var Users
+     **/
+    private $user;
+    /**
      * Contains a object of type Product.
      */
     private $product;
-
-    function __construct() 
+    /**
+     * Contains a object of type Qualificationes.
+     * @var Qualification
+     */
+    private $qualification;
+    /**
+     * @var Conection
+     */
+    private $conection;
+    /**
+     * productsController constructor.
+     */
+    function __construct()
     {
+        $this->conection = new Conection();
+        $this->user = new Users();
+        $this->user->setConection($this->conection);
         $this->product = new Product();
+        $this->product->setCon($this->conection);
+        $this->qualification = new Qualification();
+        $this->qualification->setConn($this->conection);
     }
     /**Default*/
     public function index()
     {
-        $data = $this->product->toList();
+        $data=null;
+        $listProduct = $this->product->toList();
+        foreach ($listProduct as $node)
+        {
+            $item = array();
+            $item['id']=$node['id'];
+            $item['name']=$node['name'];
+            $item['price']=$node['price'];
+            $item['image']=$node['image'];
+            $item['stock']=$node['stock'];
+            $item['creationDate']=$node['creationDate'];
+            $this->qualification->setIdProduct($node['id']);
+            $averageProduct = $this->qualification->findAverage();
+            if (isset($averageProduct['average']))
+            {
+                $item['average']= number_format($averageProduct['average'],2);
+            }
+            else
+            {
+                $item['average']= 0;
+            }
+            $data[]=$item;
+        }
         return $data;
     }
     /**
@@ -74,7 +123,26 @@ class productsController implements Crud
     public function view(int $id=0)
     {
         $this->product->setId($id);
-        $data = $this->product->view();
+        $product = $this->product->view();
+        if (isset($product['id']))
+        {
+            $data = array();
+            $data['id'] = $product['id'];
+            $data['name'] = $product['name'];
+            $data['price'] = $product['price'];
+            $data['image'] = $product['image'];
+            $data['stock'] = $product['stock'];
+            $data['creationDate'] = $product['creationDate'];
+            $this->qualification->setIdProduct($product['id']);
+            $averageProduct = $this->qualification->findAverage();
+            if (isset($averageProduct['average'])) {
+                $data['average'] = number_format($averageProduct['average'], 2);
+            } else {
+                $data['average'] = 0;
+            }
+        }
+        else
+            $data = null;
         return $data;
     }
 

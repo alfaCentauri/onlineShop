@@ -8,22 +8,28 @@
 
 namespace Models;
 
-
-class Entity
+/**
+ * Abstract class to define common methods to create, read, update and delete.
+ *
+ * @package Models.
+ * @author Ingeniero en Computación: Ricardo Presilla.
+ * @version 1.0.
+ */
+abstract class Entity
 {
     /**
      * @var Conection
      */
-    private $conn;
+    protected $conn;
     /**
      * It contains the index
      * @var integer
      */
-    private $id;
+    protected $id;
     /**
      * Contains creation date.
      */
-    private $creationDate;
+    protected $creationDate;
 
     /**
      * @return Conection
@@ -72,5 +78,26 @@ class Entity
     {
         $this->creationDate = $creationDate;
     }
-
+    /**
+     * Display a record indicated by the current id.
+     * @return array|null Return the register if found else return null.
+     */
+    abstract public function view();
+    /**
+     * Add a register.
+     */
+    abstract public function add();
+    /**
+     * Edit record indicated by the current id.
+     */
+    abstract public function edit();
+    /**
+     * Delete record indicated by the current id.
+     */
+    abstract public function delete();
+    /**
+     * Get a list of all the records.
+     * @return mixed
+     */
+    abstract public function toList();
 }

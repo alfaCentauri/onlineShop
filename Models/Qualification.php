@@ -22,6 +22,7 @@ namespace Models;
 /**
  * This is the qualification of the product.
  *
+ * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.0.
  */
@@ -61,7 +62,6 @@ class Qualification implements Crud
      */
     function __construct()
     {
-        $this->conn = new Conection();
         $this->id = 0;
         $this->idUser = 0;
         $this->idProduct = 0;
@@ -171,7 +171,8 @@ class Qualification implements Crud
     {
         $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) 
           VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->points}', NOW());";
-        $this->conn->SimpleQuery($sql);
+        $data = $this->conn->InsertQuery($sql);
+        return $data;
     }
     /**
      * Delete record indicated by the current id.
@@ -186,7 +187,7 @@ class Qualification implements Crud
      */
     public function edit()
     {
-        $sql = "update qualification set ponits='{$this->points}' where id='{$this->id}';";
+        $sql = "update qualification set points='{$this->points}' where id='{$this->id}';";
         $this->conn->SimpleQuery($sql);
     }
     /**
@@ -210,11 +211,12 @@ class Qualification implements Crud
           INNER JOIN products P 
           on Q.idProduct=P.id and Q.id='{$this->id}';";
         $data = $this->conn->ReturnQuery($sql);
-        return $data;
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
     /**
-     * Find a register by the user current.
-     * @return bool|\mysqli_result
+     * Find all registers by the current user.
+     * @return array
      */
     public function findByUser()
     {
@@ -224,7 +226,23 @@ class Qualification implements Crud
           INNER JOIN products P 
           on Q.idProduct=P.id;";
         $data = $this->conn->ReturnQuery($sql);
-        return $data;
+        $row = mysqli_fetch_assoc($data);
+        return $row;
+    }
+    /**
+     * Find a record for the current user and the product indicate by their index.
+     * @return array
+     */
+    public function findByUserProduct()
+    {
+        $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
+          FROM qualification Q 
+          INNER JOIN users U on Q.idUser='{$this->idUser}' and Q.idUser=U.id  
+          INNER JOIN products P 
+          on Q.idProduct=P.id and Q.idProduct='{$this->idProduct}';";
+        $data = $this->conn->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
     /**
      * List all the average.
@@ -238,5 +256,19 @@ class Qualification implements Crud
           on Q.idProduct=P.id;";
         $data = $this->conn->ReturnQuery($sql);
         return $data;
+    }
+    /**
+     * Find a average for a product.
+     * @return bool|\mysqli_result
+     */
+    public function findAverage()
+    {
+        $sql = "SELECT Q.idProduct, AVG(Q.points) as average, P.name as name_product, P.image as image_product 
+          FROM qualification Q 
+          INNER JOIN products P 
+          on Q.idProduct='{$this->idProduct}';";
+        $data = $this->conn->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
+        return $row;
     }
 }

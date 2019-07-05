@@ -18,136 +18,136 @@
  */
 
 ?>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="text-center">User's cart history.</h3>
-        </div>
-    </div>
-    <?php
-    if (isset($data))
-    {
-        ?>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-3">
-                    <div class="card-header bg-success">
-                        My shopping carts:
-                    </div>
-                    <div class="card-body">
-                        <table border="1" class="table table-striped table-hover">
-                            <thead>
-                            <tr class="table-primary">
-                                <th>#</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th class="text-center">Quantity</th>
-                                <th class="text-center">Total Price $</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            $total = 0;
-                            $idCart = 0;
-                            $idU = 1;
-                            $i=1;
-                            while ($row = mysqli_fetch_array($data)){
-                                ?>
-                                <tr>
-                                    <td><?php echo $i++; ?></td>
-                                    <td>
-                                        <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $row["image_product"];?>"
-                                             width="60px" height="60px" alt="Picture"
-                                             class="img-fluid"/>
-                                    </td>
-                                    <td>
-                                        <?php echo $row["name_product"];?>
-                                    </td>
-                                    <td class="text-center"><?php echo $row['quantity']; ?></td>
-                                    <td class="text-right">
-                                        <?php
-                                        if (isset($row['id']) && isset($row['idUser']))
-                                        {
-                                            $idCart= $row['id'];
-                                            $idU = $row['idUser'];
-                                        }
-                                        $total = $row['totalPrice'] + $total;
-                                        echo $row['totalPrice'];
-                                        ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="<?php echo URL; ?>index.php?url=cart/edit/<?php echo $row['idItem']; ?>" class="btn btn-warning">
-                                            Edit
-                                        </a>
-                                        <a href="<?php echo URL; ?>index.php?url=cart/remove/<?php echo $row['idItem']; ?>" class="btn btn-danger" >
-                                            Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                                <?php
-                            }
-                            ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div><!-- End card -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center">User's cart history.</h3>
+                </div>
             </div>
-        </div>
-        <div class="row"><!-- Row Total -->
-            <div class="col-md-12">
-                <div class="card bg-light mb-3">
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="hidden-sm col-md-6 col-lg-6"></div>
-                                <div class="col-sm-6 col-md-3 col-lg-3">
-                                    <strong>Total to pay: </strong>
-                                </div>
-                                <div class="col-sm-6 col-md-3 col-lg-3">
-                                    <div class="price" id="total">
-                                       <?php echo $total;?> $
-                                    </div>
-                                </div>
+            <?php
+            if (isset($data))
+            {
+                ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-3">
+                            <div class="card-header bg-success">
+                                My shopping carts:
                             </div>
-                        </div>
-                    </div>
-                </div><!-- End card -->
-            </div><!-- End col -->
-        </div><!-- End row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-2 col-md-2 col-lg-2"></div>
-                                <div class="col-sm-4 col-md-4 col-lg-4">
-                                    <?php if ($idCart>0)
-                                    {
+                            <div class="card-body">
+                                <table border="1" class="table table-striped table-hover">
+                                    <thead>
+                                    <tr class="table-primary">
+                                        <th>#</th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Total Price $</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $total = 0;
+                                    $idCart = 0;
+                                    $idU = 1;
+                                    $i=1;
+                                    while ($row = mysqli_fetch_array($data)){
                                         ?>
-                                        <a href="<?php echo URL; ?>index.php?url=cart/shipping/<?php echo $idCart; ?>/<?php echo $idU; ?>" class="btn btn-success btn-block">Pay</a>
+                                        <tr>
+                                            <td><?php echo $i++; ?></td>
+                                            <td>
+                                                <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $row["image_product"];?>"
+                                                     width="60px" height="60px" alt="Picture"
+                                                     class="img-fluid"/>
+                                            </td>
+                                            <td>
+                                                <?php echo $row["name_product"];?>
+                                            </td>
+                                            <td class="text-center"><?php echo $row['quantity']; ?></td>
+                                            <td class="text-right">
+                                                <?php
+                                                if (isset($row['id']) && isset($row['idUser']))
+                                                {
+                                                    $idCart= $row['id'];
+                                                    $idU = $row['idUser'];
+                                                }
+                                                $total = $row['totalPrice'] + $total;
+                                                echo $row['totalPrice'];
+                                                ?>
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="<?php echo URL; ?>index.php?url=cart/edit/<?php echo $row['idItem']; ?>" class="btn btn-warning">
+                                                    Edit
+                                                </a>
+                                                <a href="<?php echo URL; ?>index.php?url=cart/remove/<?php echo $row['idItem']; ?>" class="btn btn-danger" >
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
                                         <?php
                                     }
                                     ?>
-                                </div>
-                                <div class="col-sm-4 col-md-4 col-lg-4">
-                                    <a href="<?php echo URL; ?>index.php?url=products/" class="btn btn-info btn-block">Return</a>
-                                </div>
-                                <div class="col-sm-2 col-md-2 col-lg-2"></div>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
+                        </div><!-- End card -->
                     </div>
-                </div><!-- End card -->
-            </div><!-- End col -->
-        </div><!-- End row -->
-        <?php
-    }
-    else
-    {
-        ?>
-        <h2 class="text-center">My shopping carts is empty</h2>
-        <?php
-    }
-    ?>
-</div>
+                </div>
+                <div class="row"><!-- Row Total -->
+                    <div class="col-md-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="hidden-sm col-md-6 col-lg-6"></div>
+                                        <div class="col-sm-6 col-md-3 col-lg-3">
+                                            <strong>Total to pay: </strong>
+                                        </div>
+                                        <div class="col-sm-6 col-md-3 col-lg-3">
+                                            <div class="price" id="total">
+                                               <?php echo $total;?> $
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End card -->
+                    </div><!-- End col -->
+                </div><!-- End row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-2 col-md-2 col-lg-2"></div>
+                                        <div class="col-sm-4 col-md-4 col-lg-4">
+                                            <?php if ($idCart>0)
+                                            {
+                                                ?>
+                                                <a href="<?php echo URL; ?>index.php?url=cart/shipping/<?php echo $idCart; ?>/<?php echo $idU; ?>" class="btn btn-success btn-block">Pay</a>
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="col-sm-4 col-md-4 col-lg-4">
+                                            <a href="<?php echo URL; ?>index.php?url=products/" class="btn btn-info btn-block">Return</a>
+                                        </div>
+                                        <div class="col-sm-2 col-md-2 col-lg-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End card -->
+                    </div><!-- End col -->
+                </div><!-- End row -->
+                <?php
+            }
+            else
+            {
+                ?>
+                <h2 class="text-center">My shopping carts is empty</h2>
+                <?php
+            }
+            ?>
+        </div>

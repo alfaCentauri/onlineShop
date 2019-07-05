@@ -17,41 +17,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-            <h1 class="text-center">Product</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="card mb-3">
-                <div class="card-header bg-success">Product Details <?php echo $data['name']; ?></div>
-                <div class="card-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-4">
-                                <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Picture" class="img-fluid"/>
-                            </div>
-                            <div class="col-sm-12 col-md-8 mb-3">
-                                <ul class="list-group mb-3">
-                                  <li class="list-group-item"><strong>Product Name:</strong> <?php echo $data['name']; ?></li>
-                                  <li class="list-group-item"><strong>Price:</strong> <?php echo $data['price']; ?></li>
-                                  <li class="list-group-item"><strong>Stock:</strong> <?php echo $data['stock']; ?></li>
-                                  <li class="list-group-item"><strong>Creation date:</strong> <?php echo $data["creationDate"];?></li>
-                                </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-center">Product</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="card mb-3">
+                        <div class="card-header bg-success">Product Details <?php echo $data['name']; ?></div>
+                        <div class="card-body">
+                            <div class="container">
                                 <div class="row">
-                                    <div class="col-sm-4 col-md-4"></div>
-                                    <div class="col-sm-4 col-md-4">
-                                        <a href="index.php?url=products" class="btn btn-info btn-block">Return</a>
+                                    <div class="col-sm-12 col-md-4">
+                                        <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Picture" class="img-fluid"/>
                                     </div>
-                                    <div class="col-sm-4 col-md-4"></div>
+                                    <div class="col-sm-12 col-md-8 mb-3">
+                                        <ul class="list-group mb-3">
+                                          <li class="list-group-item"><strong>Product Name:</strong> <?php echo $data['name']; ?></li>
+                                          <li class="list-group-item"><strong>Price:</strong> <?php echo $data['price']; ?></li>
+                                          <li class="list-group-item"><strong>Stock:</strong> <?php echo $data['stock']; ?></li>
+                                          <li class="list-group-item"><strong>Creation date:</strong> <?php echo $data["creationDate"];?></li>
+                                          <li class="list-group-item"><strong>Average:</strong> <?php echo $data["average"];?></li>
+                                        </ul>
+                                        <div class="row">
+                                            <div class="col-sm-4 col-md-4"></div>
+                                            <div class="col-sm-4 col-md-4">
+                                                <a href="index.php?url=products" class="btn btn-info btn-block">Return</a>
+                                            </div>
+                                            <div class="col-sm-4 col-md-4"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>                    
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
