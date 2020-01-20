@@ -24,7 +24,7 @@ class Conection
     /** Contains the password */
     private $password = "userShop.19";
     /** Contains the name of the database*/
-    private $dbname = "rpresilla";
+    private $dbname = "shop";
     /** Contains the conection */
     private $conn;
     /**
