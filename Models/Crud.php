@@ -20,7 +20,7 @@
 namespace Models;
 
 /**
- * Interface class to define common methods to create, read, update and delete.
+ * Interface class to define common methods to create, read, update, delete and to list.
  *
  * @package Models.
  * @author Ingeniero en Computación: Ricardo Presilla.

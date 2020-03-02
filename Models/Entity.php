@@ -9,7 +9,7 @@
 namespace Models;
 
 /**
- * Abstract class to define common methods to create, read, update and delete.
+ * Abstract class to define common methods to create, read, update, delete and list of all the records.
  *
  * @package Models.
  * @author Ingeniero en Computación: Ricardo Presilla.

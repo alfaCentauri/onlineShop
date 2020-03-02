@@ -130,15 +130,5 @@ class Credit extends Entity
         $data = $this->conn->ReturnQuery($sql);
         return $data;
     }
-    /**
-     * Display a record indicated by the current index user.
-     * @return array|null Return the register if found else return null.
-     */
-    public function findByUser()
-    {
-        $sql = "SELECT * FROM credit where idUser='{$this->idUser}'";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
+
 }
