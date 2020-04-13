@@ -18,40 +18,85 @@
 
 namespace Repository;
 
+use Models\Conection;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * Interface class to define common methods to find, find by and order by.
+ * Abstract class to define common methods to all, find, find by and order by and parameter conection.
  *
  * @package Repository.
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 1.2.
  */
-interface Repository
+abstract class Repository
 {
+    /**
+     * Conetion to DB.
+     * @var Conection
+     */
+    protected $conection;
+    
+    /**
+     * @return Conection
+     */
+    public function getConection(): Conection
+    {
+        return $this->conection;
+    }
+    
+    /**
+     * @param Conection $conection
+     */
+    public function setConection(Conection $conection): void
+    {
+        $this->conection = $conection;
+    }
+    
     /**
      * List of all registers.
      * 
      * @return null|array Result of the query.
      */
-    public function all();
+    abstract public function all();
+    
     /**
      * Find a record for you id.
      * @param Integer $id Index.
      */
-    public function find(Integer $id);
+    abstract public function find(Integer $id);
 
     /**
      * Find a record for at value param.
      * @param String $param Param for find.
      * @param String $value Value.
      */
-    public function findBy(String $param, String $value);
+    abstract public function findBy(String $param, String $value);
 
     /**
      * Order all records by param.
      * @param String $param Param for order.
      * @param String $order Order asc or des.
      */
-    public function orderBy(String $param, String $order = 'ASC');
+    abstract public function orderBy(String $param, String $order = 'ASC');
+    
+    /**
+     * Add a register
+     */
+    abstract public function add();
+    
+    /**
+     * Edit record indicated by the current id.
+     */
+    abstract public function edit();
+    
+    /**
+     * Display a record indicated by the current id.
+     * @return array|null Return an arrangement with the record.
+     */
+    abstract public function view();
+    
+    /**
+     * Delete record indicated by the current id.
+     */
+    abstract public function delete();
 }

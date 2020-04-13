@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ namespace Models;
  *
  * @package Models.
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 2.0.
  */
 class Credit extends Entity
 {
@@ -76,59 +76,6 @@ class Credit extends Entity
     public function setBalance($balance): void
     {
         $this->balance = $balance;
-    }
-
-    /**
-     * Display a record indicated by the current id.
-     * @return array|null Return the register if found else return null.
-     */
-    public function view()
-    {
-        $sql = "SELECT * FROM credit where id='{$this->id}'";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-
-    /**
-     * Add a register
-     * @return int Return a integer with last id of credit.
-     */
-    public function add()
-    {
-        $sql = "INSERT INTO credit(id, idUser, balance, creationDate) 
-          VALUES(null, '{$this->idUser}', '{$this->balance}', NOW());";
-        $lastId=$this->conn->InsertQuery($sql);
-        return $lastId;
-    }
-
-    /**
-     * Edit record indicated by the current id.
-     */
-    public function edit()
-    {
-        $sql = "UPDATE credit SET balance='{$this->balance}' where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
-
-    /**
-     * Delete record indicated by the current id.
-     */
-    public function delete()
-    {
-        $sql = "delete from credit where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
-
-    /**
-     * Get a list of all the records.
-     * @return mixed
-     */
-    public function toList()
-    {
-        $sql = "select * from credit;";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
     }
 
 }

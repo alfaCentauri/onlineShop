@@ -24,15 +24,10 @@ namespace Models;
  *
  * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 2.0.
  */
-class Users implements Crud
+class Users extends Entity
 {
-    /**
-     * It contains the index.
-     * @var int
-     */
-    private $id;
     /**
      * Contains the firstName
      * @var string
@@ -63,16 +58,6 @@ class Users implements Crud
      */
     private $active;
     /**
-     * Contains creation date.
-     * @var mixed
-     */
-    private $creationDate;
-    /**
-     * Conetion to DB.
-     * @var Conection
-     */
-    private $conection;
-    /**
      * Construct of the class
      */
     function __construct() 
@@ -86,22 +71,6 @@ class Users implements Crud
         $this->active=true;
     }
     
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
     /**
      * @return string
      */
@@ -196,38 +165,6 @@ class Users implements Crud
     public function setActive(bool $active): void
     {
         $this->active = $active;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreationDate()
-    {
-        return $this->creationDate;
-    }
-
-    /**
-     * @param mixed $creationDate
-     */
-    public function setCreationDate($creationDate): void
-    {
-        $this->creationDate = $creationDate;
-    }
-
-    /**
-     * @return Conection
-     */
-    public function getConection(): Conection
-    {
-        return $this->conection;
-    }
-
-    /**
-     * @param Conection $conection
-     */
-    public function setConection(Conection $conection): void
-    {
-        $this->conection = $conection;
     }
 
 }

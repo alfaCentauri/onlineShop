@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: rpres
+ * User: Ricardo Presilla
  * Date: 6/7/2019
  * Time: 7:06 PM
  */
@@ -9,7 +9,7 @@
 namespace Models;
 
 /**
- * Abstract class to define common methods to create, read, update, delete and list of all the records.
+ * Abstract class to define common methods to all the Models.
  *
  * @package Models.
  * @author Ingeniero en Computación: Ricardo Presilla.
@@ -17,10 +17,6 @@ namespace Models;
  */
 abstract class Entity
 {
-    /**
-     * @var Conection
-     */
-    protected $conn;
     /**
      * It contains the index
      * @var integer
@@ -30,22 +26,10 @@ abstract class Entity
      * Contains creation date.
      */
     protected $creationDate;
-
     /**
-     * @return Conection
+     * @var Boolean
      */
-    public function getConn(): Conection
-    {
-        return $this->conn;
-    }
-
-    /**
-     * @param Conection $conn
-     */
-    public function setConn(Conection $conn): void
-    {
-        $this->conn = $conn;
-    }
+    protected $active;
 
     /**
      * @return int
@@ -78,26 +62,5 @@ abstract class Entity
     {
         $this->creationDate = $creationDate;
     }
-    /**
-     * Display a record indicated by the current id.
-     * @return array|null Return the register if found else return null.
-     */
-    abstract public function view();
-    /**
-     * Add a register.
-     */
-    abstract public function add();
-    /**
-     * Edit record indicated by the current id.
-     */
-    abstract public function edit();
-    /**
-     * Delete record indicated by the current id.
-     */
-    abstract public function delete();
-    /**
-     * Get a list of all the records.
-     * @return mixed
-     */
-    abstract public function toList();
+    
 }

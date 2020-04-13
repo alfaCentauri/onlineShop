@@ -1,9 +1,19 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: rpres
- * Date: 6/7/2019
- * Time: 7:08 PM
+ * Copyright (C) 2020 Ingeniero en Computación: Ricardo Presilla.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Models;
@@ -13,19 +23,10 @@ namespace Models;
  *
  * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 2.0.
  */
-class CartItems implements Crud
+class CartItems extends Entity
 {
-    /**
-     * @var Conection
-     */
-    private $conn;
-    /**
-     * It contains the index
-     * @var integer
-     */
-    private $id;
     /**
      * Contains the index of the cart.
      * @var int
@@ -56,38 +57,6 @@ class CartItems implements Crud
         $this->idProduct = 0;
         $this->quantity = 0;
         $this->totalPrice = 0;
-    }
-
-    /**
-     * @return Conection
-     */
-    public function getConn(): Conection
-    {
-        return $this->conn;
-    }
-
-    /**
-     * @param Conection $conn
-     */
-    public function setConn(Conection $conn): void
-    {
-        $this->conn = $conn;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     /**
@@ -153,71 +122,5 @@ class CartItems implements Crud
     {
         $this->totalPrice = $totalPrice;
     }
-    /**
-     * View register.
-     * @return array|null Return an arrangement with the record.
-     */
-    public function view()
-    {
-        $sql = "SELECT I.*, P.name as name_product, P.image as image_product, P.stock as stock 
-          FROM itemsCart I 
-          INNER JOIN products P 
-          on I.idProduct=P.id and I.id='{$this->id}';";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * Add register
-     */
-    public function add()
-    {
-        $sql = "INSERT INTO itemsCart(id, idCart, idProduct, quantity, totalPrice) VALUES(NULL, '{$this->idCart}', '{$this->idProduct}', '{$this->quantity}', '{$this->totalPrice}');";
-        $this->conn->SimpleQuery($sql);
-    }
-    /**
-     * Edit record indicated by the current id.
-     */
-    public function edit()
-    {
-        $sql = "update itemsCart set quantity='{$this->quantity}', totalPrice='{$this->totalPrice}' where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
-    /**
-     * Delete record indicated by the current id.
-     */
-    public function delete()
-    {
-        $sql = "delete from itemsCart where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
-    /**
-     * Get a list of all the records.
-     */
-    public function toList()
-    {
-        $sql = "SELECT * FROM itemsCart;";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-    /**
-     * Get a list of all records with the image and the name of the associated
-     * product.
-     */
-    public function toList2()
-    {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM itemsCart T1 INNER JOIN products T2 on T1.idProduct=T2.id ;";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-    /**
-     * Get the total of all the records for a cart.
-     */
-    public function totalList()
-    {
-        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM itemsCart T1 where T1.idCart='{$this->idCart}';";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
+    
 }

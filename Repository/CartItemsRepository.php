@@ -18,25 +18,22 @@
 
 namespace Repository;
 
-use Models\Credit;
+use Models\CartItems;
 use phpDocumentor\Reflection\Types\Integer;
 /**
- * Repository of Class Credit.
+ * Repository of Class CartItems.
  *
  * @package Repository.
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.1.
  */
-class CreditRepository extends Repository
+class CartItemsRepository extends Entity
 {
-    /**
-     * Object credit for use data.
-    */
-    private Credit $credit;
+    private CartItems $cartItem;
     
-    function __construct(Credit $credit)
+    function __construct(CartItems $cartItem)
     {
-        $this->credit = $credit;
+        $this->cartItem = $cartItem;
     }
     
     /**
@@ -44,7 +41,7 @@ class CreditRepository extends Repository
      */
     public function all()
     {
-        $sql = "SELECT * FROM credit;"
+        $sql = "SELECT * FROM itemsCart;"
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
@@ -55,7 +52,7 @@ class CreditRepository extends Repository
      */
     public function find(Integer $id)
     {
-        $sql = "SELECT * FROM credit where id='{$id}'";
+        $sql = "SELECT * FROM itemsCart where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -66,7 +63,7 @@ class CreditRepository extends Repository
      */
     public function findBy(String $param, String $value)
     {
-        $sql = "SELECT * FROM credit where {$param}='{$value}'";
+        $sql = "SELECT * FROM itemsCart where {$param}='{$value}'";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -77,34 +74,19 @@ class CreditRepository extends Repository
      */
     public function orderBy(String $param, String $order = 'ASC')
     {
-        $sql = "SELECT * FROM credit ORDER BY {$param} '{$order}'";
+        $sql = "SELECT * FROM itemsCart ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
     }
     
     /**
-     * Display a record indicated by the current index user.
-     * @return array|null Return the register if found else return null.
-     */
-    public function findByUser()
-    {
-        $sql = "SELECT * FROM credit where idUser='{$this->credit->getIdUser()}'";
-        $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    
-    /**
-     * Add a register.
-     * @return int Return a integer with last id of credit.
+     * @inheritDoc
      */
     public function add()
     {
-        $sql = "INSERT INTO credit(id, idUser, balance, creationDate) 
-          VALUES(null, '{$this->getIdUser()}', '{$this->getBalance()}', NOW());";
-        $lastId=$this->conection->InsertQuery($sql);
-        return $lastId;
+        $sql = "INSERT INTO itemsCart(id, idCart, idProduct, quantity, totalPrice) VALUES(NULL, '{$this->cartItem->getIdCart()}', '{$this->cartItem->getIdProduct()}', '{$this->cartItem->getQuantity()}', '{$this->cartItem->getTotalPrice()}');";
+        $this->conection->SimpleQuery($sql);
     }
     
     /**
@@ -112,28 +94,54 @@ class CreditRepository extends Repository
      */
     public function edit()
     {
-        $sql = "UPDATE credit SET balance='{$this->getBalance()}' where id='{$this->getId()}';";
+        $sql = "update itemsCart set quantity='{$this->cartItem->getQuantity()}', totalPrice='{$this->cartItem->getTotalPrice()}' where id='{$this->cartItem->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
     /**
-     * @inheritDoc
+     * View register.
+     * @return array|null Return an arrangement with the record.
      */
     public function view()
     {
-        $sql = "SELECT * FROM credit where id='{$this->getId()}'";
+        $sql = "SELECT I.*, P.name as name_product, P.image as image_product, P.stock as stock 
+          FROM itemsCart I 
+          INNER JOIN products P 
+          on I.idProduct=P.id and I.id='{$this->cartItem->getId()}';";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
     
     /**
-     * @inheritDoc
+     * Delete record indicated by the current id.
      */
     public function delete()
     {
-        $sql = "delete from credit where id='{$this->getId()}';";
+        $sql = "delete from itemsCart where id='{$this->cartItem->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
-
+    
+    /**
+     * Get a list of all records with the image and the name of the associated
+     * product.
+     */
+    public function toList2()
+    {
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM itemsCart T1 INNER JOIN products T2 on T1.idProduct=T2.id ;";
+        $data = $this->conection->ReturnQuery($sql);
+        $rows = mysqli_fetch_assoc($data);
+        return $rows;
+    }
+    
+    /**
+     * Get the total of all the records for a cart.
+     */
+    public function totalList()
+    {
+        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM itemsCart T1 where T1.idCart='{$this->cartItem->getId()Cart}';";
+        $data = $this->conection->ReturnQuery($sql);
+        $row = mysqli_fetch_assoc($data);
+        return $row;
+    }
 }

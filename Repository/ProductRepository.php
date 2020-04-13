@@ -16,27 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Repository;
+namespace Models;
 
-use Models\Credit;
+use Models\Product;
 use phpDocumentor\Reflection\Types\Integer;
 /**
- * Repository of Class Credit.
+ * Repository of Class Products.
  *
- * @package Repository.
+ * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.1.
+ * @version 1.0.
  */
-class CreditRepository extends Repository
+class ProductRepository extends Repository
 {
-    /**
-     * Object credit for use data.
-    */
-    private Credit $credit;
+    private Product $product;
     
-    function __construct(Credit $credit)
+    public __construct(Product $product)
     {
-        $this->credit = $credit;
+        $this->product = $product;
     }
     
     /**
@@ -44,7 +41,7 @@ class CreditRepository extends Repository
      */
     public function all()
     {
-        $sql = "SELECT * FROM credit;"
+        $sql = "SELECT * FROM products;";
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
@@ -55,56 +52,50 @@ class CreditRepository extends Repository
      */
     public function find(Integer $id)
     {
-        $sql = "SELECT * FROM credit where id='{$id}'";
+        $sql = "SELECT * FROM products where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
-
+    
     /**
      * @inheritDoc
      */
     public function findBy(String $param, String $value)
     {
-        $sql = "SELECT * FROM credit where {$param}='{$value}'";
+        $sql = "SELECT * FROM products where '{$param}'='{$value}';";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
-
+    
     /**
      * @inheritDoc
      */
     public function orderBy(String $param, String $order = 'ASC')
     {
-        $sql = "SELECT * FROM credit ORDER BY {$param} '{$order}'";
+        $sql = "SELECT * FROM products ORDER BY {$param} '{$order}';";
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
     }
     
     /**
-     * Display a record indicated by the current index user.
-     * @return array|null Return the register if found else return null.
-     */
-    public function findByUser()
-    {
-        $sql = "SELECT * FROM credit where idUser='{$this->credit->getIdUser()}'";
-        $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    
-    /**
-     * Add a register.
-     * @return int Return a integer with last id of credit.
+     * @inheritDoc
      */
     public function add()
     {
-        $sql = "INSERT INTO credit(id, idUser, balance, creationDate) 
-          VALUES(null, '{$this->getIdUser()}', '{$this->getBalance()}', NOW());";
-        $lastId=$this->conection->InsertQuery($sql);
-        return $lastId;
+        $sql = "INSERT INTO products(name, price, image, stock, creationDate) VALUES('{$this->getName()}', '{$this->getPrice()}', '{$this->getImage()}', '{$this->getStock()}',NOW());";
+        $this->conection->SimpleQuery($sql);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function delete()
+    {
+        $sql = "delete from products where id='{$this->getId()}';";
+        $this->conection->SimpleQuery($sql);
     }
     
     /**
@@ -112,7 +103,8 @@ class CreditRepository extends Repository
      */
     public function edit()
     {
-        $sql = "UPDATE credit SET balance='{$this->getBalance()}' where id='{$this->getId()}';";
+        $sql = "update products set name='{$this->getName()}', price="
+        . "'{$this->getPrice()}', stock='{$this->getStock()}' where id='{$this->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -121,19 +113,23 @@ class CreditRepository extends Repository
      */
     public function view()
     {
-        $sql = "SELECT * FROM credit where id='{$this->getId()}'";
+        $sql = "SELECT * FROM products where id='{$this->getId()}'";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
     
     /**
-     * @inheritDoc
+     * List witch average.     
+     * 
+     * @return null|array Result of the query.
      */
-    public function delete()
+    public function toListAverage()
     {
-        $sql = "delete from credit where id='{$this->getId()}';";
-        $this->conection->SimpleQuery($sql);
+        $sql = "SELECT P.* FROM products P INNER JOIN qualification Q
+              ON Q.idProduct=P.id;";
+        $data = $this->conection->ReturnQuery($sql);
+        $rows = mysqli_fetch_assoc($data);
+        return $rows;
     }
-
 }

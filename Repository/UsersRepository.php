@@ -26,11 +26,16 @@ use phpDocumentor\Reflection\Types\Integer;
  *
  * @package Repository
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 1.1.
  */
-class Users implements Repository
+class UsersRepository extends Repository
 {
-    private Users user;
+    private Users $user;
+    
+    function __construct(Users $user)
+    {
+        $this->user = $user;
+    }
     
     /**
      * @inheritDoc
@@ -38,7 +43,7 @@ class Users implements Repository
     public function all()
     {
         $sql = "SELECT * FROM users;";
-        $data = $this->user->getConection()->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         return $data;
     }
     
@@ -48,7 +53,7 @@ class Users implements Repository
     public function find(Integer $id)
     {
         $sql = "SELECT * FROM users where id='{$id}';";
-        $data = $this->user->getConection()->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
@@ -59,7 +64,7 @@ class Users implements Repository
     public function findBy(String $param, String $value)
     {
         $sql = "SELECT * FROM users where '{$param}'='{$value}';";
-        $data = $this->user->getConection()->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
@@ -70,49 +75,49 @@ class Users implements Repository
     public function orderBy(String $param, String $order = 'ASC')
     {
         $sql = "SELECT * FROM users ORDER BY {$param} '{$order}';";
-        $data = $this->user->getConection()->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
     }
     
     /**
-     * Add a register
+     * @inheritDoc
      */
     public function add()
     {
         $sql = "INSERT INTO users(firstName, lastName, email, login, password, creationDate) "
-                . "VALUES('{$this->firstName}', '{$this->lastName}', '"
+                . "VALUES('{$this->user->getFirstName()}', '{$this->user->getLastName()}', '"
                 . "{$this->email}', '{$this->user->getLogin()}', '{$this->user->getPassword()}', NOW());";
-        $this->user->getConection()->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     
     /**
-     * Delete record indicated by the current id.
+     * @inheritDoc
      */
     public function delete()
     {
         $sql = "delete from users where id='{$this->user->getId()}';";
-        $this->user->getConection()->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     
     /**
-     * Edit record indicated by the current id.
+     * @inheritDoc
      */
     public function edit()
     {
         $sql = "update users set firstName = '{$this->user->getFirstName()}', lastName = "
         . "'{$this->user->getLastName()}', email = '{$this->user->getEmail()}', login = '{$this->user->getLogin()}', '"
         . "{$this->user->getPassword()}' where id = '{$this->user->getId()}';";
-        $this->user->getConection()->SimpleQuery($sql);
+        $this->conection->SimpleQuery($sql);
     }
     
     /**
-     * Display a record indicated by the current id.
+     * @inheritDoc
      */
     public function view()
     {
         $sql = "SELECT * FROM users where id='{$this->user->getId()}'";
-        $data = $this->user->getConection()->ReturnQuery($sql);
+        $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
