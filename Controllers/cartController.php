@@ -32,7 +32,7 @@ use Models\Conection as Conection;
  *
  * @package Controllers
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.1.
+ * @version 1.2.
  */
 class cartController implements Crud
 {
@@ -151,7 +151,10 @@ class cartController implements Crud
         return null;
     }
     
-    /**List all product carts.*/
+    /**
+      * List all product carts.
+      * @return null|array Return a array of data.
+      */
     public function all()
     {
         $data = $this->cartRepository->all();
@@ -244,7 +247,7 @@ class cartController implements Crud
      */
     private function updateCartShopping($dataCart)
     {
-        if(is_null($dataCart) || ($dataCart['paidOut']==1))
+        if(is_null($dataCart))
         {
             $idCart=$this->cartRepository->add();
             if (isset($idCart))
@@ -272,6 +275,15 @@ class cartController implements Crud
     public function preview(int $id=1, int $idU=0)
     {
         $this->product->setId($id);
+        $data = createPreviewProduct();            
+        return $data;
+    }
+    
+    /**
+     * @return array|null   Data of product for preview.
+     */
+    private function createPreviewProduct(): array
+    {
         $product = $this->product->view();
         if (isset($product['id']))
         {
@@ -283,31 +295,42 @@ class cartController implements Crud
             $data['stock'] = $product['stock'];
             $data['creationDate'] = $product['creationDate'];
             $this->qualification->setIdProduct($product['id']);
-            $averageProduct = $this->qualification->findAverage();
-            if (isset($averageProduct['average']))
-            {
-                $data['average'] = number_format($averageProduct['average'], 2);
-            }
-            else
-            {
-                $data['average'] = 0;
-            }
             $this->qualification->setIdUser($idU);
-            $qualification = $this->qualification->findByUserProduct();
-            if(is_null($qualification))
-            {
-                $data['points'] = 0;
-            }
-            else
-            {
-                $data['points'] = $qualification['points'];
-            }
+            $data['average'] = findAverageOfTheProduct();
+            $data['points'] = findQualificationOfProductByUser();
         }
         else
             $data = null;
-        return $data;
     }
 
+    /**
+     * @return float Return average of the product.
+     */
+    private function findAverageOfTheProduct(): float
+    {
+        $average = 0;
+        $averageProduct = $this->qualificationRepository->findAverage();
+        if (isset($averageProduct['average']))
+            $average = number_format($averageProduct['average'], 2);
+                
+        return $average;
+    }
+    
+    /**
+     * Method for find the qualification of the product.
+     *
+     * @return float Return qualification.
+     */
+    private function findQualificationOfProductByUser(): float
+    {
+        $points = 0;
+        $qualification = $this->qualificationRepository->findByUserProduct();
+        if(isset($qualification['points']))
+            $points = $qualification['points']; 
+            
+        return $points
+    }
+    
     /**
      * Show a cart.
      * @param $id   Integer integer.
@@ -316,7 +339,7 @@ class cartController implements Crud
     public function view(int $id=0):array
     {
         $this->cart->setId($id);
-        $data = $this->cart->view();
+        $data = $this->cartRepository->view();
         return $data;
     }
 
@@ -332,41 +355,73 @@ class cartController implements Crud
         $infoForShipping = array();
         $this->cart->setId($id);
         $this->cart->setIdUser($idU);
-        $shoppingCart = $this->cart->findByUser();
-        if (!is_null($shoppingCart))
+        $infoForShipping = createShoppingCart($this->cartRepository->findByUser());        
+        if ($_POST && $this->subtotal > 0)
         {
-            $infoForShipping['id'] = $shoppingCart['id'];
-            $infoForShipping['idUser'] = $shoppingCart['idUser'];
-            $this->credit->setIdUser($shoppingCart['idUser']);
-            $dataCredit = $this->credit->findByUser();
-            $infoForShipping['balanceCredit'] = $dataCredit['balance'];
-            $this->itemsCart->setIdCart($shoppingCart['id']);
-            $array = $this->itemsCart->totalList();
-            $this->subtotal = $array['subtotal'];
-            $infoForShipping['subtotal'] = number_format($array['subtotal'],2);
-            $infoForShipping['remainingBalance'] = number_format($infoForShipping['balanceCredit'] - $infoForShipping['subtotal'],2);
-        }
-        if ($_POST && $this->subtotal>0)
-        {
-            $this->cart->setDirection($_POST['direction']);
-            if($_POST['shipping']==5)
-            {
-                $this->cart->setTotalPrice(($this->subtotal+5));
-            }
-            else
-            {
-                $this->cart->setTotalPrice($this->subtotal);
-            }
-            $dataCredit['balance'] = $infoForShipping['balanceCredit'] - $this->cart->getTotalPrice();
-            $this->credit->setId($dataCredit['id']);
-            $this->credit->setBalance($dataCredit['balance']);
-            $this->credit->edit();
-            $this->cart->setPaidOut(true);
-            $this->cart->edit();
+            processShipment($_POST['direction']); 
+            addCostShipping($_POST['shipping']);
             header("Location: ".URL."index.php?url=cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         return $infoForShipping;
     }
+    
+    /**
+     * @param array|null $shoppingCart Information of the shopping cart for 
+     * current user.
+     *
+     * @return array Return array of data shopping cart.
+     */
+    private function createShoppingCart($shoppingCart): array
+    {
+        $infoForShipping = array();
+        if (isset($shoppingCart))
+        {
+            $infoForShipping['id'] = $shoppingCart['id'];
+            $infoForShipping['idUser'] = $shoppingCart['idUser'];
+            $this->credit->setIdUser($shoppingCart['idUser']);
+            findDataCredit();
+            $infoForShipping['balanceCredit'] = $this->credit->getBalance();
+            $this->itemsCart->setIdCart($shoppingCart['id']);
+            $sumSubTotal = $this->cartItemsRepository->totalList();
+            $this->subtotal = $sumSubTotal['subtotal'];
+            $infoForShipping['subtotal'] = number_format($sumSubTotal['subtotal'], 2);
+            $infoForShipping['remainingBalance'] = number_format($infoForShipping['balanceCredit'] - $infoForShipping['subtotal'], 2);
+        }
+        return $infoForShipping;
+    }
+    
+    /****/
+    private function findDataCredit()
+    {
+        $dataCredit = $this->creditRepository->findByUser();
+        $this->credit->setId($dataCredit['id']);
+        $this->credit->setBalance($dataCredit['balance']);
+    }
+    
+    /**
+     * @param String $direction String with direction.
+     */
+    private function processShipment($direction)
+    {
+        $this->cart->setDirection($direction);        
+        $this->credit->setBalance($this->credit->getBalance() - $this->cart->getTotalPrice());
+        $this->creditRepository->edit();
+        $this->cart->setPaidOut(true);
+        $this->cartRepository->edit();
+    }
+    
+    private function addCostShipping($shipping = 0)
+    {
+        if($shipping == 5)
+        {
+            $this->cart->setTotalPrice(($this->subtotal+5));
+        }
+        else
+        {
+            $this->cart->setTotalPrice($this->subtotal);
+        }
+    }
+    
     /**
      * Accept the dispatch, show the shipping address and return to the cart paid.
      * @param int $id Default 0.
@@ -379,9 +434,10 @@ class cartController implements Crud
         $this->cart->setId($id);
         $this->cart->setIdUser($idU);
         $this->itemsCart->setIdCart($id);
-        $dataCart = $this->cart->view();
+        $dataCart = $this->cartRepository->view();
         return $dataCart;
     }
+    
     /**
      * Edit an item in the shopping cart.
      * The route for this method is: http://localhost/onlineShop/cart/edit/$id .
@@ -391,36 +447,47 @@ class cartController implements Crud
     public function edit(int $id=1)
     {
         $this->itemsCart->setId($id);
-        $data = $this->itemsCart->view();
-        $this->product->setId($data['idProduct']);
+        $data = $this->cartItemsRepository->view();
         if ($_POST)
         {
             $quantityPreview = $data['quantity'];
+            $PricePreview = $data['totalPrice'];
+            
             $quantity = $_POST['quantity'];
             $this->itemsCart->setQuantity($quantity);
-            $this->product->setId($data['idProduct']);
-            $product_data = $this->product->view();
-            $totalPrice = $product_data["price"]*$quantity;
-            $PricePreview = $data['totalPrice'];
+            
+            findProduct($data['idProduct']);
+            
+            $totalPrice = $this->product->getPrice() * $this->itemsCart->getQuantity();
             $this->itemsCart->setTotalPrice($totalPrice);
-            $result = $product_data['stock'] - ($this->itemsCart->getQuantity() - $quantityPreview);
+            
+            $result = $this->product->getStock() - ($this->itemsCart->getQuantity() - $quantityPreview);
             $this->product->setStock($result);
-            $this->product->setId($product_data['id']);
-            $this->product->setName($product_data['name']);
-            $this->product->setPrice($product_data["price"]);
+            
             $this->product->edit();
             $this->itemsCart->edit();
             //Update total cart price
             $this->cart->setId($data['idCart']);
-            $dataCart = $this->cart->view();
+            $dataCart = $this->cartRepository->view();
             $updatePrice = $dataCart['totalPrice'] - ($PricePreview - $totalPrice);
             $this->cart->setTotalPrice($updatePrice);
-            $this->cart->edit();
+            $this->cartRepository->edit();
             header("Location: ".URL."index.php?url=cart/");
         }
         return $data;
     }
 
+    /****/
+    private function findProduct($idProduct)
+    {
+        $product_data = $this->productRepository->find($idProduct);            
+        $this->product->setId($product_data['id']);
+        $this->product->setName($product_data['name']);
+        $this->product->setPrice($product_data["price"]);
+        $this->product->setStock($product_data["stock"]);
+        $this->product->setImage($product_data["image"]);
+        $this->product->setCreationDate($product_data["creationDate"]);
+    }
     /**
      * Delete a cart item.
      * @param int $id Integer with id to cart item.
@@ -441,13 +508,13 @@ class cartController implements Crud
                 $this->product->edit();
             }
             $this->cart->setId($data['idCart']);
-            $shoppingCart=$this->cart->view();
+            $shoppingCart=$this->cartRepository->view();
             if (!empty($data['totalPrice']) && !empty($shoppingCart['totalPrice']))
             {
                 $this->cart->setTotalPrice($shoppingCart['totalPrice'] - $data['totalPrice']);
                 $this->cart->setDirection($shoppingCart['direction']);
                 $this->cart->setPaidOut(false);
-                $this->cart->edit();
+                $this->cartRepository->edit();
             }
             $this->itemsCart->delete();
         }

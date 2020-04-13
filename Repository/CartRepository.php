@@ -174,7 +174,7 @@ class CartRepository extends Repository
     }
     
     /**
-     * View a register.
+     * View a register not paid out.
      * @return array|null Return an arrangement with the record.
      */
     public function viewNotPaidout()
