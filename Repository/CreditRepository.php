@@ -20,7 +20,7 @@ namespace Repository;
 
 use Models\Credit;
 use phpDocumentor\Reflection\Types\Integer;
-/***
+/**
  * Repository of Class Credit.
  *
  * @package Repository.
@@ -33,6 +33,17 @@ class CreditRepository implements Repository
      * Object credit for use data.
     */
     private Credit $credit;
+    
+    /**
+     * @inheritDoc
+     */
+    public function all()
+    {
+        $sql = "SELECT * FROM credit;"
+        $data = $this->credit->getConn()->ReturnQuery($sql);
+        $rows = mysqli_fetch_assoc($data);
+        return $rows;
+    }
     /**
      * @inheritDoc
      */
@@ -58,12 +69,12 @@ class CreditRepository implements Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order)
+    public function orderBy(String $param, String $order = 'ASC')
     {
-        $sql = "SELECT * FROM credit ORDER BY {$param} {$order}";
+        $sql = "SELECT * FROM credit ORDER BY {$param} '{$order}'";
         $data = $this->credit->getConn()->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        $rows = mysqli_fetch_assoc($data);
+        return $rows;
     }
     /**
      * Display a record indicated by the current index user.

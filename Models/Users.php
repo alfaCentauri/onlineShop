@@ -1,7 +1,7 @@
 <?php
 
-/*
- * Copyright (C) 2019 ricardo
+/**
+ * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,46 +85,7 @@ class Users implements Crud
         $this->password="";
         $this->active=true;
     }
-    /**
-     * List
-     * @return null|array Result of the query.
-     */
-    public function toList()
-    {
-        $sql = "SELECT * FROM users;";
-        $data = $this->conection->ReturnQuery($sql);
-        return $data;
-    }
-    /**Add register*/
-    public function add()
-    {
-        $sql = "INSERT INTO users(firstName, lastName, email, login, password, creationDate) "
-                . "VALUES('{$this->firstName}', '{$this->lastName}', '"
-                . "{$this->email}', '{$this->login}', '{$this->password}', NOW());";
-        $this->conection->SimpleQuery($sql);
-    }
-    /**Delete record indicated by the current id.*/
-    public function delete()
-            {
-        $sql = "delete from users where id='{$this->id}';";
-        $this->conection->SimpleQuery($sql);
-    }
-    /**Edit record indicated by the current id.*/
-    public function edit()
-    {
-        $sql = "update users set firstName='{$this->firstName}', lastName="
-        . "'{$this->lastName}', email='{$this->email}', login='{$this->login}', '"
-        . "{$this->password}' where id='{$this->id}';";
-        $this->conection->SimpleQuery($sql);
-    }
-    /**Display a record indicated by the current id.*/
-    public function view()
-    {
-        $sql = "SELECT * FROM users where id='{$this->id}'";
-        $datos = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($datos);
-        return $row;
-    }
+    
     /**
      * @return int
      */

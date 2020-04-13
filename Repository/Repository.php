@@ -30,6 +30,12 @@ use phpDocumentor\Reflection\Types\Integer;
 interface Repository
 {
     /**
+     * List of all registers.
+     * 
+     * @return null|array Result of the query.
+     */
+    public function all();
+    /**
      * Find a record for you id.
      * @param Integer $id Index.
      */
@@ -47,5 +53,5 @@ interface Repository
      * @param String $param Param for order.
      * @param String $order Order asc or des.
      */
-    public function orderBy(String $param, String $order);
+    public function orderBy(String $param, String $order = 'ASC');
 }
