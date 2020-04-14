@@ -54,8 +54,8 @@ class ProductRepository extends Repository
     {
         $sql = "SELECT * FROM products where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        setProduct(mysqli_fetch_assoc($data));
+        return $this->product;
     }
     
     /**
@@ -115,8 +115,8 @@ class ProductRepository extends Repository
     {
         $sql = "SELECT * FROM products where id='{$this->getId()}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        setProduct(mysqli_fetch_assoc($data));
+        return $this->product;
     }
     
     /**
@@ -131,5 +131,21 @@ class ProductRepository extends Repository
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
+    }
+    
+    /**
+     * @param array $product_data Contains the product data.
+     */
+    private function setProduct($product_data): void
+    {
+        if(isset$product_data))
+        {
+            $this->product->setId($product_data['id']);
+            $this->product->setName($product_data['name']);
+            $this->product->setPrice($product_data["price"]);
+            $this->product->setStock($product_data["stock"]);
+            $this->product->setImage($product_data["image"]);
+            $this->product->setCreationDate($product_data["creationDate"]);
+        }
     }
 }

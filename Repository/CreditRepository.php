@@ -57,8 +57,8 @@ class CreditRepository extends Repository
     {
         $sql = "SELECT * FROM credit where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        setCredit(mysqli_fetch_assoc($data));
+        return $this->credit;
     }
 
     /**
@@ -91,8 +91,8 @@ class CreditRepository extends Repository
     {
         $sql = "SELECT * FROM credit where idUser='{$this->credit->getIdUser()}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        setCredit(mysqli_fetch_assoc($data));
+        return $this->credit;
     }
     
     /**
@@ -123,8 +123,8 @@ class CreditRepository extends Repository
     {
         $sql = "SELECT * FROM credit where id='{$this->getId()}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        setCredit(mysqli_fetch_assoc($data));
+        return $this->credit;
     }
     
     /**
@@ -136,4 +136,17 @@ class CreditRepository extends Repository
         $this->conection->SimpleQuery($sql);
     }
 
+    /**
+     * @param array $dataCredit Array of data.
+     */
+    private function setCredit($dataCredit):void
+    {
+        if(isset($dataCredit))
+        {
+            $this->credit->setId($dataCredit['id']);
+            $this->credit->setIdUser($dataCredit['idUser']);
+            $this->credit->setBalance($dataCredit['balance']);
+            $this->credit->setCreationDate($dataCredit['creationDate']);
+        }
+    }
 }

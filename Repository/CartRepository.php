@@ -58,8 +58,8 @@ class CartRepository extends Repository
     {
         $sql = "SELECT * FROM carts where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        setCart(mysqli_fetch_assoc($data));
+        return $this->cart;
     }
     
     /**
@@ -69,8 +69,8 @@ class CartRepository extends Repository
     {
         $sql = "SELECT * FROM carts where {$param}='{$value}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        $rows = mysqli_fetch_assoc($data);
+        return $rows;
     }
     
     /**
@@ -160,8 +160,8 @@ class CartRepository extends Repository
     {
         $sql = "SELECT * FROM carts WHERE id='{$this->cart->getId()}'";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        setCart(mysqli_fetch_assoc($data));
+        return $this->cart;
     }
     
     /**
@@ -185,4 +185,19 @@ class CartRepository extends Repository
         return $row;
     }
     
+    /**
+     * @param array $dataCart Array of data.
+     */
+    private function setCart($dataCart): void
+    {
+        if(isset($dataCart))
+        {
+            $this->cart->setId($dataCart['id']);
+            $this->cart->setIdUser($dataCart['idUser']);
+            $this->cart->setTotalPrice($dataCart['totalPrice']);
+            $this->cart->setDirection($dataCart['direction']);
+            $this->cart->setPaidOut($dataCart['paidOut']);
+            $this->cart->setCreationDate($dataCart['creationDate']);
+        }
+    }
 }

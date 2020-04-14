@@ -55,6 +55,7 @@ class Cart extends Entity
         $this->idUser = 0;
         $this->direction ="";
         $this->totalPrice = 0;
+        $this->paidOut = false;
     }
     
     /**
