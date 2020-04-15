@@ -184,4 +184,12 @@ class QualificationRepository extends Repository
         $row = mysqli_fetch_assoc($data);
         return $row;
     }
+    
+    /**
+     * @param array $product_data Contains the product data.
+     */
+    private function setQualification(array $dataQualification): void
+    {
+        $this->qualification->setId($dataQualification['id']);
+    }
 }

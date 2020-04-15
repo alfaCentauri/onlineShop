@@ -35,7 +35,7 @@
                                         <img src="<?php echo URL; ?>Views/Templates/images/products/<?php echo $data["image"];?>" alt="Foto" class="img-fluid"/>
                                     </div>
                                     <div class="col-sm-12 col-md-8">
-                                        <form name="formProduct" action="" method="POST" >
+                                        <form name="formProduct" action="<?php echo URL; ?>index.php?url=products/update/" method="POST" >
                                         <div class="row">
                                             <div class="col-sm-12 col-md-12">
                                                 <label for="name">Product Name:</label>

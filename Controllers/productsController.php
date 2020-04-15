@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ use Models\Qualification as Qualification;
  *
  * @package Controllers.
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 1.1.
  */
 class productsController implements Crud
 {
@@ -49,6 +49,9 @@ class productsController implements Crud
      * @var Conection
      */
     private $conection;
+    private UserRepository $userRepository;
+    private ProductRepository $productRepository;
+    private QualificationRepository $qualificationRepository;
     /**
      * productsController constructor.
      */
@@ -56,123 +59,197 @@ class productsController implements Crud
     {
         $this->conection = new Conection();
         $this->user = new Users();
-        $this->user->setConection($this->conection);
+        $this->userRepository = new UserRepository($this->user);
+        $this->userRepository->setConection($this->conection);
+        
         $this->product = new Product();
-        $this->product->setCon($this->conection);
+        $this->productRepository = new ProductRepository($this->product);
+        $this->productRepository->setConection($this->conection);
+        
         $this->qualification = new Qualification();
-        $this->qualification->setConn($this->conection);
+        $this->qualificationRepository = new QualificationRepository($this->qualification);
+        $this->qualificationRepository->setConection($this->conection);
     }
+    
     /**Default*/
     public function index()
     {
-        $data=null;
-        $listProduct = $this->product->toList();
+        $data = array();
+        $listProduct = $this->productRepository->all();
         foreach ($listProduct as $node)
         {
             $item = array();
-            $item['id']=$node['id'];
-            $item['name']=$node['name'];
-            $item['price']=$node['price'];
-            $item['image']=$node['image'];
-            $item['stock']=$node['stock'];
-            $item['creationDate']=$node['creationDate'];
-            $this->qualification->setIdProduct($node['id']);
-            $averageProduct = $this->qualification->findAverage();
-            if (isset($averageProduct['average']))
+            $item['id'] = $node['id'];
+            $item['name'] = $node['name'];
+            $item['price'] = $node['price'];
+            $item['image'] = $node['image'];
+            $item['stock'] = $node['stock'];
+            $item['creationDate'] = $node['creationDate'];
+            findAverageOfProduct($node['id']);
+            if (isset($this->qualification->getaverage))
             {
-                $item['average']= number_format($averageProduct['average'],2);
+                $item['average'] = number_format($this->qualification->getaverage, 2);
             }
             else
             {
-                $item['average']= 0;
+                $item['average'] = 0;
             }
             $data[]=$item;
         }
         return $data;
     }
+    
+    /**
+     * Method to find the average of the product.
+     * @param int $id Index of product.
+     */
+    private function findAverageOfProduct(int $id = 0)
+    {
+        $this->qualification->setIdProduct($id);
+        $averageProduct = $this->qualificationRepository->findAverage();
+    }
+    
     /**
      * Method to create the product.
      */
     public function add()
     {
-        if ($_POST)
-        {
-            $permitted = array("image/jpeg", "image/png", "image/gif", "image/jpg");
-            $limit = 700;
-            if (in_array($_FILES['image']['type'], $permitted) && $_FILES['image']['size'] <= $limit*1024){
-                $name = date('is').$_FILES['image']['name'];
-                $ruta = "Views".DS."Templates".DS."images".DS."products".DS.$name;
-                move_uploaded_file($_FILES['image']['tmp_name'], $ruta);
-                $this->product->setName($_POST['name']);
-                $this->product->setPrice($_POST['price']);
-                $this->product->setStock($_POST['stock']);
-                $this->product->setImage($name);
-                $this->product->add();
+        if ($_POST && isset($_FILES['image']))
+        {   
+            $file = $_FILES['image'];
+            if (isValidImageFile($file))
+            {
+                $nameFile = createNameFileOnServerAndSource($file);
+                appendProduct($_POST['name'], $_POST['price'], $_POST['stock'], $nameFile);
                 header("Location: ".URL."index.php?url=products");
-            } else {
+            } 
+            else 
+            {
                 print '<h2 class="error text-center">Error: The file is not valid.</h2>';
             }
         }
     }
+    
+    /**
+     * @param array $file Array of data file.
+     * @return bool Return true or false.
+     */
+    private function isValidImageFile($file): bool
+    {
+        $permitted = array("image/jpeg", "image/png", "image/gif", "image/jpg");
+        $limit = 700;
+        if (in_array($file['type'], $permitted) && $file['size'] <= $limit*1024)
+            return true;
+        else
+            return false;
+    }
 
     /**
+     * @param array $file Array of data file.
+     * @return String Return name file.
+     */
+    private function createNameFileOnServerAndSource($file): String
+    {
+        $name = date('is').$file['name'];
+        $ruta = "Views".DS."Templates".DS."images".DS."products".DS.$name;
+        move_uploaded_file($file['tmp_name'], $ruta);
+        return $name;
+    }
+    
+    /**
+     * @param String $productName Name of product.
+     * @param String $productPrice Price of product.
+     * @param String $productStock Stock of product.
+     * @param String $nameFile Name file.
+     */
+    private function appendProduct($productName, $productPrice, $productStock, $nameFile): void
+    {
+        $this->product->setName($productName);
+        $this->product->setPrice($productPrice);
+        $this->product->setStock($productStock);
+        $this->product->setImage($nameFile);
+        $this->productRepository->add();
+    }
+    
+    /**
      * Show a product.
-     * @param $id   Integer integer.
+     * @param int $id Index.
      * @return array|null $data
      */
-    public function view(int $id=0)
+    public function view(int $id = 0)
     {
-        $this->product->setId($id);
-        $product = $this->product->view();
-        if (isset($product['id']))
-        {
-            $data = array();
-            $data['id'] = $product['id'];
-            $data['name'] = $product['name'];
-            $data['price'] = $product['price'];
-            $data['image'] = $product['image'];
-            $data['stock'] = $product['stock'];
-            $data['creationDate'] = $product['creationDate'];
-            $this->qualification->setIdProduct($product['id']);
-            $averageProduct = $this->qualification->findAverage();
-            if (isset($averageProduct['average'])) {
-                $data['average'] = number_format($averageProduct['average'], 2);
-            } else {
-                $data['average'] = 0;
-            }
-        }
-        else
-            $data = null;
+        $data = createArrayDataProduct($id);
         return $data;
+    }
+    
+    /**
+     * @param int $id Index.
+     * @return array|null Data.
+     */
+    private function createArrayDataProduct(int $id = 0)
+    {
+        $data = array();
+        $this->product = $this->productRepository->find($id);
+        if (isset($this->product))
+        {
+            $data['id'] = $this->product->getId();
+            $data['name'] = $this->product->getName();
+            $data['price'] = $this->product->getPrice();
+            $data['image'] = $this->product->getImage();
+            $data['stock'] = $this->product->getStock();
+            $data['creationDate'] = $this->product->getCreationDate();
+            findAverageOfProduct($this->product->getId());
+            $data['average'] = getAverageOfProduct();
+        }    
+        return $data; 
+    }
+    
+    /**
+     * @return float Return average of product.
+     */
+    private function getAverageOfProduct(): float
+    {
+        $average = 0;
+        if (isset($this->qualification->getAverage()))
+            $average = number_format($this->qualification->getAverage(), 2);
+            
+        return $average;
+    }
+    
+    /**
+     * Method to show form for edit the product.
+     * @param $id   Integer integer.
+     * @return array|null Data
+     */
+    public function edit(int $id = 0)
+    {
+        $data = createArrayDataProduct($id);
+        return $data;        
     }
 
     /**
      * Method to update the product.
-     * @param $id   Integer integer.
-     * @return array|null Data
      */
-    public function edit(int $id=0){
-        $this->product->setId($id);
-        if (!$_POST){
-            $data = $this->product->view();
-            return $data;
-        } else {
+    public function update()
+    {
+        if ($_POST)
+        {
             $this->product->setName($_POST['name']);
             $this->product->setPrice($_POST['price']);
             $this->product->setStock($_POST['stock']);
-            $this->product->edit();
-            header("Location: ".URL."index.php?url=products");
+            $this->productRepository->edit();            
         }
-        return null;
+        header("Location: ".URL."index.php?url=products");
     }
-
-    /**Delete a product
+    
+    /**
+     * Delete a product
      * @param $id   Integer integer.
      */
     public function remove(int $id=0)
     {
         $this->product->setId($id);
-        $this->product->delete();
+        $this->productRepository->delete();
         header("Location: ".URL."index.php?url=products");
     }
 }
