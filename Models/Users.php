@@ -54,21 +54,18 @@ class Users extends Entity
     */
     private $password;
     /**
-     * @var Boolean
-     */
-    private $active;
-    /**
      * Construct of the class
      */
     function __construct() 
     {
-        $this->id=0;
-        $this->firstName="";
-        $this->lastName="";
-        $this->email="";
-        $this->login="";
-        $this->password="";
-        $this->active=true;
+        $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
+        $this->firstName = "";
+        $this->lastName = "";
+        $this->email = "";
+        $this->login = "";
+        $this->password = "";
     }
     
     /**
@@ -149,22 +146,6 @@ class Users extends Entity
     public function setPassword(string $password): void
     {
         $this->password = $password;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param bool $active
-     */
-    public function setActive(bool $active): void
-    {
-        $this->active = $active;
     }
 
 }

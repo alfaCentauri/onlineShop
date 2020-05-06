@@ -32,7 +32,7 @@ class QualificationRepository extends Repository
 {
     private Qualification $qualification;
     
-    function __construct(Qualification $qualification)
+    public function __construct(Qualification $qualification)
     {
         $this->qualification = $qualification;
     }
@@ -97,7 +97,7 @@ class QualificationRepository extends Repository
     public function edit()
     {
         $sql = "update qualification set points='{$this->qualification->getPoints()}' where 
-        id='{$this->qualification->getId()}';";
+        id = '{$this->qualification->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -182,11 +182,12 @@ class QualificationRepository extends Repository
           on Q.idProduct='{$this->qualification->getIdProduct()}';";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
+        var_dump($row);
         return $row;
     }
-    
+
     /**
-     * @param array $product_data Contains the product data.
+     * @param array $dataQualification Array of data.
      */
     private function setQualification(array $dataQualification): void
     {

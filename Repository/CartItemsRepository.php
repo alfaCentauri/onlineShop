@@ -31,7 +31,7 @@ class CartItemsRepository extends Entity
 {
     private CartItems $cartItem;
     
-    function __construct(CartItems $cartItem)
+    public function __construct(CartItems $cartItem)
     {
         $this->cartItem = $cartItem;
     }
@@ -41,7 +41,7 @@ class CartItemsRepository extends Entity
      */
     public function all()
     {
-        $sql = "SELECT * FROM itemsCart;"
+        $sql = "SELECT * FROM itemsCart;";
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
@@ -85,7 +85,9 @@ class CartItemsRepository extends Entity
      */
     public function add()
     {
-        $sql = "INSERT INTO itemsCart(id, idCart, idProduct, quantity, totalPrice) VALUES(NULL, '{$this->cartItem->getIdCart()}', '{$this->cartItem->getIdProduct()}', '{$this->cartItem->getQuantity()}', '{$this->cartItem->getTotalPrice()}');";
+        $sql = "INSERT INTO itemsCart(id, idCart, idProduct, quantity, totalPrice)
+            VALUES(NULL, '{$this->cartItem->getIdCart()}', '{$this->cartItem->getIdProduct()}', 
+            '{$this->cartItem->getQuantity()}', '{$this->cartItem->getTotalPrice()}');";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -94,7 +96,10 @@ class CartItemsRepository extends Entity
      */
     public function edit()
     {
-        $sql = "update itemsCart set quantity='{$this->cartItem->getQuantity()}', totalPrice='{$this->cartItem->getTotalPrice()}' where id='{$this->cartItem->getId()}';";
+        $sql = "update itemsCart set 
+            quantity='{$this->cartItem->getQuantity()}', 
+            totalPrice='{$this->cartItem->getTotalPrice()}' 
+            where id='{$this->cartItem->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -128,7 +133,8 @@ class CartItemsRepository extends Entity
      */
     public function toList2()
     {
-        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM itemsCart T1 INNER JOIN products T2 on T1.idProduct=T2.id ;";
+        $sql = "SELECT T1.*, T2.name as name_product, T2.image as image_product FROM itemsCart T1 
+            INNER JOIN products T2 on T1.idProduct=T2.id ;";
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
@@ -139,7 +145,7 @@ class CartItemsRepository extends Entity
      */
     public function totalList()
     {
-        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM itemsCart T1 where T1.idCart='{$this->cartItem->getId()Cart}';";
+        $sql = "SELECT sum(T1.totalPrice) as subtotal FROM itemsCart T1 where T1.idCart='{$this->cartItem->getIdCart()}';";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;

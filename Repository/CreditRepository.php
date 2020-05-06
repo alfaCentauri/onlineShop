@@ -33,8 +33,8 @@ class CreditRepository extends Repository
      * Object credit for use data.
     */
     private Credit $credit;
-    
-    function __construct(Credit $credit)
+
+    public function __construct(Credit $credit)
     {
         $this->credit = $credit;
     }
@@ -44,7 +44,7 @@ class CreditRepository extends Repository
      */
     public function all()
     {
-        $sql = "SELECT * FROM credit;"
+        $sql = "SELECT * FROM credit;";
         $data = $this->conection->ReturnQuery($sql);
         $rows = mysqli_fetch_assoc($data);
         return $rows;
@@ -75,7 +75,7 @@ class CreditRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order = 'ASC')
+    public function orderBy(String $param, String $order = "ASC")
     {
         $sql = "SELECT * FROM credit ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);

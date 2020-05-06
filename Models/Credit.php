@@ -43,7 +43,10 @@ class Credit extends Entity
     public function __construct()
     {
         $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
         $this->idUser = 0;
+        $this->balance = 0;
     }
 
     /**

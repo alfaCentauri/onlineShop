@@ -32,7 +32,7 @@ class UsersRepository extends Repository
 {
     private Users $user;
     
-    function __construct(Users $user)
+    public function __construct(Users $user)
     {
         $this->user = $user;
     }

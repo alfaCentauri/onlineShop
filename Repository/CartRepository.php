@@ -34,7 +34,7 @@ class CartRepository extends Repository
     /**
      * Constructor.
      */
-    function __construct(Cart $cart)
+    public function __construct(Cart $cart)
     {
         $this->cart = $cart;
         //super("carts"); //Table: carts

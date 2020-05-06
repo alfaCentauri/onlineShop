@@ -22,6 +22,9 @@ use Models\Users as Users;
 use Models\Product as Product;
 use Models\Conection as Conection;
 use Models\Qualification as Qualification;
+use Repository\UsersRepository as UserRepository;
+use Repository\ProductRepository as ProductRepository;
+use Repository\QualificationRepository as QualificationRepository;
 /**
  * Controller of actions on products.
  *
@@ -162,11 +165,11 @@ class productsController implements Crud
      * @param String $productStock Stock of product.
      * @param String $nameFile Name file.
      */
-    private function appendProduct($productName, $productPrice, $productStock, $nameFile): void
+    private function appendProduct(String $productName, String $productPrice, String $productStock, String $nameFile): void
     {
         $this->product->setName($productName);
-        $this->product->setPrice($productPrice);
-        $this->product->setStock($productStock);
+        $this->product->setPrice(floatval($productPrice));
+        $this->product->setStock((int) $productStock);
         $this->product->setImage($nameFile);
         $this->productRepository->add();
     }
@@ -209,10 +212,11 @@ class productsController implements Crud
      */
     private function getAverageOfProduct(): float
     {
+        $dataAverage = $this->qualification->getAverage();
         $average = 0;
-        if (isset($this->qualification->getAverage()))
+        if(isset($dataAverage))
             $average = number_format($this->qualification->getAverage(), 2);
-            
+
         return $average;
     }
     

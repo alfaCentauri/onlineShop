@@ -52,6 +52,8 @@ class Cart extends Entity
     function __construct()
     {
         $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
         $this->idUser = 0;
         $this->direction ="";
         $this->totalPrice = 0;

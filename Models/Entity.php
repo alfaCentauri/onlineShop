@@ -32,6 +32,17 @@ abstract class Entity
     protected $active;
 
     /**
+     * Entity constructor.
+     */
+    public function __construct()
+    {
+        $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
+    }
+
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -62,5 +73,20 @@ abstract class Entity
     {
         $this->creationDate = $creationDate;
     }
-    
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
 }

@@ -77,7 +77,7 @@ abstract class Repository
      * @param String $param Param for order.
      * @param String $order Order asc or des.
      */
-    abstract public function orderBy(String $param, String $order = 'ASC');
+    abstract public function orderBy(String $param, String $order = "ASC");
     
     /**
      * Add a register

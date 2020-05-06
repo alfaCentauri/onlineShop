@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Models;
+namespace Repository;
 
 use Models\Product;
 use phpDocumentor\Reflection\Types\Integer;
@@ -31,7 +31,7 @@ class ProductRepository extends Repository
 {
     private Product $product;
     
-    public __construct(Product $product)
+    public function __construct(Product $product)
     {
         $this->product = $product;
     }
@@ -72,7 +72,7 @@ class ProductRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order = 'ASC')
+    public function orderBy(String $param, String $order = "ASC")
     {
         $sql = "SELECT * FROM products ORDER BY {$param} '{$order}';";
         $data = $this->conection->ReturnQuery($sql);
@@ -85,7 +85,8 @@ class ProductRepository extends Repository
      */
     public function add()
     {
-        $sql = "INSERT INTO products(name, price, image, stock, creationDate) VALUES('{$this->getName()}', '{$this->getPrice()}', '{$this->getImage()}', '{$this->getStock()}',NOW());";
+        $sql = "INSERT INTO products(name, price, image, stock, creationDate) 
+            VALUES('{$this->getName()}', '{$this->getPrice()}', '{$this->getImage()}', '{$this->getStock()}',NOW());";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -138,7 +139,7 @@ class ProductRepository extends Repository
      */
     private function setProduct($product_data): void
     {
-        if(isset$product_data))
+        if(isset($product_data))
         {
             $this->product->setId($product_data['id']);
             $this->product->setName($product_data['name']);

@@ -43,11 +43,13 @@ class Product extends Entity
      */
     function __construct()
     {
-        $this->id=0;
-        $this->name="";
-        $this->price=0.0;
-        $this->stock=0;
-        $this->image="noImage.jpg";
+        $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
+        $this->name = "";
+        $this->price = 0.0;
+        $this->stock = 0;
+        $this->image = "noImage.jpg";
     }
     
     /**

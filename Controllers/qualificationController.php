@@ -21,7 +21,10 @@ namespace Controllers;
 use Models\Users as Users;
 use Models\Product as Product;
 use Models\Conection as Conection;
-use Models\Qualification as Qualificationes;
+use Models\Qualification as Qualification;
+use Repository\UsersRepository as UserRepository;
+use Repository\ProductRepository as ProductRepository;
+use Repository\QualificationRepository as QualificationRepository;
 /**
  * This is the driver to add, edit, display and delete points of a product. Use 
  * Json files to send and receive the data.
@@ -44,7 +47,7 @@ class qualificationController implements Crud
     private $product;
     /**
      * Contains a object of type Qualificationes.
-     * @var Qualificationes
+     * @var Qualification
      */
     private $qualification;
     /**
@@ -246,7 +249,7 @@ class qualificationController implements Crud
             $this->statusCode = 500;
             $arrayResult['message'] = "Error on server.";
         }
-        file_put_contents($url.'/Views/Templates/files/resultAverage.json',json_encode($dataAverage));            
+        file_put_contents($url.'/Views/Templates/files/resultAverage.json',json_encode($arrayResult));
         header("Location: ".URL."index.php?url=products");
     }
     

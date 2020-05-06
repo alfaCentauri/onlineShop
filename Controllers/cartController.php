@@ -26,6 +26,12 @@ use Models\Credit as Credit;
 use Models\Product as Product;
 use Models\Conection as Conection;
 use Models\Qualification as Qualification;
+use Repository\CartRepository as CartRepository;
+use Repository\UsersRepository as UserRepository;
+use Repository\CreditRepository as CreditRepository;
+use Repository\ProductRepository as ProductRepository;
+use Repository\CartItemsRepository as CartItemsRepository;
+use Repository\QualificationRepository as QualificationRepository;
 
 /**
  * Description of cartController
@@ -72,7 +78,7 @@ class cartController implements Crud
     /**
      * @var Conection
      */
-    private $conection;    
+    private Conection $conection;
     private CartRepository $cartRepository;
     private UserRepository $userRepository;
     private CreditRepository $creditRepository;
@@ -116,10 +122,10 @@ class cartController implements Crud
     /**
      * Default.
      *
-     * @param int $idU
+     * @param int $idU Index of user.
      * @return bool|\mysqli_result  Data of list of the cart.
      */
-    public function index(int $idU=1)
+    public function index(int $idU = 1)
     {
         $this->cart->setIdUser($idU);        
         $dataCart = $this->cartRepository->viewNotPaidout();
@@ -137,12 +143,12 @@ class cartController implements Crud
     
     /**
      * Gets the user's full name.
-     * @param int $idU
-     * @return null|string
+     * @param int $idU Index of user.
+     * @return null|string Return full name of user or null.
      */
-    public function getUserName(int $idU=0)
+    public function getUserName(int $idU = 0)
     {
-        if ($idU>0)
+        if ($idU > 0)
         {
             $this->user->setId($idU);
             $data_users = $this->userRepository->view();
@@ -216,9 +222,10 @@ class cartController implements Crud
             $this->productRepository->edit();
         }
     }
-    
+
     /**
      * @param int $points Integer with points.
+     * @param int $idU Index of user.
      */
     private function appendQualification(int $points = 0, int $idU = 0): void
     {
@@ -265,16 +272,18 @@ class cartController implements Crud
      * @param int $idU  Integer of index user.
      * @return array|null   Data of product.
      */
-    public function preview(int $id=1, int $idU=0)
+    public function preview(int $id = 1, int $idU = 0)
     {
         $dataProduct = createPreviewProduct($idU);            
         return $dataProduct;
     }
-    
+
     /**
+     * @param int $idProduct Index of product.
+     * @param int $idU Index of user.
      * @return array|null   Data of product for preview.
      */
-    private function createPreviewProduct(int $idProduct, int $idU): array
+    private function createPreviewProduct(int $idProduct = 0, int $idU = 1): array
     {
         $data = createArrayDataProduct($idProduct);
         if (isset($this->product))
@@ -286,11 +295,12 @@ class cartController implements Crud
         }
         return $data;
     }
-    
+
     /**
+     * @param int $idProduct Index of product.
      * @return array|null   Data of product for preview.
      */
-    private function createArrayDataProduct($idProduct): array
+    private function createArrayDataProduct(int $idProduct = 0): array
     {
         $data = array();
         $this->product = $this->productRepository->find($idProduct);
@@ -331,7 +341,7 @@ class cartController implements Crud
         if(isset($qualification['points']))
             $points = $qualification['points']; 
             
-        return $points
+        return $points;
     }
     
     /**
@@ -405,12 +415,9 @@ class cartController implements Crud
             $this->itemsCart->setIdCart($shoppingCart['id']);
             $sumSubTotal = $this->cartItemsRepository->totalList();
             $this->subtotal = $sumSubTotal['subtotal'];
-            $infoForShipping['subtotal'] = number_format(
-                $sumSubTotal['subtotal'], 2);
-            $infoForShipping['remainingBalance'] = number_format(
-                $infoForShipping['balanceCredit'] - 
-                $infoForShipping['subtotal'],
-                    2);
+            $infoForShipping['subtotal'] = number_format($sumSubTotal['subtotal'], 2);
+            $infoForShipping['remainingBalance'] = number_format($infoForShipping['balanceCredit'] -
+                $infoForShipping['subtotal'], 2);
         }
         return $infoForShipping;
     }
@@ -478,9 +485,12 @@ class cartController implements Crud
         $data = createArrayDataItemCart($id);
         return $data;
     }
-    
-    /***/
-    private function createArrayDataItemCart($id)
+
+    /**
+     * @param int $id Index to item cart.
+     * @return array Return array of data for item cart.
+     */
+    private function createArrayDataItemCart(int $id = 0)
     {
         $data = array();
         findItemCart($id);
@@ -502,14 +512,14 @@ class cartController implements Crud
     {
         if($idItemCart > 0)
         {
-            $this->itemsCart = $this->cartItemsRepository->find($id);
+            $this->itemsCart = $this->cartItemsRepository->find($idItemCart);
         }
     }
     
     /**
      * @param int $quantity Quantity of product.
      */
-    private function appendQuantity(int $quantity): void
+    private function appendQuantity(int $quantity = 0): void
     {
         if($quantity > 0)
             $this->itemsCart->setQuantity($quantity);
@@ -625,7 +635,7 @@ class cartController implements Crud
      * @param int $idCart
      * @return bool|\mysqli_result List of carts per user indicated.
      */
-    public function toListUser( int $idCart=1, int $idU=1)
+    public function toListUser( int $idCart = 1, int $idU = 1)
     {
         $this->cart->setId($idCart);
         $this->cart->setIdUser($idU);

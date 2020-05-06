@@ -53,6 +53,8 @@ class CartItems extends Entity
     public function __construct()
     {
         $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
         $this->idCart = 0;
         $this->idProduct = 0;
         $this->quantity = 0;
