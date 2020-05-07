@@ -28,7 +28,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Object-Oriented PHP: Base project</title>
@@ -49,13 +49,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
             <div class="collapse navbar-collapse" id="navbars01">
               <ul class="navbar-nav mr-auto">
-                <!--li class="nav-item dropdown">
+                <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
                   <div class="dropdown-menu" aria-labelledby="dropdown09">
                     <a class="dropdown-item" href="<?php echo URL; ?>index.php?url=products">List</a>
                     <a class="dropdown-item" href="<?php echo URL; ?>index.php?url=products/add">Add</a>
                   </div>
-                </li-->
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo URL; ?>index.php?url=cart/">Cart</a>
                 </li>

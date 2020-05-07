@@ -6,9 +6,6 @@
  * Created: 03/06/2019
  */
 create database shop;
-/**For online shop*/
-grant all privileges on shop.* to 'phptest'@'localhost' identified by 'userShop.19' with grant option;
-
 use shop;
 
 drop table users;
