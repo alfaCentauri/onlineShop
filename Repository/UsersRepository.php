@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 namespace Repository;
 
 use Models\Users;
@@ -72,7 +71,7 @@ class UsersRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order = 'ASC')
+    public function orderBy(string $param, string $order = 'ASC')
     {
         $sql = "SELECT * FROM users ORDER BY {$param} '{$order}';";
         $data = $this->conection->ReturnQuery($sql);
