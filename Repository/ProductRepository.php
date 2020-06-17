@@ -72,7 +72,7 @@ class ProductRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order = "ASC")
+    public function orderBy(String $param, string $order = "ASC")
     {
         $sql = "SELECT * FROM products ORDER BY {$param} '{$order}';";
         $data = $this->conection->ReturnQuery($sql);
