@@ -76,7 +76,7 @@ class CartRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order = 'ASC')
+    public function orderBy(String $param, string $order = "ASC")
     {
         $sql = "SELECT * FROM carts ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);

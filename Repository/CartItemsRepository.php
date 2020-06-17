@@ -27,7 +27,7 @@ use phpDocumentor\Reflection\Types\Integer;
  * @author Ingeniero en Computación: Ricardo Presilla.
  * @version 1.1.
  */
-class CartItemsRepository extends Entity
+class CartItemsRepository extends Repository
 {
     private CartItems $cartItem;
     

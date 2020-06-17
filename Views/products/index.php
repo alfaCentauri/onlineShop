@@ -22,6 +22,10 @@
                     <h3 class="text-center">Products list</h3>
                 </div>
             </div>
+            <?php
+            if (isset($data))
+            {
+            ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-3">
@@ -73,5 +77,13 @@
                     </div>
                 </div>
             </div>
-
+                <?php
+            }
+            else
+            {
+                ?>
+                <h2 class="text-center">The list products is empty</h2>
+                <?php
+            }
+            ?>
         </div>

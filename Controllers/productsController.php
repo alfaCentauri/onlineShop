@@ -88,28 +88,28 @@ class productsController implements Crud
             $item['image'] = $node['image'];
             $item['stock'] = $node['stock'];
             $item['creationDate'] = $node['creationDate'];
-            findAverageOfProduct($node['id']);
-            if (isset($this->qualification->getaverage))
-            {
-                $item['average'] = number_format($this->qualification->getaverage, 2);
-            }
-            else
-            {
-                $item['average'] = 0;
-            }
-            $data[]=$item;
+            $averageProduct = $this->findAverageOfProduct($node['id']);
+            $item['average'] = number_format($averageProduct, 2);
+            $data[] = $item;
         }
+        var_dump($data);
         return $data;
     }
     
     /**
      * Method to find the average of the product.
      * @param int $id Index of product.
+     * @return Return a float.
      */
-    private function findAverageOfProduct(int $id = 0)
+    private function findAverageOfProduct(int $id = 0): float
     {
         $this->qualification->setIdProduct($id);
         $averageProduct = $this->qualificationRepository->findAverage();
+        $result = 0;
+        if (isset($averageProduct)) {
+            $result = $averageProduct['average'];
+        }
+        return $result;
     }
     
     /**

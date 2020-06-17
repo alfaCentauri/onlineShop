@@ -179,10 +179,9 @@ class QualificationRepository extends Repository
         $sql = "SELECT Q.idProduct, AVG(Q.points) as average, P.name as name_product, P.image as image_product 
           FROM qualification Q 
           INNER JOIN products P 
-          on Q.idProduct='{$this->qualification->getIdProduct()}';";
+          on Q.idProduct=P.id and Q.idProduct='{$this->qualification->getIdProduct()}';";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
-        var_dump($row);
         return $row;
     }
 

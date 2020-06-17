@@ -22,7 +22,7 @@ class Conection
     /** Contains the MySQL user*/
     private $username = "phptest";
     /** Contains the password */
-    private $password = "userShop.19";
+    private $password = "userShop.20";
     /** Contains the name of the database*/
     private $dbname = "shop";
     /** Contains the conection */
