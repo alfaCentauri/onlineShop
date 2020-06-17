@@ -106,7 +106,7 @@ class productsController implements Crud
         $this->qualification->setIdProduct($id);
         $averageProduct = $this->qualificationRepository->findAverage();
         $result = 0;
-        if (isset($averageProduct)) {
+        if (isset($averageProduct['average'])) {
             $result = $averageProduct['average'];
         }
         return $result;
