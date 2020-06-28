@@ -72,7 +72,7 @@ class QualificationRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order = 'ASC')
+    public function orderBy(string $param, string $order = 'ASC')
     {
         $sql = "SELECT * FROM qualification ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);
@@ -86,7 +86,8 @@ class QualificationRepository extends Repository
     public function add()
     {
         $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) 
-          VALUES(NULL, '{$this->qualification->getIdUser()}', '{$this->qualification->getIdProduct()}', '{$this->qualification->getPoints()}', NOW());";
+          VALUES(NULL, '{$this->qualification->getIdUser()}', '{$this->qualification->getIdProduct()}', '
+            {$this->qualification->getPoints()}', NOW());";
         $data = $this->conection->InsertQuery($sql);
         return $data;
     }

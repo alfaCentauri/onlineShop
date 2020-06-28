@@ -88,7 +88,7 @@ class productsController implements Crud
             $item['image'] = $node['image'];
             $item['stock'] = $node['stock'];
             $item['creationDate'] = $node['creationDate'];
-            $averageProduct = $this->findAverageOfProduct($node['id']);
+            $averageProduct = $this->findAverageOfProduct(intval($node['id']));
             $item['average'] = number_format($averageProduct, 2);
             $data[] = $item;
         }
