@@ -92,7 +92,6 @@ class productsController implements Crud
             $item['average'] = number_format($averageProduct, 2);
             $data[] = $item;
         }
-        var_dump($data);
         return $data;
     }
     

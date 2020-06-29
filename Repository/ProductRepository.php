@@ -43,8 +43,7 @@ class ProductRepository extends Repository
     {
         $sql = "SELECT * FROM products;";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**
@@ -76,8 +75,7 @@ class ProductRepository extends Repository
     {
         $sql = "SELECT * FROM products ORDER BY {$param} '{$order}';";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**
