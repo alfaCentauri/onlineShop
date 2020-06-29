@@ -20,6 +20,7 @@ namespace Repository;
 
 use Models\Product;
 use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Repository of Class Products.
  *

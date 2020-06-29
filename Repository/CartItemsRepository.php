@@ -43,8 +43,7 @@ class CartItemsRepository extends Repository
     {
         $sql = "SELECT * FROM itemsCart;";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**
@@ -76,8 +75,7 @@ class CartItemsRepository extends Repository
     {
         $sql = "SELECT * FROM itemsCart ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**

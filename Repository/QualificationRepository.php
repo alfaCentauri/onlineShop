@@ -21,6 +21,7 @@ namespace Repository;
 
 use Models\Qualification;
 use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * This is the qualification of the product.
  *
@@ -76,8 +77,7 @@ class QualificationRepository extends Repository
     {
         $sql = "SELECT * FROM qualification ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**

@@ -46,8 +46,7 @@ class CreditRepository extends Repository
     {
         $sql = "SELECT * FROM credit;";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**
@@ -79,8 +78,7 @@ class CreditRepository extends Repository
     {
         $sql = "SELECT * FROM credit ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**

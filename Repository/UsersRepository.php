@@ -20,6 +20,7 @@ namespace Repository;
 
 use Models\Users;
 use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Repository of Class Users.
  *
@@ -75,8 +76,7 @@ class UsersRepository extends Repository
     {
         $sql = "SELECT * FROM users ORDER BY {$param} '{$order}';";
         $data = $this->conection->ReturnQuery($sql);
-        $rows = mysqli_fetch_assoc($data);
-        return $rows;
+        return $data;
     }
     
     /**
