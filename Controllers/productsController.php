@@ -98,7 +98,7 @@ class productsController implements Crud
     /**
      * Method to find the average of the product.
      * @param int $id Index of product.
-     * @return Return a float.
+     * @return float Return a float.
      */
     private function findAverageOfProduct(int $id = 0): float
     {
@@ -119,10 +119,10 @@ class productsController implements Crud
         if ($_POST && isset($_FILES['image']))
         {   
             $file = $_FILES['image'];
-            if (isValidImageFile($file))
+            if ($this->isValidImageFile($file))
             {
-                $nameFile = createNameFileOnServerAndSource($file);
-                appendProduct($_POST['name'], $_POST['price'], $_POST['stock'], $nameFile);
+                $nameFile = $this->createNameFileOnServerAndSource($file);
+                $this->appendProduct($_POST['name'], $_POST['price'], $_POST['stock'], $nameFile);
                 header("Location: ".URL."index.php?url=products");
             } 
             else 
@@ -136,7 +136,7 @@ class productsController implements Crud
      * @param array $file Array of data file.
      * @return bool Return true or false.
      */
-    private function isValidImageFile($file): bool
+    private function isValidImageFile($file = null): bool
     {
         $permitted = array("image/jpeg", "image/png", "image/gif", "image/jpg");
         $limit = 700;
@@ -150,7 +150,7 @@ class productsController implements Crud
      * @param array $file Array of data file.
      * @return String Return name file.
      */
-    private function createNameFileOnServerAndSource($file): String
+    private function createNameFileOnServerAndSource($file = null): String
     {
         $name = date('is').$file['name'];
         $ruta = "Views".DS."Templates".DS."images".DS."products".DS.$name;
@@ -178,9 +178,9 @@ class productsController implements Crud
      * @param int $id Index.
      * @return array|null $data
      */
-    public function view(int $id = 0)
+    public function view(int $id = 0):array
     {
-        $data = createArrayDataProduct($id);
+        $data = $this->createArrayDataProduct($id);
         return $data;
     }
     
@@ -188,7 +188,7 @@ class productsController implements Crud
      * @param int $id Index.
      * @return array|null Data.
      */
-    private function createArrayDataProduct(int $id = 0)
+    private function createArrayDataProduct(int $id = 0):array
     {
         $data = array();
         $this->product = $this->productRepository->find($id);
@@ -200,8 +200,8 @@ class productsController implements Crud
             $data['image'] = $this->product->getImage();
             $data['stock'] = $this->product->getStock();
             $data['creationDate'] = $this->product->getCreationDate();
-            findAverageOfProduct($this->product->getId());
-            $data['average'] = getAverageOfProduct();
+            $this->findAverageOfProduct($this->product->getId());
+            $data['average'] = $this->getAverageOfProduct();
         }    
         return $data; 
     }
@@ -211,10 +211,10 @@ class productsController implements Crud
      */
     private function getAverageOfProduct(): float
     {
-        $dataAverage = $this->qualification->getAverage();
+        $dataAverage = $this->qualificationRepository->findAverage();
         $average = 0;
         if(isset($dataAverage))
-            $average = number_format($this->qualification->getAverage(), 2);
+            $average = number_format($dataAverage, 2);
 
         return $average;
     }
@@ -224,9 +224,9 @@ class productsController implements Crud
      * @param $id   Integer integer.
      * @return array|null Data
      */
-    public function edit(int $id = 0)
+    public function edit(int $id = 0): array
     {
-        $data = createArrayDataProduct($id);
+        $data = $this->createArrayDataProduct($id);
         return $data;        
     }
 
