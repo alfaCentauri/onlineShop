@@ -19,7 +19,6 @@
 namespace Repository;
 
 use Models\Product;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Repository of Class Products.
@@ -50,11 +49,11 @@ class ProductRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function find(Integer $id)
+    public function find(int $id)
     {
         $sql = "SELECT * FROM products where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
-        setProduct(mysqli_fetch_assoc($data));
+        $this->setProduct(mysqli_fetch_assoc($data));
         return $this->product;
     }
     
@@ -85,7 +84,9 @@ class ProductRepository extends Repository
     public function add()
     {
         $sql = "INSERT INTO products(name, price, image, stock, creationDate) 
-            VALUES('{$this->getName()}', '{$this->getPrice()}', '{$this->getImage()}', '{$this->getStock()}',NOW());";
+            VALUES('{$this->product->getName()}', '{$this->product->getPrice()}', '{$this->product->getImage()}', 
+                   '{$this->product->getStock()}', NOW());";
+        var_dump($sql);
         $this->conection->SimpleQuery($sql);
     }
     
@@ -94,7 +95,7 @@ class ProductRepository extends Repository
      */
     public function delete()
     {
-        $sql = "delete from products where id='{$this->getId()}';";
+        $sql = "delete from products where id='{$this->product->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -103,8 +104,8 @@ class ProductRepository extends Repository
      */
     public function edit()
     {
-        $sql = "update products set name='{$this->getName()}', price="
-        . "'{$this->getPrice()}', stock='{$this->getStock()}' where id='{$this->getId()}';";
+        $sql = "update products set name='{$this->product->getName()}', price="
+        . "'{$this->product->getPrice()}', stock='{$this->product->getStock()}' where id='{$this->product->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -113,9 +114,9 @@ class ProductRepository extends Repository
      */
     public function view()
     {
-        $sql = "SELECT * FROM products where id='{$this->getId()}'";
+        $sql = "SELECT * FROM products where id='{$this->product->getId()}'";
         $data = $this->conection->ReturnQuery($sql);
-        setProduct(mysqli_fetch_assoc($data));
+        $this->setProduct(mysqli_fetch_assoc($data));
         return $this->product;
     }
     

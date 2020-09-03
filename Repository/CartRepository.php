@@ -20,7 +20,7 @@
 namespace Repository;
 
 use Models\Cart;
-use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Repository for Class Cart.
  *
@@ -54,11 +54,11 @@ class CartRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function find(Integer $id)
+    public function find(int $id)
     {
         $sql = "SELECT * FROM carts where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
-        setCart(mysqli_fetch_assoc($data));
+        $this->setCart(mysqli_fetch_assoc($data));
         return $this->cart;
     }
     
@@ -86,7 +86,7 @@ class CartRepository extends Repository
     
     /**
      * Get a list of all the records for a user.
-     * @return bool|\mysqli_result Return a list of all the records for a user.
+     * @return string[] Return a list of all the records for a user.
      */
     public function toListUser()
     {
@@ -116,7 +116,7 @@ class CartRepository extends Repository
 
     /**
      * Generates a list to show all the items in a cart for a specific user.
-     * @return bool|\mysqli_result
+     * @return string[] Return a list of items.
      */
     public function toListItemsCart()
     {
@@ -132,13 +132,14 @@ class CartRepository extends Repository
     }
     
     /**
-     * Add a register
+     * Add a register.
+     * @return mysqli_result Return a mysql result.
      */
     public function add()
     {
         $sql = "INSERT INTO carts(id, idUser, totalPrice, direction, paidOut, creationDate) 
                 VALUES(NULL, '{$this->cart->getIdUser()}', '{$this->cart->getTotalPrice()}', '{$this->cart->getDirection()}', 
-                '{$this->cart->getPaidOut()}', NOW());";
+                '{$this->cart->isPaidOut()}', NOW());";
         $data = $this->conection->InsertQuery($sql);
         return $data;
     }
@@ -148,19 +149,21 @@ class CartRepository extends Repository
      */
     public function edit()
     {
-        $sql = "update carts set totalPrice='{$this->cart->getTotalPrice()}', direction='{$this->cart->getDirection()}', paidOut='{$this->cart->getPaidOut()}' where id='{$this->cart->getId()}';";
+        $sql = "update carts set totalPrice='{$this->cart->getTotalPrice()}', 
+                 direction='{$this->cart->getDirection()}', paidOut='{$this->cart->isPaidOut()}' 
+                 where id='{$this->cart->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
     /**
      * View a register.
-     * @return array|null Return an arrangement with the record. 
+     * @return Cart Return an arrangement with the record.
      */
     public function view()
     {
         $sql = "SELECT * FROM carts WHERE id='{$this->cart->getId()}'";
         $data = $this->conection->ReturnQuery($sql);
-        setCart(mysqli_fetch_assoc($data));
+        $this->setCart(mysqli_fetch_assoc($data));
         return $this->cart;
     }
     

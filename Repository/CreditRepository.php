@@ -19,7 +19,7 @@
 namespace Repository;
 
 use Models\Credit;
-use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Repository of Class Credit.
  *
@@ -52,11 +52,11 @@ class CreditRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function find(Integer $id)
+    public function find(int $id)
     {
         $sql = "SELECT * FROM credit where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
-        setCredit(mysqli_fetch_assoc($data));
+        $this->setCredit(mysqli_fetch_assoc($data));
         return $this->credit;
     }
 
@@ -83,13 +83,13 @@ class CreditRepository extends Repository
     
     /**
      * Display a record indicated by the current index user.
-     * @return array|null Return the register if found else return null.
+     * @return Credit Return the register if found else return null.
      */
     public function findByUser()
     {
         $sql = "SELECT * FROM credit where idUser='{$this->credit->getIdUser()}'";
         $data = $this->conection->ReturnQuery($sql);
-        setCredit(mysqli_fetch_assoc($data));
+        $this->setCredit(mysqli_fetch_assoc($data));
         return $this->credit;
     }
     
@@ -100,7 +100,7 @@ class CreditRepository extends Repository
     public function add()
     {
         $sql = "INSERT INTO credit(id, idUser, balance, creationDate) 
-          VALUES(null, '{$this->getIdUser()}', '{$this->getBalance()}', NOW());";
+          VALUES(null, '{$this->credit->getIdUser()}', '{$this->credit->getBalance()}', NOW());";
         $lastId=$this->conection->InsertQuery($sql);
         return $lastId;
     }
@@ -110,7 +110,7 @@ class CreditRepository extends Repository
      */
     public function edit()
     {
-        $sql = "UPDATE credit SET balance='{$this->getBalance()}' where id='{$this->getId()}';";
+        $sql = "UPDATE credit SET balance='{$this->credit->getBalance()}' where id='{$this->credit->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -119,9 +119,9 @@ class CreditRepository extends Repository
      */
     public function view()
     {
-        $sql = "SELECT * FROM credit where id='{$this->getId()}'";
+        $sql = "SELECT * FROM credit where id='{$this->credit->getId()}'";
         $data = $this->conection->ReturnQuery($sql);
-        setCredit(mysqli_fetch_assoc($data));
+        $this->setCredit(mysqli_fetch_assoc($data));
         return $this->credit;
     }
     
@@ -130,7 +130,7 @@ class CreditRepository extends Repository
      */
     public function delete()
     {
-        $sql = "delete from credit where id='{$this->getId()}';";
+        $sql = "delete from credit where id='{$this->credit->getId()}';";
         $this->conection->SimpleQuery($sql);
     }
 

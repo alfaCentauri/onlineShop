@@ -19,7 +19,6 @@
 namespace Repository;
 
 use Models\Conection;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Abstract class to define common methods to all, find, find by and order by and parameter conection.
@@ -58,12 +57,12 @@ abstract class Repository
      * @return null|array Result of the query.
      */
     abstract public function all();
-    
+
     /**
      * Find a record for you id.
-     * @param Integer $id Index.
+     * @param int $id Index.
      */
-    abstract public function find(Integer $id);
+    abstract public function find(int $id);
 
     /**
      * Find a record for at value param.
@@ -74,10 +73,10 @@ abstract class Repository
 
     /**
      * Order all records by param.
-     * @param String $param Param for order.
-     * @param String $order Order asc or des.
+     * @param string $param Param for order.
+     * @param string $order Order asc or des.
      */
-    abstract public function orderBy(String $param, String $order = "ASC");
+    abstract public function orderBy(string $param, string $order = "ASC");
     
     /**
      * Add a register

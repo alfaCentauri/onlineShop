@@ -19,7 +19,6 @@
 namespace Repository;
 
 use Models\CartItems;
-use phpDocumentor\Reflection\Types\Integer;
 /**
  * Repository of Class CartItems.
  *
@@ -49,7 +48,7 @@ class CartItemsRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function find(Integer $id)
+    public function find(int $id)
     {
         $sql = "SELECT * FROM itemsCart where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
@@ -71,7 +70,7 @@ class CartItemsRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function orderBy(String $param, String $order = 'ASC')
+    public function orderBy(string $param, string $order = 'ASC')
     {
         $sql = "SELECT * FROM itemsCart ORDER BY {$param} '{$order}'";
         $data = $this->conection->ReturnQuery($sql);

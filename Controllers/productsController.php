@@ -38,23 +38,25 @@ class productsController implements Crud
      * Contains a object of type Users.
      * @var Users
      **/
-    private $user;
+    private Users $user;
     /**
      * Contains a object of type Product.
+     * @var Product
      */
-    private $product;
+    private Product $product;
     /**
-     * Contains a object of type Qualificationes.
+     * Contains a object of type Qualification.
      * @var Qualification
      */
-    private $qualification;
+    private Qualification $qualification;
     /**
      * @var Conection
      */
-    private $conection;
+    private Conection $conection;
     private UserRepository $userRepository;
     private ProductRepository $productRepository;
     private QualificationRepository $qualificationRepository;
+
     /**
      * productsController constructor.
      */
@@ -74,7 +76,10 @@ class productsController implements Crud
         $this->qualificationRepository->setConection($this->conection);
     }
     
-    /**Default*/
+    /**
+     * Default.
+     * @return array Return a array with data or empty.
+     */
     public function index()
     {
         $data = array();
@@ -110,14 +115,15 @@ class productsController implements Crud
         }
         return $result;
     }
-    
+
     /**
      * Method to create the product.
+     * @return void Return a web.
      */
     public function add()
     {
         if ($_POST && isset($_FILES['image']))
-        {   
+        {
             $file = $_FILES['image'];
             if ($this->isValidImageFile($file))
             {

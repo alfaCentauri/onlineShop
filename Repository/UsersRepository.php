@@ -19,7 +19,6 @@
 namespace Repository;
 
 use Models\Users;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Repository of Class Users.
@@ -50,7 +49,7 @@ class UsersRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function find(Integer $id)
+    public function find(int $id)
     {
         $sql = "SELECT * FROM users where id='{$id}';";
         $data = $this->conection->ReturnQuery($sql);
@@ -86,7 +85,7 @@ class UsersRepository extends Repository
     {
         $sql = "INSERT INTO users(firstName, lastName, email, login, password, creationDate) "
                 . "VALUES('{$this->user->getFirstName()}', '{$this->user->getLastName()}', '"
-                . "{$this->email}', '{$this->user->getLogin()}', '{$this->user->getPassword()}', NOW());";
+                . "{$this->user->getEmail()}', '{$this->user->getLogin()}', '{$this->user->getPassword()}', NOW());";
         $this->conection->SimpleQuery($sql);
     }
     

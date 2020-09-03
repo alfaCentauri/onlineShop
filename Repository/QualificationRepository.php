@@ -20,7 +20,6 @@
 namespace Repository;
 
 use Models\Qualification;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * This is the qualification of the product.
@@ -51,7 +50,7 @@ class QualificationRepository extends Repository
     /**
      * @inheritDoc
      */
-    public function find(Integer $id)
+    public function find(int $id)
     {
         $sql = "SELECT * FROM qualification where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
@@ -173,7 +172,7 @@ class QualificationRepository extends Repository
     
     /**
      * Find a average for a product.
-     * @return bool|\mysqli_result
+     * @return string[] Return a mysql result.
      */
     public function findAverage()
     {
