@@ -51,7 +51,7 @@ class ProductRepository extends Repository
      */
     public function find(int $id)
     {
-        $sql = "SELECT * FROM products where id='{$id}'";
+        $sql = "SELECT * FROM products where id={$id}";
         $data = $this->conection->ReturnQuery($sql);
         $this->setProduct(mysqli_fetch_assoc($data));
         return $this->product;
@@ -95,7 +95,7 @@ class ProductRepository extends Repository
      */
     public function delete()
     {
-        $sql = "delete from products where id='{$this->product->getId()}';";
+        $sql = "delete from products where id={$this->product->getId()};";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -114,7 +114,7 @@ class ProductRepository extends Repository
      */
     public function view()
     {
-        $sql = "SELECT * FROM products where id='{$this->product->getId()}'";
+        $sql = "SELECT * FROM products where id={$this->product->getId()}";
         $data = $this->conection->ReturnQuery($sql);
         $this->setProduct(mysqli_fetch_assoc($data));
         return $this->product;
@@ -137,16 +137,16 @@ class ProductRepository extends Repository
     /**
      * @param array $product_data Contains the product data.
      */
-    private function setProduct($product_data): void
+    private function setProduct(array $product_data): void
     {
         if(isset($product_data))
         {
             $this->product->setId($product_data['id']);
             $this->product->setName($product_data['name']);
-            $this->product->setPrice($product_data["price"]);
-            $this->product->setStock($product_data["stock"]);
-            $this->product->setImage($product_data["image"]);
-            $this->product->setCreationDate($product_data["creationDate"]);
+            $this->product->setPrice($product_data['price']);
+            $this->product->setStock($product_data['stock']);
+            $this->product->setImage($product_data['image']);
+            $this->product->setCreationDate($product_data['creationDate']);
         }
     }
 }

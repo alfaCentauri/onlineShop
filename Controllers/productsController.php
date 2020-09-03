@@ -110,9 +110,9 @@ class productsController implements Crud
         $this->qualification->setIdProduct($id);
         $averageProduct = $this->qualificationRepository->findAverage();
         $result = 0;
-        if (isset($averageProduct['average'])) {
-            $result = $averageProduct['average'];
-        }
+        if (isset($averageProduct['average']))
+            $result = number_format($averageProduct['average'], 2);
+
         return $result;
     }
 
@@ -192,39 +192,25 @@ class productsController implements Crud
     
     /**
      * @param int $id Index.
-     * @return array|null Data.
+     * @return array Data of product found.
      */
     private function createArrayDataProduct(int $id = 0):array
     {
-        $data = array();
+        $productFound = array();
         $this->product = $this->productRepository->find($id);
         if (isset($this->product))
         {
-            $data['id'] = $this->product->getId();
-            $data['name'] = $this->product->getName();
-            $data['price'] = $this->product->getPrice();
-            $data['image'] = $this->product->getImage();
-            $data['stock'] = $this->product->getStock();
-            $data['creationDate'] = $this->product->getCreationDate();
-            $this->findAverageOfProduct($this->product->getId());
-            $data['average'] = $this->getAverageOfProduct();
-        }    
-        return $data; 
+            $productFound['id'] = $this->product->getId();
+            $productFound['name'] = $this->product->getName();
+            $productFound['price'] = $this->product->getPrice();
+            $productFound['image'] = $this->product->getImage();
+            $productFound['stock'] = $this->product->getStock();
+            $productFound['creationDate'] = $this->product->getCreationDate();
+            $productFound['average'] = $this->findAverageOfProduct($this->product->getId());
+        }
+        return $productFound;
     }
-    
-    /**
-     * @return float Return average of product.
-     */
-    private function getAverageOfProduct(): float
-    {
-        $dataAverage = $this->qualificationRepository->findAverage();
-        $average = 0;
-        if(isset($dataAverage))
-            $average = number_format($dataAverage, 2);
 
-        return $average;
-    }
-    
     /**
      * Method to show form for edit the product.
      * @param $id   Integer integer.

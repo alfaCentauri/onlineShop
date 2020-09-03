@@ -52,7 +52,7 @@ class QualificationRepository extends Repository
      */
     public function find(int $id)
     {
-        $sql = "SELECT * FROM qualification where id='{$id}'";
+        $sql = "SELECT * FROM qualification where id={$id}";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -85,8 +85,8 @@ class QualificationRepository extends Repository
     public function add()
     {
         $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) 
-          VALUES(NULL, '{$this->qualification->getIdUser()}', '{$this->qualification->getIdProduct()}', '
-            {$this->qualification->getPoints()}', NOW());";
+          VALUES(NULL, {$this->qualification->getIdUser()}, {$this->qualification->getIdProduct()}, 
+            {$this->qualification->getPoints()}, NOW());";
         $data = $this->conection->InsertQuery($sql);
         return $data;
     }
@@ -96,8 +96,8 @@ class QualificationRepository extends Repository
      */
     public function edit()
     {
-        $sql = "update qualification set points='{$this->qualification->getPoints()}' where 
-        id = '{$this->qualification->getId()}';";
+        $sql = "update qualification set points = {$this->qualification->getPoints()} where 
+        id = {$this->qualification->getId()};";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -109,7 +109,7 @@ class QualificationRepository extends Repository
         $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
           FROM qualification Q 
           INNER JOIN products P 
-          on Q.idProduct=P.id and Q.id='{$this->qualification->getId()}';";
+          on Q.idProduct=P.id and Q.id= {$this->qualification->getId()};";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -120,7 +120,7 @@ class QualificationRepository extends Repository
      */
     public function delete()
     {
-        $sql = "delete from qualification where id='{$this->qualification->getId()}';";
+        $sql = "delete from qualification where id = {$this->qualification->getId()};";
         $this->conection->SimpleQuery($sql);
     }
     
@@ -132,7 +132,7 @@ class QualificationRepository extends Repository
     {
         $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
           FROM qualification Q 
-          INNER JOIN users U on Q.idUser='{$this->qualification->getIdUser()}' and Q.idUser=U.id  
+          INNER JOIN users U on Q.idUser= {$this->qualification->getIdUser()} and Q.idUser=U.id  
           INNER JOIN products P 
           on Q.idProduct=P.id;";
         $data = $this->conection->ReturnQuery($sql);
@@ -148,9 +148,9 @@ class QualificationRepository extends Repository
     {
         $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
           FROM qualification Q 
-          INNER JOIN users U on Q.idUser='{$this->qualification->getIdUser()}' and Q.idUser=U.id  
+          INNER JOIN users U on Q.idUser= {$this->qualification->getIdUser()} and Q.idUser=U.id  
           INNER JOIN products P 
-          on Q.idProduct=P.id and Q.idProduct='{$this->qualification->getIdProduct()}';";
+          on Q.idProduct=P.id and Q.idProduct = {$this->qualification->getIdProduct()};";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
@@ -179,7 +179,7 @@ class QualificationRepository extends Repository
         $sql = "SELECT Q.idProduct, AVG(Q.points) as average, P.name as name_product, P.image as image_product 
           FROM qualification Q 
           INNER JOIN products P 
-          on Q.idProduct=P.id and Q.idProduct='{$this->qualification->getIdProduct()}';";
+          on Q.idProduct=P.id and Q.idProduct={$this->qualification->getIdProduct()};";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
