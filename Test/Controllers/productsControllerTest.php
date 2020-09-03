@@ -1,23 +1,26 @@
 <?php
 
-namespace TestControllers;
+namespace Test\Controllers;
 
-use Controllers\productsController;
+use Models\Conection as Conection;
+use PHPUnit\Framework\TestCase;
 
-class productsControllerTest extends \PHPUnit_Framework_TestCase
+class productsControllerTest extends TestCase
 {
+    private string $mensaje;
 
-    public function testAdd()
+    public function testCanBeCreated__construct(): void
     {
+        $this->mensaje = "Error al crear la conexión.";
+        $this->assertInstanceOf(Conection::class, new Conection(), $this->mensaje);
+    }
 
+    public function testIndex()
+    {
+        $this->mensaje = "";
     }
 
     public function testRemove()
-    {
-
-    }
-
-    public function testView()
     {
 
     }
@@ -27,7 +30,12 @@ class productsControllerTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testIndex()
+    public function testAdd()
+    {
+
+    }
+
+    public function testView()
     {
 
     }

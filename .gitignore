@@ -1,3 +1,6 @@
 /nbproject/
 /NamespacePHP/nbproject/private/
 /.idea/
+phpunit
+phpunit-9.phar
+/Views/Templates/images/products
