@@ -39,25 +39,25 @@ class qualificationController implements Crud
      * Contains a object of type Users.
      * @var Users
      **/
-    private $user;
+    private Users $user;
     /**
      * Contains a object of type Product.
      * @var Product
      */
-    private $product;
+    private Product $product;
     /**
      * Contains a object of type Qualificationes.
      * @var Qualification
      */
-    private $qualification;
+    private Qualification $qualification;
     /**
      * Contains the status of the request.
      */
-    private $statusCode;
+    private int $statusCode;
     /**
      * @var Conection
      */
-    private $conection;
+    private Conection $conection;
     private UserRepository $userRepository;
     private ProductRepository $productRepository;
     private QualificationRepository $qualificationRepository;
@@ -99,21 +99,22 @@ class qualificationController implements Crud
     {
         $url = getcwd();
         $arrayResult = array();
-        $dataJson = getFileJSon();
-        if(isValidJSon($dataJson)) 
+        $dataJson = $this->getFileJSon();
+        if($this->isValidJSon($dataJson))
         {
-            $id = appendQualification($dataJson);
-            $arrayResult[] = setStatusCode($id);           
+            $id = $this->appendQualification($dataJson);
+            $arrayResult[] = $this->setStatusCode($id);
         }
         else
         {
-            notAcceptable();
+            $this->notAcceptable();
         }
         file_put_contents($url.'/Views/Templates/files/result.json',json_encode($arrayResult));
         header("Location: ".URL."index.php?url=products");
     }
-    
+
     /**
+     * @param String $nameFile Name File, default is qualification.json.
      * @return array Return array with data of json.
      */
     private function getFileJSon(String $nameFile = "qualification.json"): array
@@ -180,11 +181,11 @@ class qualificationController implements Crud
         $arrayResult = array();
         if ($id > 0)
         {
-            $arrayResult = findQualificationAndStatusCode($id);
+            $arrayResult = $this->findQualificationAndStatusCode($id);
         }
         else
         {
-            notAcceptable();
+            $this->notAcceptable();
         }
         file_put_contents($url.'/Views/Templates/files/result.json',json_encode($arrayResult));
         header("Location: ".URL."index.php?url=products");
@@ -201,7 +202,7 @@ class qualificationController implements Crud
     {
         $arrayResult = array();
         $this->qualification = $this->qualificationRepository->find($id);
-        $arrayResult = getQualificationAndStatusCode();
+        $arrayResult = $this->getQualificationAndStatusCode();
         return $arrayResult;
     }
     
@@ -221,8 +222,7 @@ class qualificationController implements Crud
             $arrayResult['idUser'] = $this->qualification->getIdUser();
             $arrayResult['idProduct'] = $this->qualification->getIdProduct();
             $arrayResult['points'] = $this->qualification->getPoints();
-            $arrayResult['creationDate'] = 
-                $this->qualification->getCreationDate();
+            $arrayResult['creationDate'] = $this->qualification->getCreationDate();
         }
         else 
         {
@@ -242,7 +242,7 @@ class qualificationController implements Crud
         $arrayResult = array();
         if ($idProduct > 0)
         {
-            $arrayResult = findQualificationForAProductAndStatusCode($idProduct);                
+            $arrayResult = $this->findQualificationForAProductAndStatusCode($idProduct);
         }
         else
         {
@@ -252,12 +252,16 @@ class qualificationController implements Crud
         file_put_contents($url.'/Views/Templates/files/resultAverage.json',json_encode($arrayResult));
         header("Location: ".URL."index.php?url=products");
     }
-    
+
+    /**
+     * @param int $idProduct Index of product.
+     * @return array Return a array with data.
+     */
     private function findQualificationForAProductAndStatusCode(int $idProduct = 0): array
     {
         $this->qualification->setIdProduct($idProduct);
         $this->qualification = $this->qualificationRepository->findAverage();
-        $dataAverage = getQualificationAndStatusCode();
+        $dataAverage = $this->getQualificationAndStatusCode();
         return $dataAverage;
     }
     
@@ -271,23 +275,24 @@ class qualificationController implements Crud
         $arrayResult = array();
         if ($idQualification > 0)
         {   
-            $dataJson = getFileJSon("points.json");
-            if(isValidJSon($dataJson)) 
+            $dataJson = $this->getFileJSon("points.json");
+            if($this->isValidJSon($dataJson))
             {
-                $arrayResult = updateQualification($dataJson, $idQualification); 
-                $arrayResult[] = setStatusCode($idQualification);
+                $arrayResult = $this->updateQualification($dataJson, $idQualification);
+                $arrayResult[] = $this->setStatusCode($idQualification);
             }            
         }
         else
         {
-            notAcceptable();
+            $this->notAcceptable();
         }
         file_put_contents($url.'/Views/Templates/files/resultEdit.json',json_encode($arrayResult));
         header("Location: ".URL."index.php?url=products");
     }
-    
+
     /**
      * @param array $dataJson Array of data.
+     * @param int $idQualification Index of qualification.
      * @return int Return a Integer with the index.
      */
     private function updateQualification($dataJson, int $idQualification): int
@@ -296,7 +301,8 @@ class qualificationController implements Crud
         $this->qualification->setIdUser($dataJson['idUser']);
         $this->qualification->setIdProduct($dataJson['idProduct']);
         $this->qualification->setPoints($dataJson['points']);
-        return $this->qualificationRepository->update();
+        $this->qualificationRepository->edit();
+        return $this->qualification->getId();
     }
     
     /**
@@ -317,7 +323,7 @@ class qualificationController implements Crud
         }
         else
         {
-            notAcceptable();
+            $this->notAcceptable();
         }
         file_put_contents($url.'/Views/Templates/files/resultDelete.json',json_encode($arrayResult));
         header("Location: ".URL."index.php?url=products");

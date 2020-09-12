@@ -2,35 +2,50 @@
 
 namespace Test\Controllers;
 
-use Models\Conection as Conection;
+use Controllers\productsController;
 use PHPUnit\Framework\TestCase;
 
 class productsControllerTest extends TestCase
 {
     private string $mensaje;
+    private productsController $controlador;
 
-    public function testCanBeCreated__construct(): void
+    public function testCanBeCreated__construct():void
     {
-        $this->mensaje = "Error al crear la conexión.";
-        $this->assertInstanceOf(Conection::class, new Conection(), $this->mensaje);
+        $this->mensaje = "Error al crear la instancia.";
+        $this->assertInstanceOf(productsController::class, new productsController(), $this->mensaje);
     }
 
-    public function testIndex()
+    public function testCanBeCreatedArrayIndex():void
     {
-        $this->mensaje = "";
+        $this->mensaje = "No se crea el arreglo de datos.";
+        $this->controlador = new productsController();
+        $this->assertIsArray($this->controlador->index(), $this->mensaje);
     }
 
-    public function testRemove()
+    /**
+     * @dataProvider additionProvider
+     */
+    public function testWhenMethodGetAdd()
     {
+        $this->mensaje = "No se pueden agregar los datos.";
+        $this->controlador = new productsController();
+        $this->callback(); // Revisar
+        //$this->call('Get', 'add'); // no existe
+        //$this->assertResponseOk(); // no existe
+    }
 
+    public function additionProvider()
+    {
+        return [
+            'id'    => 100,
+            'name'  => "ejemplo 1",
+            'price' => 1.45,
+            'stock' => 25
+        ];
     }
 
     public function testEdit()
-    {
-
-    }
-
-    public function testAdd()
     {
 
     }
@@ -43,5 +58,10 @@ class productsControllerTest extends TestCase
     public function testUpdate()
     {
 
+    }
+
+    public function testRemove()
+    {
+        $this->mensaje = "No se puede borrar los datos.";
     }
 }

@@ -18,15 +18,15 @@ namespace Models;
 class Conection
 {
     /** Contains the name of the server*/
-    private $servername = "localhost";
+    private string $servername = "localhost";
     /** Contains the MySQL user*/
-    private $username = "phptest";
+    private string $username = "phptest";
     /** Contains the password */
-    private $password = "userShop.20";
+    private string $password = "userShop.20";
     /** Contains the name of the database*/
-    private $dbname = "shop";
+    private string $dbname = "shop";
     /** Contains the conection */
-    private $conn;
+    private \mysqli $conn;
     /**
      * Conection constructor.
      */
@@ -41,7 +41,7 @@ class Conection
      * 
      * @param String $sql   Simple query sql.
      */
-    public function SimpleQuery($sql)
+    public function SimpleQuery($sql): void
     {
         $this->conn->query($sql);
     }

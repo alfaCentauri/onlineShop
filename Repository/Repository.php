@@ -33,7 +33,7 @@ abstract class Repository
      * Conetion to DB.
      * @var Conection
      */
-    protected $conection;
+    protected Conection $conection;
     
     /**
      * @return Conection

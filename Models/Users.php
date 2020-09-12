@@ -32,27 +32,28 @@ class Users extends Entity
      * Contains the firstName
      * @var string
      */
-    private $firstName;
+    private string $firstName;
     /**
      * Contains the lastName
      * @var string
      */
-    private $lastName;
+    private string $lastName;
     /**
      * User email
      * @var string
      */
-    private $email;
+    private string $email;
     /**
      * User Login
      * @var string
     */
-    private $login;
+    private string $login;
     /**
      * Encrypted user password
      * @var string
     */
-    private $password;
+    private string $password;
+
     /**
      * Construct of the class
      */

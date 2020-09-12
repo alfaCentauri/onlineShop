@@ -30,9 +30,10 @@ use Models\Cart;
 class CartRepository extends Repository
 {
     private Cart $cart;
-    
+
     /**
      * Constructor.
+     * @param Cart $cart Contains a cart of shopping.
      */
     public function __construct(Cart $cart)
     {
@@ -133,7 +134,7 @@ class CartRepository extends Repository
     
     /**
      * Add a register.
-     * @return mysqli_result Return a mysql result.
+     * @return int Return a mysql result.
      */
     public function add()
     {

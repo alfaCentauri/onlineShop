@@ -19,6 +19,8 @@
 
 namespace Models;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 /**
  * Description of Cart
  *
@@ -30,21 +32,21 @@ class Cart extends Entity
     /**
      * @var integer
      */
-    private $idUser;
+    private int $idUser;
     /**
      * Constains the total price.
      * @var float
      */
-    private $totalPrice;
+    private float $totalPrice;
     /**
      * Contains the direction of shipping.
-     * @var String
+     * @var string
      */
-    private $direction;
+    private string $direction;
     /**
-     * @var Boolean
+     * @var bool
      */
-    private $paidOut;
+    private Boolean $paidOut;
     
     /**
      * Cart constructor.

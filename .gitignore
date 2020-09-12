@@ -4,3 +4,4 @@
 phpunit
 phpunit-9.phar
 /Views/Templates/images/products
+/vendor/

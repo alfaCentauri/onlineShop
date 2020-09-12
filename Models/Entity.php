@@ -8,6 +8,8 @@
 
 namespace Models;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 /**
  * Abstract class to define common methods to all the Models.
  *
@@ -19,17 +21,17 @@ abstract class Entity
 {
     /**
      * It contains the index
-     * @var integer
+     * @var int
      */
-    protected $id;
+    protected int $id;
     /**
      * Contains creation date.
      */
     protected $creationDate;
     /**
-     * @var Boolean
+     * @var bool
      */
-    protected $active;
+    protected Boolean $active;
 
     /**
      * Entity constructor.

@@ -32,17 +32,17 @@ class Qualification extends Entity
      * It contains the index of the user.
      * @var int
      */
-    private $idUser;
+    private int $idUser;
     /**
      * It contains the index of the product.
      * @var int
      */
-    private $idProduct;
+    private int $idProduct;
     /**
      * It contains the points del product.
      * @var int
      */
-    private $points;
+    private int $points;
     
     /**
      * Qualification constructor.

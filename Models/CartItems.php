@@ -31,21 +31,21 @@ class CartItems extends Entity
      * Contains the index of the cart.
      * @var int
     */
-    private $idCart;
+    private int $idCart;
     /**
-     * @var integer
+     * @var int
      */
-    private $idProduct;
+    private int $idProduct;
     /**
      * Constains the quantity.
-     * @var integer
+     * @var int
      */
-    private $quantity;
+    private int $quantity;
     /**
      * Constains the total price.
      * @var float
      */
-    private $totalPrice;
+    private float $totalPrice;
 
     /**
      * CartItems constructor.

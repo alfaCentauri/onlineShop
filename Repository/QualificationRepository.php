@@ -54,8 +54,8 @@ class QualificationRepository extends Repository
     {
         $sql = "SELECT * FROM qualification where id={$id}";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        $this->setQualification(mysqli_fetch_assoc($data));
+        return $this->qualification;
     }
     
     /**
@@ -169,10 +169,10 @@ class QualificationRepository extends Repository
         $data = $this->conection->ReturnQuery($sql);
         return $data;
     }
-    
+
     /**
      * Find a average for a product.
-     * @return string[] Return a mysql result.
+     * @return Qualification Return a mysql result.
      */
     public function findAverage()
     {
@@ -181,8 +181,8 @@ class QualificationRepository extends Repository
           INNER JOIN products P 
           on Q.idProduct=P.id and Q.idProduct={$this->qualification->getIdProduct()};";
         $data = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
+        $this->setQualification(mysqli_fetch_assoc($data));
+        return $this->qualification;
     }
 
     /**
@@ -191,5 +191,9 @@ class QualificationRepository extends Repository
     private function setQualification(array $dataQualification): void
     {
         $this->qualification->setId($dataQualification['id']);
+        $this->qualification->setIdProduct($dataQualification['idProduct']);
+        $this->qualification->setIdUser($dataQualification['idUser']);
+        $this->qualification->setPoints($dataQualification['points']);
+        $this->qualification->setCreationDate($dataQualification['creationDate']);
     }
 }

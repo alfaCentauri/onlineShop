@@ -19,24 +19,24 @@ class Product extends Entity
 {
     /**
      * Contains the name.
-     * @var String
+     * @var string
      */
-    private $name;
+    private string $name;
     /**
      * Contains the price.
      * @var float
      */
-    private $price;
+    private float $price;
     /**
      * Contains the stock.
      * @var int
      */
-    private $stock;
+    private int $stock;
     /**
      * Contains name image.
-     * @var String
+     * @var string
      */
-    private $image;
+    private string $image;
     
     /**
      * Product constructor.
@@ -53,25 +53,25 @@ class Product extends Entity
     }
     
     /**
-     * @return String
+     * @return string Return a name.
      */
-    public function getName()
+    public function getName():string
     {
         return $this->name;
     }
 
     /**
-     * @param String $name
+     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
 
     /**
-     * @return mixed
+     * @return float Return the price of product.
      */
-    public function getPrice()
+    public function getPrice():float
     {
         return $this->price;
     }
@@ -85,7 +85,7 @@ class Product extends Entity
     }
 
     /**
-     * @return Integer
+     * @return int Return the stock of the product.
      */
     public function getStock()
     {
@@ -93,7 +93,7 @@ class Product extends Entity
     }
 
     /**
-     * @param Integer $stock
+     * @param int $stock
      */
     public function setStock($stock)
     {

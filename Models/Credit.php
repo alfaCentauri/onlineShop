@@ -30,12 +30,12 @@ class Credit extends Entity
      * Contains the index of user.
      * @var int
      */
-    private $idUser;
+    private int $idUser;
     /**
      * Contains the balance of credit.
      * @var float
      */
-    private $balance;
+    private float $balance;
 
     /**
      * Credit constructor.

@@ -53,7 +53,8 @@ class CartItemsRepository extends Repository
         $sql = "SELECT * FROM itemsCart where id='{$id}'";
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
-        return $row;
+        $this->setCartItem($row);
+        return $this->cartItem;
     }
 
     /**
@@ -146,5 +147,17 @@ class CartItemsRepository extends Repository
         $data = $this->conection->ReturnQuery($sql);
         $row = mysqli_fetch_assoc($data);
         return $row;
+    }
+
+    /**
+     * @param array $dataCartItem Data of the Cart Items.
+     */
+    private function setCartItem(array $dataCartItem):void
+    {
+        $this->cartItem->setId($dataCartItem['id']);
+        $this->cartItem->setIdCart($dataCartItem['idCart']);
+        $this->cartItem->setIdProduct($dataCartItem['idProduct']);
+        $this->cartItem->setQuantity($dataCartItem['quantity']);
+        $this->cartItem->setTotalPrice($dataCartItem['totalPrice']);
     }
 }
