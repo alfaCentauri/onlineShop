@@ -19,20 +19,26 @@
 
 namespace Controllers;
 
-use Models\Cart as Cart;
-use Models\CartItems;
-use Models\Product as Product;
 use Models\Users;
-use Models\Qualification as Qualification;
+use Models\CartItems;
+use Models\Cart as Cart;
 use Models\Credit as Credit;
+use Models\Product as Product;
 use Models\Conection as Conection;
+use Models\Qualification as Qualification;
+use Repository\CartRepository as CartRepository;
+use Repository\UsersRepository as UserRepository;
+use Repository\CreditRepository as CreditRepository;
+use Repository\ProductRepository as ProductRepository;
+use Repository\CartItemsRepository as CartItemsRepository;
+use Repository\QualificationRepository as QualificationRepository;
 
 /**
  * Description of cartController
  *
  * @package Controllers
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 1.2.
  */
 class cartController implements Crud
 {
@@ -40,39 +46,47 @@ class cartController implements Crud
      * Contains a object of type Users.
      * @var Users
      **/
-    private $user;
+    private Users $user;
     /**
-     * Contains a object of type Cat.
+     * Contains a object of type Cart.
+     * @var Cart
      */
-    private $cart;
+    private Cart $cart;
     /**
      * Contains a object of type Product.
      * @var Product
      */
-    private $product;
+    private Product $product;
     /**
      * Contains the data of the cart items.
      * @var CartItems
      */
-    private $itemsCart;
+    private CartItems $itemsCart;
     /**
      * @var float
     */
-    private $subtotal;
+    private float $subtotal;
     /**
      * Contains a object of type Qualification.
      * @var Qualification
      */
-    private $qualification;
+    private Qualification $qualification;
     /**
      * Contains a object of type Credit.
      * @var Credit
     */
-    private $credit;
+    private Credit $credit;
     /**
      * @var Conection
      */
-    private $conection;
+    private Conection $conection;
+    private CartRepository $cartRepository;
+    private UserRepository $userRepository;
+    private CreditRepository $creditRepository;
+    private ProductRepository $productRepository;
+    private CartItemsRepository $cartItemsRepository;
+    private QualificationRepository $qualificationRepository;
+    
     /**
      * Construct
      **/
@@ -80,66 +94,82 @@ class cartController implements Crud
     {
         $this->conection = new Conection();
         $this->user = new Users();
-        $this->user->setConection($this->conection);
+        $this->userRepository = new UserRepository($this->user);
+        $this->userRepository->setConection($this->conection);
+        
         $this->cart = new Cart();
-        $this->cart->setConn($this->conection);
+        $this->cartRepository = new CartRepository($this->cart);
+        $this->cartRepository->setConection($this->conection);
+        
         $this->product = new Product();
-        $this->product->setCon($this->conection);
+        $this->productRepository = new ProductRepository($this->product);
+        $this->productRepository->setConection($this->conection);
+        
         $this->itemsCart = new CartItems();
-        $this->itemsCart->setConn($this->conection);
+        $this->cartItemsRepository = new CartItemsRepository($this->itemsCart);
+        $this->cartItemsRepository->setConection($this->conection);
+        
         $this->qualification = new Qualification();
-        $this->qualification->setConn($this->conection);
+        $this->qualificationRepository = new QualificationRepository($this->qualification);
+        $this->qualificationRepository->setConection($this->conection);
+        
         $this->credit = new Credit();
-        $this->credit->setConn($this->conection);
-        $this->subtotal =0;
+        $this->creditRepository = new CreditRepository($this->credit);
+        $this->creditRepository->setConection($this->conection);
+        
+        $this->subtotal = 0;
     }
 
-    /**Default
-     * @param int $idU
-     * @return bool|\mysqli_result  Data of list of the cart.
+    /**
+     * Default.
+     *
+     * @param int $idU Index of user.
+     * @return array  Data of list of the cart.
      */
-    public function index(int $idU=1)
+    public function index(int $idU = 1):array
     {
-        $this->cart->setIdUser($idU);
-        $dataCart = $this->cart->viewNotPaidout();
+        $data = array();
+        $this->cart->setIdUser($idU);        
+        $dataCart = $this->cartRepository->viewNotPaidout();
         if (isset($dataCart))
         {
             $this->cart->setId($dataCart['id']);
-            $data = $this->cart->toListItemsCart();
-            return $data;
+            $data = $this->cartRepository->toListItemsCart();
         }
-        else
-        {
-            return null;
-        }
+        return $data;
     }
+    
     /**
      * Gets the user's full name.
-     * @param int $idU
-     * @return null|string
+     * @param int $idU Index of user.
+     * @return string Return full name of user or null.
      */
-    public function getUserName(int $idU=0)
+    public function getUserName(int $idU = 0):string
     {
-        if ($idU>0)
+        if ($idU > 0)
         {
             $this->user->setId($idU);
-            $data_users = $this->user->view();
+            $data_users = $this->userRepository->view();
             return $data_users['firstName']." ".$data_users['lastName'];
         }
-        return null;
+        return "";
     }
-    /**List all product carts.*/
+    
+    /**
+      * List all product carts.
+      * @return null|array Return a array of data.
+      */
     public function all()
     {
-        $data = $this->cart->toList();
+        $data = $this->cartRepository->all();
         return $data;
     }
 
     /**
      * Add the product to the user's cart with the indicated amount and discount
      * the stock. Go back to the list of products.
-     * First check if the shopping cart exists; then add the items to the cart. If it does not exist, a new one is
-     * created.
+     * First check if the shopping cart exists; then add the items to the cart. 
+     * If it does not exist, a new one is created.
      * The route to add to the cart will be:
      * http://localhost/onlineShop/cart/add/$id/$idU/$idCart .
      *
@@ -150,118 +180,168 @@ class cartController implements Crud
      */
     public function add(int $id=0, int $idU=1, int $idCart=1)
     {
-        if ($id>0)
+        $data = array();
+        if ($id > 0)
         {
-            $this->product->setId($id);
-            $data = $this->product->view();
+            $data = $this->createArrayDataProduct($id);
             $this->cart->setIdUser($idU);
-            $this->itemsCart->setIdProduct($data['id']);
-            if ($_POST && $_POST['quantity']>0)
+            $this->itemsCart->setIdProduct($this->product->getId());
+            if ($_POST['quantity'] > 0)
             {
-                $quantity = $_POST['quantity'];
-                $this->itemsCart->setQuantity($quantity);
-                $this->itemsCart->setTotalPrice($data["price"]*$quantity);
-                $result = $data['stock'] - $this->itemsCart->getQuantity();
-                $this->product->setStock($result);
-                $this->product->setId($data['id']);
-                $this->product->setName($data['name']);
-                $this->product->setPrice($data["price"]);
-                $this->product->edit();
-                if ($_POST['points']>0) //Points
-                {
-                    $points = $_POST['points'];
-                    $this->qualification->setIdProduct($this->product->getId());
-                    $this->qualification->setPoints($points);
-                    $this->qualification->setIdUser($idU);
-                    $result = $this->qualification->findByUserProduct();
-                    if(is_null($result))
-                    {
-                        $this->qualification->add();
-                    }
-                }
-                $this->cart->setId($idCart);
-                $dataCart = $this->cart->viewNotPaidout();
-                if(is_null($dataCart))
-                {
-                    $idCart=$this->cart->add();
-                    if (isset($idCart))
-                    {
-                        $this->cart->setId($idCart);
-                        $this->itemsCart->setIdCart($idCart);
-                    }
-                }
-                elseif ($dataCart['paidOut']==1)
-                    {
-                        $idCart=$this->cart->add();
-                        if (isset($idCart))
-                        {
-                            $this->cart->setId($idCart);
-                            $this->itemsCart->setIdCart($idCart);
-                        }
-                    }
-                    else
-                    {
-                        $this->cart->setId($dataCart['id']);
-                        $this->cart->edit();
-                        $this->itemsCart->setIdCart($dataCart['id']);
-                    }
-                $this->itemsCart->add();
+                $this->updateItemOfCartShopping($_POST['quantity'], $this->product->getPrice());
+                $this->descountProductOfStock();
+                $this->appendQualification($_POST['points'], $idU);
+                $this->updateCartShopping($this->cartRepository->viewNotPaidout());
                 header("Location: ".URL."index.php?url=cart/toListUser/".$this->cart->getId()."/".$idU);
-            }
-            return $data;
+            }            
         }
-        else
+        return $data;
+    }
+    
+    /**
+     * @param int $quantity Type Integer, quantity of item.
+     * @param float $price Type float, price of item.
+     */
+    private function updateItemOfCartShopping(int $quantity = 0, float $price): void
+    {
+        $this->itemsCart->setQuantity($quantity);
+        $this->itemsCart->setTotalPrice($price*$quantity);
+    }
+
+    /**
+     * 
+     */
+    private function descountProductOfStock(): void
+    {
+        if($this->itemsCart->getQuantity() > 0)
         {
-            return null;
+            $result = $this->product->getStock() - $this->itemsCart->getQuantity();            
+            $this->product->setStock($result);
+            $this->productRepository->edit();
         }
     }
 
     /**
-     * Preview of the cart.
-     * The route is: http://localhost/onlineShop/cart/preview/$id/$idU .
-     * @param int $id   Integer integer.
-     * @param int $idU  Integer of index user.
-     * @return array|null   Data of product.
+     * @param int $points Integer with points.
+     * @param int $idU Index of user.
      */
-    public function preview(int $id=1, int $idU=0)
+    private function appendQualification(int $points = 0, int $idU = 0): void
     {
-        $this->product->setId($id);
-        $product = $this->product->view();
-        if (isset($product['id']))
+        if ($points > 0) 
         {
-            $data = array();
-            $data['id'] = $product['id'];
-            $data['name'] = $product['name'];
-            $data['price'] = $product['price'];
-            $data['image'] = $product['image'];
-            $data['stock'] = $product['stock'];
-            $data['creationDate'] = $product['creationDate'];
-            $this->qualification->setIdProduct($product['id']);
-            $averageProduct = $this->qualification->findAverage();
-            if (isset($averageProduct['average']))
-            {
-                $data['average'] = number_format($averageProduct['average'], 2);
-            }
-            else
-            {
-                $data['average'] = 0;
-            }
+            $this->qualification->setIdProduct($this->product->getId());
+            $this->qualification->setPoints($points);
             $this->qualification->setIdUser($idU);
-            $qualification = $this->qualification->findByUserProduct();
-            if(is_null($qualification))
+            $result = $this->qualificationRepository->findByUserProduct();
+            if(is_null($result))
             {
-                $data['points'] = 0;
+                $this->qualificationRepository->add();
             }
-            else
+        }
+    }
+    
+    /**
+     * @param array $dataCart Type array.
+     */
+    private function updateCartShopping($dataCart): void
+    {
+        if(is_null($dataCart))
+        {
+            $idCart = $this->cartRepository->add();
+            if (isset($idCart))
             {
-                $data['points'] = $qualification['points'];
+                $this->cart->setId($idCart);
+                $this->itemsCart->setIdCart($idCart);
             }
         }
         else
-            $data = null;
+        {
+            $this->cart->setId($dataCart['id']);
+            $this->cartRepository->edit();
+            $this->itemsCart->setIdCart($dataCart['id']);
+        }
+        $this->cartItemsRepository->add();
+    }
+    
+    /**
+     * Preview of the cart.
+     * The route is: http://localhost/onlineShop/cart/preview/$id/$idU .
+     * @param int $id   Integer index of cart.
+     * @param int $idU  Integer of index user.
+     * @return array Data of product.
+     */
+    public function preview(int $id = 1, int $idU = 0):array
+    {
+        $dataProduct = $this->createPreviewProduct($id, $idU);
+        return $dataProduct;
+    }
+
+    /**
+     * @param int $idProduct Index of product.
+     * @param int $idU Index of user.
+     * @return array Data of product for preview.
+     */
+    private function createPreviewProduct(int $idProduct = 0, int $idU = 1): array
+    {
+        $data = $this->createArrayDataProduct($idProduct);
+        if (isset($this->product))
+        {
+            $this->qualification->setIdProduct($this->product->getId());
+            $this->qualification->setIdUser($idU);
+            $data['average'] = $this->findAverageOfTheProduct();
+            $data['points'] = $this->findQualificationOfProductByUser();
+        }
         return $data;
     }
 
+    /**
+     * @param int $idProduct Index of product.
+     * @return array|null   Data of product for preview.
+     */
+    private function createArrayDataProduct(int $idProduct = 0): array
+    {
+        $data = array();
+        $this->product = $this->productRepository->find($idProduct);
+        if (isset($this->product))
+        {
+            $data['id'] = $this->product->getId();
+            $data['name'] = $this->product->getName();
+            $data['price'] = $this->product->getPrice();
+            $data['image'] = $this->product->getImage();
+            $data['stock'] = $this->product->getStock();
+            $data['creationDate'] = $this->product->getCreationDate();
+        }
+        return $data;
+    }
+
+    /**
+     * @return float Return average of the product.
+     */
+    private function findAverageOfTheProduct(): float
+    {
+        $average = 0;
+        $averageProduct = $this->qualificationRepository->findAverage();
+        if (isset($averageProduct['average']))
+            $average = number_format($averageProduct['average'], 2);
+                
+        return $average;
+    }
+    
+    /**
+     * Method for find the qualification of the product.
+     *
+     * @return float Return qualification.
+     */
+    private function findQualificationOfProductByUser(): float
+    {
+        $points = 0;
+        $qualification = $this->qualificationRepository->findByUserProduct();
+        if(isset($qualification['points']))
+            $points = $qualification['points']; 
+            
+        return $points;
+    }
+    
     /**
      * Show a cart.
      * @param $id   Integer integer.
@@ -269,8 +349,27 @@ class cartController implements Crud
      */
     public function view(int $id=0):array
     {
-        $this->cart->setId($id);
-        $data = $this->cart->view();
+        $data = $this->createArrayDataCart($id);
+        return $data;
+    }
+    
+    /**
+     * @param int $id Index.
+     * @return array|null Data.
+     */
+    private function createArrayDataCart(int $id = 0):array
+    {
+        $data = array();
+        $this->cart = $this->cartRepository->find($id);
+        if(isset($this->cart))
+        {
+            $data['id'] = $this->cart->getId();
+            $data['idUser'] = $this->cart->getIdUser();
+            $data['totalPrice'] = $this->cart->getTotalPrice();
+            $data['direction'] = $this->cart->getDirection();
+            $data['paidOut'] = $this->cart->isPaidOut();
+            $data['creationDate'] = $this->cart->getCreationDate();
+        }
         return $data;
     }
 
@@ -281,46 +380,82 @@ class cartController implements Crud
      * @param int $idU Default 1, index of user.
      * @return array Array with shipping information.
      */
-    public function shipping(int $id=1, int $idU=1)
+    public function shipping(int $id=1, int $idU=1):array
     {
         $infoForShipping = array();
         $this->cart->setId($id);
         $this->cart->setIdUser($idU);
-        $shoppingCart = $this->cart->findByUser();
-        if (!is_null($shoppingCart))
+        $infoForShipping = $this->createShoppingCart($this->cartRepository->findByUser());
+        if ($_POST && $this->subtotal > 0)
         {
-            $infoForShipping['id'] = $shoppingCart['id'];
-            $infoForShipping['idUser'] = $shoppingCart['idUser'];
-            $this->credit->setIdUser($shoppingCart['idUser']);
-            $dataCredit = $this->credit->findByUser();
-            $infoForShipping['balanceCredit'] = $dataCredit['balance'];
-            $this->itemsCart->setIdCart($shoppingCart['id']);
-            $array = $this->itemsCart->totalList();
-            $this->subtotal = $array['subtotal'];
-            $infoForShipping['subtotal'] = number_format($array['subtotal'],2);
-            $infoForShipping['remainingBalance'] = number_format($infoForShipping['balanceCredit'] - $infoForShipping['subtotal'],2);
-        }
-        if ($_POST && $this->subtotal>0)
-        {
-            $this->cart->setDirection($_POST['direction']);
-            if($_POST['shipping']==5)
-            {
-                $this->cart->setTotalPrice(($this->subtotal+5));
-            }
-            else
-            {
-                $this->cart->setTotalPrice($this->subtotal);
-            }
-            $dataCredit['balance'] = $infoForShipping['balanceCredit'] - $this->cart->getTotalPrice();
-            $this->credit->setId($dataCredit['id']);
-            $this->credit->setBalance($dataCredit['balance']);
-            $this->credit->edit();
-            $this->cart->setPaidOut(true);
-            $this->cart->edit();
+            $this->processShipment($_POST['direction']);
+            $this->addCostShipping($_POST['shipping']);
             header("Location: ".URL."index.php?url=cart/dispach/".$this->cart->getId()."/".$this->cart->getIdUser());
         }
         return $infoForShipping;
     }
+    
+    /**
+     * @param array|null $shoppingCart Information of the shopping cart for 
+     * current user.
+     *
+     * @return array Return array of data shopping cart.
+     */
+    private function createShoppingCart($shoppingCart): array
+    {
+        $infoForShipping = array();
+        if (isset($shoppingCart))
+        {
+            $infoForShipping['id'] = $shoppingCart['id'];
+            $infoForShipping['idUser'] = $shoppingCart['idUser'];            
+            $this->findDataCredit($shoppingCart['idUser']);
+            $infoForShipping['balanceCredit'] = $this->credit->getBalance();
+            $this->itemsCart->setIdCart($shoppingCart['id']);
+            $sumSubTotal = $this->cartItemsRepository->totalList();
+            $this->subtotal = $sumSubTotal['subtotal'];
+            $infoForShipping['subtotal'] = number_format($sumSubTotal['subtotal'], 2);
+            $infoForShipping['remainingBalance'] = number_format($infoForShipping['balanceCredit'] -
+                $infoForShipping['subtotal'], 2);
+        }
+        return $infoForShipping;
+    }
+    
+    /**
+     * @param int $idUser Index.
+     */
+    private function findDataCredit(int $idUser = 0): void
+    {
+        $this->credit->setIdUser($idUser);
+        $this->credit = $this->creditRepository->findByUser();
+    }
+    
+    /**
+     * @param String $direction String with direction.
+     */
+    private function processShipment($direction)
+    {
+        $this->cart->setDirection($direction);        
+        $this->credit->setBalance($this->credit->getBalance() - $this->cart->getTotalPrice());
+        $this->creditRepository->edit();
+        $this->cart->setPaidOut(true);
+        $this->cartRepository->edit();
+    }
+    
+    /**
+     * @param float $shipping Cost of shipping.
+     */
+    private function addCostShipping(float $shipping = 0)
+    {
+        if($shipping == 5)
+        {
+            $this->cart->setTotalPrice(($this->subtotal+5));
+        }
+        else
+        {
+            $this->cart->setTotalPrice($this->subtotal);
+        }
+    }
+    
     /**
      * Accept the dispatch, show the shipping address and return to the cart paid.
      * @param int $id Default 0.
@@ -333,94 +468,175 @@ class cartController implements Crud
         $this->cart->setId($id);
         $this->cart->setIdUser($idU);
         $this->itemsCart->setIdCart($id);
-        $dataCart = $this->cart->view();
+        $dataCart = $this->createArrayDataCart($id);
         return $dataCart;
     }
+    
     /**
      * Edit an item in the shopping cart.
      * The route for this method is: http://localhost/onlineShop/cart/edit/$id .
      * @param int $id Index of the item.
      * @return array|null   Data of cart item.
      */
-    public function edit(int $id=1)
+    public function edit(int $id=1):array
     {
-        $this->itemsCart->setId($id);
-        $data = $this->itemsCart->view();
-        $this->product->setId($data['idProduct']);
-        if ($_POST)
-        {
-            $quantityPreview = $data['quantity'];
-            $quantity = $_POST['quantity'];
-            $this->itemsCart->setQuantity($quantity);
-            $this->product->setId($data['idProduct']);
-            $product_data = $this->product->view();
-            $totalPrice = $product_data["price"]*$quantity;
-            $PricePreview = $data['totalPrice'];
-            $this->itemsCart->setTotalPrice($totalPrice);
-            $result = $product_data['stock'] - ($this->itemsCart->getQuantity() - $quantityPreview);
-            $this->product->setStock($result);
-            $this->product->setId($product_data['id']);
-            $this->product->setName($product_data['name']);
-            $this->product->setPrice($product_data["price"]);
-            $this->product->edit();
-            $this->itemsCart->edit();
-            //Update total cart price
-            $this->cart->setId($data['idCart']);
-            $dataCart = $this->cart->view();
-            $updatePrice = $dataCart['totalPrice'] - ($PricePreview - $totalPrice);
-            $this->cart->setTotalPrice($updatePrice);
-            $this->cart->edit();
-            header("Location: ".URL."index.php?url=cart/");
-        }
+        $data = $this->createArrayDataItemCart($id);
         return $data;
     }
 
     /**
+     * @param int $id Index to item cart.
+     * @return array Return array of data for item cart.
+     */
+    private function createArrayDataItemCart(int $id = 0):array
+    {
+        $data = array();
+        $this->findItemCart($id);
+        if(isset($this->itemsCart))
+        {
+            $data['id'] = $this->itemsCart->getId();
+            $data['idProduct'] = $this->itemsCart->getIdProduct();
+            $data['quantity'] = $this->itemsCart->getQuantity();
+            $data['totalPrice'] = $this->itemsCart->getTotalPrice();
+            $data['creationDate'] = $this->itemsCart->getCreationDate();
+        }
+        return $data;
+    }
+    
+    /**
+     * @param int $idItemCart Index to item cart.
+     */
+    private function findItemCart(int $idItemCart = 0): void
+    {
+        if($idItemCart > 0)
+        {
+            $this->itemsCart = $this->cartItemsRepository->find($idItemCart);
+        }
+    }
+    
+    /**
+     * @param int $quantity Quantity of product.
+     */
+    private function appendQuantity(int $quantity = 0): void
+    {
+        if($quantity > 0)
+            $this->itemsCart->setQuantity($quantity);
+    }
+
+    /**
+     * @param int $idProduct Index of product.
+     */
+    private function findProduct(int $idProduct = 0): void
+    {
+        if($idProduct > 0)
+        {
+            $this->product = $this->productRepository->find($idProduct); 
+        }
+    }
+    
+    /***/
+    private function calcTotalPrice(): void
+    {
+        $totalPrice = $this->product->getPrice() * 
+            $this->itemsCart->getQuantity();
+        $this->itemsCart->setTotalPrice($totalPrice);
+    }
+    
+    /**
+     * @param int $quantityPreview Quantity preview of product in the cart 
+     * shopping.
+     */
+    private function calcStock(int $quantityPreview): void
+    {
+        $result = $this->product->getStock() - 
+            ($this->itemsCart->getQuantity() - $quantityPreview);
+        $this->product->setStock($result);
+    }
+    
+    /**
+     * @param int $idCart Index of cart.
+     */
+    private function findCart(int $idCart = 0): void
+    {
+        if($idCart > 0)
+        {
+            $this->cart = $this->cartRepository->find($idCart);
+        }
+    }
+    
+    /**
+     * Update total cart price.
+     * @param float $pricePreview Price total preview of the cart.
+     */
+    private function updateTotalPriceCart(float $pricePreview): void
+    {
+        $updatePrice = $this->cart->getTotalPrice() -  ($pricePreview -
+            $this->itemsCart->getTotalPrice());
+        $this->cart->setTotalPrice($updatePrice);
+        $this->cartRepository->edit();
+    }
+    
+    /**
+     * Method to update the product.
+     */
+    public function update()
+    {
+        if ($_POST)
+        {
+            $pricePreview = $this->itemsCart->getTotalPrice();
+            $this->appendQuantity($_POST['quantity']);
+            $this->findProduct($this->itemsCart->getIdProduct());
+            $this->calcTotalPrice();
+            $this->calcStock($this->itemsCart->getQuantity());
+            $this->productRepository->edit();
+            $this->cartItemsRepository->edit();
+            $this->findCart($this->itemsCart->getIdCart());
+            $this->updateTotalPriceCart($pricePreview);
+        }
+        header("Location: ".URL."index.php?url=cart/");
+    }
+    
+    /**
      * Delete a cart item.
      * @param int $id Integer with id to cart item.
      */
-    public function remove(int $id=0)
+    public function remove(int $id = 0)
     {
-        $this->itemsCart->setId($id);
-        $data = $this->itemsCart->view();
-        if (isset($data))
-        {
-            $this->product->setId($data['idProduct']);
-            $product_data = $this->product->view();
-            if (isset($product_data)) {
-                $result = $product_data['stock'] + $data['quantity'];
-                $this->product->setStock($result);
-                $this->product->setName($product_data['name']);
-                $this->product->setPrice($product_data["price"]);
-                $this->product->edit();
-            }
-            $this->cart->setId($data['idCart']);
-            $shoppingCart=$this->cart->view();
-            if (!empty($data['totalPrice']) && !empty($shoppingCart['totalPrice']))
-            {
-                $this->cart->setTotalPrice($shoppingCart['totalPrice'] - $data['totalPrice']);
-                $this->cart->setDirection($shoppingCart['direction']);
-                $this->cart->setPaidOut(false);
-                $this->cart->edit();
-            }
-            $this->itemsCart->delete();
-        }
+        $this->findItemCart($id);
+        $this->findProduct($this->itemsCart->getIdProduct());
+        $this->returnProductToStock($this->itemsCart->getQuantity());
+        $this->findCart($this->itemsCart->getIdCart());
+        $this->updateTotalPriceCart(0);
+        $this->cartItemsRepository->delete();
         header("Location: ".URL."index.php?url=cart/");
+    }
+
+    /**
+     * @param int $quantity Quantity to return.
+     */
+    private function returnProductToStock(int $quantity = 0):void 
+    {
+        if ($quantity > 0) 
+        {
+            $result = $this->product->getStock() + $quantity;
+            $this->product->setStock($result);    
+            $this->productRepository->edit();
+        }
     }
 
     /**
      * List of carts per user indicated.
      * The route to list to the cart will be:
      * http://localhost/onlineShop/cart/tolistuser/$idCart/$idU .
-     * @param int $idU
-     * @param int $idCart
-     * @return bool|\mysqli_result List of carts per user indicated.
+     * @param int $idCart Index of cart.
+     * @param int $idU Index of user.
+     * @return string[] List of carts per user indicated.
      */
-    public function toListUser( int $idCart=1, int $idU=1)
+    public function toListUser( int $idCart = 1, int $idU = 1)
     {
         $this->cart->setId($idCart);
         $this->cart->setIdUser($idU);
-        $data = $this->cart->toListItemsCart();
+        $data = $this->cartRepository->toListItemsCart();
         return $data;
     }
 

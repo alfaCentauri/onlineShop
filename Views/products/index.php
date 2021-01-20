@@ -22,6 +22,10 @@
                     <h3 class="text-center">Products list</h3>
                 </div>
             </div>
+            <?php
+            if (isset($data))
+            {
+            ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-3">
@@ -53,12 +57,12 @@
                                         <td class="text-right"><?php echo $row["price"];?></td>
                                         <td class="text-center"><?php echo $row["average"];?></td>
                                         <td class="text-center">
-                                            <!--a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">
+                                            <a href="<?php echo URL; ?>index.php?url=products/edit/<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">
                                                 Edit
                                             </a>
                                             <a href="<?php echo URL; ?>index.php?url=products/remove/<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" >
                                                 Delete
-                                            </a-->
+                                            </a>
                                             <a href="<?php echo URL; ?>index.php?url=cart/preview/<?php echo $row['id']; ?>/1" class="btn btn-success btn-sm" >
                                                 Add to cart
                                             </a>
@@ -73,5 +77,13 @@
                     </div>
                 </div>
             </div>
-
+                <?php
+            }
+            else
+            {
+                ?>
+                <h2 class="text-center">The list products is empty</h2>
+                <?php
+            }
+            ?>
         </div>

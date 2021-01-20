@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,89 +19,49 @@
 
 namespace Models;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 /**
  * Description of Cart
  *
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 2.0.
  */
-class Cart implements Crud
+class Cart extends Entity
 {
     /**
-     * @var Conection
-     */
-    private $conn;
-    /**
-     * It contains the index
      * @var integer
      */
-    private $id;
-    /**
-     * @var integer
-     */
-    private $idUser;
+    private int $idUser;
     /**
      * Constains the total price.
      * @var float
      */
-    private $totalPrice;
+    private float $totalPrice;
     /**
      * Contains the direction of shipping.
-     * @var String
+     * @var string
      */
-    private $direction;
+    private string $direction;
     /**
-     * @var Boolean
+     * @var bool
      */
-    private $paidOut;
-    /**
-     * Contains creation date.
-     * @var mixed
-     */
-    private $creationDate;
+    private Boolean $paidOut;
+    
     /**
      * Cart constructor.
      */
     function __construct()
     {
         $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
         $this->idUser = 0;
         $this->direction ="";
         $this->totalPrice = 0;
+        $this->paidOut = false;
     }
-
-    /**
-     * @return Conection
-     */
-    public function getConn(): Conection
-    {
-        return $this->conn;
-    }
-
-    /**
-     * @param Conection $conn
-     */
-    public function setConn(Conection $conn): void
-    {
-        $this->conn = $conn;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
+    
     /**
      * @return int
      */
@@ -166,121 +126,4 @@ class Cart implements Crud
         $this->paidOut = $paidOut;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreationDate()
-    {
-        return $this->creationDate;
-    }
-
-    /**
-     * @param mixed $creationDate
-     */
-    public function setCreationDate($creationDate): void
-    {
-        $this->creationDate = $creationDate;
-    }
-
-    /**
-     * Get a list of all the records.
-     */
-    public function toList()
-    {
-        $sql = "SELECT * FROM carts;";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-    /**
-     * Get a list of all the records for a user.
-     * @return bool|\mysqli_result Return a list of all the records for a user.
-     */
-    public function toListUser()
-    {
-        $sql = "SELECT C.*, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
-          FROM carts C 
-          INNER JOIN itemsCart I 
-          on C.id=I.idCart and C.paidOut=false and C.idUser='{$this->idUser}' 
-          INNER JOIN products P on P.id=I.idProduct ";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-    /**
-     * View user's unpaid registration.
-     * @return array|null Return an arrangement with the record.
-     */
-    public function findByUser()
-    {
-        $sql = "SELECT C.* 
-          FROM carts C 
-          where C.paidOut=false and C.id='{$this->id}' and C.idUser='{$this->idUser}'";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-
-    /**
-     * Generates a list to show all the items in a cart for a specific user.
-     * @return bool|\mysqli_result
-     */
-    public function toListItemsCart()
-    {
-        $sql = "SELECT C.*, I.id as idItem, I.quantity ,I.totalPrice, P.name as name_product, P.image as image_product 
-	      FROM carts C 
-	      INNER JOIN itemsCart I 
-	      on C.id=I.idCart and C.paidOut=false and C.id='{$this->id}' and C.idUser='{$this->idUser}' 
-	      INNER JOIN products P 
-	      on P.id=I.idProduct ";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-    /**
-     * Add a register
-     */
-    public function add()
-    {
-        $sql = "INSERT INTO carts(id, idUser, totalPrice, direction, paidOut, creationDate) 
-                VALUES(NULL, '{$this->idUser}', '{$this->totalPrice}', '{$this->direction}', 
-                '{$this->paidOut}', NOW());";
-        $data = $this->conn->InsertQuery($sql);
-        return $data;
-    }
-    /**
-     * View a register.
-     * @return array|null Return an arrangement with the record. 
-     */
-    public function view()
-    {
-        $sql = "SELECT * FROM carts WHERE id='{$this->id}'";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * View a register.
-     * @return array|null Return an arrangement with the record.
-     */
-    public function viewNotPaidout()
-    {
-        $sql = "SELECT * FROM carts WHERE idUser='{$this->idUser}' and paidOut=false ";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * Edit record indicated by the current id.
-     */
-    public function edit()
-    {
-        $sql = "update carts set totalPrice='{$this->totalPrice}', direction='{$this->direction}', paidOut='{$this->paidOut}' where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
-    /**
-     * Delete record indicated by the current id.
-     */
-    public function delete()
-    {
-        $sql = "delete from carts where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
 }

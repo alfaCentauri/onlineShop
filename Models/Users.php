@@ -1,7 +1,7 @@
 <?php
 
-/*
- * Copyright (C) 2019 ricardo
+/**
+ * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,123 +24,51 @@ namespace Models;
  *
  * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 2.0.
  */
-class Users implements Crud
+class Users extends Entity
 {
-    /**
-     * It contains the index.
-     * @var int
-     */
-    private $id;
     /**
      * Contains the firstName
      * @var string
      */
-    private $firstName;
+    private string $firstName;
     /**
      * Contains the lastName
      * @var string
      */
-    private $lastName;
+    private string $lastName;
     /**
      * User email
      * @var string
      */
-    private $email;
+    private string $email;
     /**
      * User Login
      * @var string
     */
-    private $login;
+    private string $login;
     /**
      * Encrypted user password
      * @var string
     */
-    private $password;
-    /**
-     * @var Boolean
-     */
-    private $active;
-    /**
-     * Contains creation date.
-     * @var mixed
-     */
-    private $creationDate;
-    /**
-     * Conetion to DB.
-     * @var Conection
-     */
-    private $conection;
+    private string $password;
+
     /**
      * Construct of the class
      */
     function __construct() 
     {
-        $this->id=0;
-        $this->firstName="";
-        $this->lastName="";
-        $this->email="";
-        $this->login="";
-        $this->password="";
-        $this->active=true;
+        $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
+        $this->firstName = "";
+        $this->lastName = "";
+        $this->email = "";
+        $this->login = "";
+        $this->password = "";
     }
-    /**
-     * List
-     * @return null|array Result of the query.
-     */
-    public function toList()
-    {
-        $sql = "SELECT * FROM users;";
-        $data = $this->conection->ReturnQuery($sql);
-        return $data;
-    }
-    /**Add register*/
-    public function add()
-    {
-        $sql = "INSERT INTO users(firstName, lastName, email, login, password, creationDate) "
-                . "VALUES('{$this->firstName}', '{$this->lastName}', '"
-                . "{$this->email}', '{$this->login}', '{$this->password}', NOW());";
-        $this->conection->SimpleQuery($sql);
-    }
-    /**Delete record indicated by the current id.*/
-    public function delete()
-            {
-        $sql = "delete from users where id='{$this->id}';";
-        $this->conection->SimpleQuery($sql);
-    }
-    /**Edit record indicated by the current id.*/
-    public function edit()
-    {
-        $sql = "update users set firstName='{$this->firstName}', lastName="
-        . "'{$this->lastName}', email='{$this->email}', login='{$this->login}', '"
-        . "{$this->password}' where id='{$this->id}';";
-        $this->conection->SimpleQuery($sql);
-    }
-    /**Display a record indicated by the current id.*/
-    public function view()
-    {
-        $sql = "SELECT * FROM users where id='{$this->id}'";
-        $datos = $this->conection->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($datos);
-        return $row;
-    }
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
+    
     /**
      * @return string
      */
@@ -219,54 +147,6 @@ class Users implements Crud
     public function setPassword(string $password): void
     {
         $this->password = $password;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param bool $active
-     */
-    public function setActive(bool $active): void
-    {
-        $this->active = $active;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreationDate()
-    {
-        return $this->creationDate;
-    }
-
-    /**
-     * @param mixed $creationDate
-     */
-    public function setCreationDate($creationDate): void
-    {
-        $this->creationDate = $creationDate;
-    }
-
-    /**
-     * @return Conection
-     */
-    public function getConection(): Conection
-    {
-        return $this->conection;
-    }
-
-    /**
-     * @param Conection $conection
-     */
-    public function setConection(Conection $conection): void
-    {
-        $this->conection = $conection;
     }
 
 }

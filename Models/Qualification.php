@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Copyright (C) 2019 Ingeniero en Computación: Ricardo Presilla.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,64 +24,37 @@ namespace Models;
  *
  * @package Models
  * @author Ingeniero en Computación: Ricardo Presilla.
- * @version 1.0.
+ * @version 2.0.
  */
-class Qualification implements Crud
+class Qualification extends Entity
 {
-    /**
-     * It contains the index
-     * @var int
-     */
-    private $id;
     /**
      * It contains the index of the user.
      * @var int
      */
-    private $idUser;
+    private int $idUser;
     /**
      * It contains the index of the product.
      * @var int
      */
-    private $idProduct;
+    private int $idProduct;
     /**
      * It contains the points del product.
      * @var int
      */
-    private $points;
-    /**
-     * Contains creation date 
-     * @var mixed
-     */
-    private $creationDate;
-    /**
-     * Conetion to DB.
-     */
-    private $conn;
+    private int $points;
+    
     /**
      * Qualification constructor.
      */
     function __construct()
     {
         $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
         $this->idUser = 0;
         $this->idProduct = 0;
         $this->points = 0;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     /**
@@ -132,143 +105,4 @@ class Qualification implements Crud
         $this->points = $points;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreationDate()
-    {
-        return $this->creationDate;
-    }
-
-    /**
-     * @param mixed $creationDate
-     */
-    public function setCreationDate($creationDate): void
-    {
-        $this->creationDate = $creationDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConn()
-    {
-        return $this->conn;
-    }
-
-    /**
-     * @param mixed $conn
-     */
-    public function setConn($conn): void
-    {
-        $this->conn = $conn;
-    }
-    
-    /**
-     * Add register
-     */
-    public function add()
-    {
-        $sql = "INSERT INTO qualification(id, idUser, idProduct, points, creationDate) 
-          VALUES(NULL, '{$this->idUser}', '{$this->idProduct}', '{$this->points}', NOW());";
-        $data = $this->conn->InsertQuery($sql);
-        return $data;
-    }
-    /**
-     * Delete record indicated by the current id.
-     */
-    public function delete()
-    {
-        $sql = "delete from qualification where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
-    /**
-     * Edit record indicated by the current id.
-     */
-    public function edit()
-    {
-        $sql = "update qualification set points='{$this->points}' where id='{$this->id}';";
-        $this->conn->SimpleQuery($sql);
-    }
-    /**
-     * Get a list of all the records.
-     */
-    public function toList()
-    {
-        $sql = "SELECT * FROM qualification;";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-
-    /**
-     * View a register.
-     * @return bool|\mysqli_result Return an arrangement with the record.
-     */
-    public function view()
-    {
-        $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
-          FROM qualification Q 
-          INNER JOIN products P 
-          on Q.idProduct=P.id and Q.id='{$this->id}';";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * Find all registers by the current user.
-     * @return array
-     */
-    public function findByUser()
-    {
-        $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
-          FROM qualification Q 
-          INNER JOIN users U on Q.idUser='{$this->idUser}' and Q.idUser=U.id  
-          INNER JOIN products P 
-          on Q.idProduct=P.id;";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * Find a record for the current user and the product indicate by their index.
-     * @return array
-     */
-    public function findByUserProduct()
-    {
-        $sql = "SELECT Q.*, P.name as name_product, P.image as image_product 
-          FROM qualification Q 
-          INNER JOIN users U on Q.idUser='{$this->idUser}' and Q.idUser=U.id  
-          INNER JOIN products P 
-          on Q.idProduct=P.id and Q.idProduct='{$this->idProduct}';";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
-    /**
-     * List all the average.
-     * @return bool|\mysqli_result
-     */
-    public function listAverage()
-    {
-        $sql = "SELECT Q.idProduct, AVG(Q.points) as average, P.name as name_product, P.image as image_product 
-          FROM qualification Q 
-          INNER JOIN products P 
-          on Q.idProduct=P.id;";
-        $data = $this->conn->ReturnQuery($sql);
-        return $data;
-    }
-    /**
-     * Find a average for a product.
-     * @return bool|\mysqli_result
-     */
-    public function findAverage()
-    {
-        $sql = "SELECT Q.idProduct, AVG(Q.points) as average, P.name as name_product, P.image as image_product 
-          FROM qualification Q 
-          INNER JOIN products P 
-          on Q.idProduct='{$this->idProduct}';";
-        $data = $this->conn->ReturnQuery($sql);
-        $row = mysqli_fetch_assoc($data);
-        return $row;
-    }
 }

@@ -1,15 +1,17 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: rpres
+ * User: Ricardo Presilla
  * Date: 6/7/2019
  * Time: 7:06 PM
  */
 
 namespace Models;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 /**
- * Abstract class to define common methods to create, read, update and delete.
+ * Abstract class to define common methods to all the Models.
  *
  * @package Models.
  * @author Ingeniero en Computación: Ricardo Presilla.
@@ -18,34 +20,29 @@ namespace Models;
 abstract class Entity
 {
     /**
-     * @var Conection
-     */
-    protected $conn;
-    /**
      * It contains the index
-     * @var integer
+     * @var int
      */
-    protected $id;
+    protected int $id;
     /**
      * Contains creation date.
      */
     protected $creationDate;
+    /**
+     * @var bool
+     */
+    protected Boolean $active;
 
     /**
-     * @return Conection
+     * Entity constructor.
      */
-    public function getConn(): Conection
+    public function __construct()
     {
-        return $this->conn;
+        $this->id = 0;
+        $this->creationDate = "";
+        $this->active = true;
     }
 
-    /**
-     * @param Conection $conn
-     */
-    public function setConn(Conection $conn): void
-    {
-        $this->conn = $conn;
-    }
 
     /**
      * @return int
@@ -78,26 +75,20 @@ abstract class Entity
     {
         $this->creationDate = $creationDate;
     }
+
     /**
-     * Display a record indicated by the current id.
-     * @return array|null Return the register if found else return null.
+     * @return bool
      */
-    abstract public function view();
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
     /**
-     * Add a register.
+     * @param bool $active
      */
-    abstract public function add();
-    /**
-     * Edit record indicated by the current id.
-     */
-    abstract public function edit();
-    /**
-     * Delete record indicated by the current id.
-     */
-    abstract public function delete();
-    /**
-     * Get a list of all the records.
-     * @return mixed
-     */
-    abstract public function toList();
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
 }
